@@ -1,0 +1,20 @@
+{
+  "id": "./",
+  "name": "QURO – Belajar Al-Qur’an",
+  "short_name": "QURO",
+  "description": "Belajar membaca Al-Qur’an dengan metode Iqro: latihan, kuis, bintang, dan komunitas.",
+  "lang": "id",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#F3FBEF",
+  "theme_color": "#3DB54A",
+  "categories": ["education"],
+  "icons": [
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
