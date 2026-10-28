@@ -16,7 +16,8 @@ css/
 data/                 isi konten (ubah di sini untuk menambah materi)
   letters.js          30 huruf (L), PG
   harakat.js          harakat (HK, HKC)
-  iqro.js             daftar jilid (JL), sumber JSON (IQB), warna jilid (CVH)
+  iqro.js             warna jilid (CVH), wadah JL dan IQ
+  latihan.js          pembuat materi latihan Jilid 1-6 (orisinal, dibuat program)
   games.js            huruf game (GL), daftar game (MG), petunjuk (GI)
   community.js        data contoh teman, kabar, papan peringkat
   tajwid.js           materi tanwin, tasydid, mad (TJ) + kata tanpa tanda (TJN)
@@ -57,11 +58,11 @@ js/
 
 - Urutan muat: `data` → `assets` → `js/*` → `js/views/*` → `games.js` → `events.js` → `main.js`. `views/learn.js` harus pertama di antara views karena membuat `V`.
 - Huruf Arab ditulis RTL dan harus berada di dalam elemen `.ar`. Jangan membalik urutan array huruf.
-- Halaman Iqro masih diambil dari repo `dyazincahya/iqro-json` lewat CDN (lihat `IQB` di `data/iqro.js`) dan disimpan di localStorage. Untuk menambah jilid 3–6 sendiri, isi `data/iqro/` lalu ubah `IQB` dan `JL`.
-- Tailwind, font Amiri/Nunito, dan qrcodejs sekarang lokal (`css/tailwind.css`, `css/fonts.css`, `assets/fonts/`, `assets/lib/`). Satu-satunya yang masih dari luar adalah data halaman Iqro (`IQB`).
+- Materi latihan dibuat oleh `data/latihan.js` saat aplikasi dibuka (pengacak bersemi, jadi selalu sama). Jilid: 1 fathah (14 hal), 2 kasrah dan dhammah (10), 3 mad (12), 4 sukun dan tanwin (10), 5 tasydid (10), 6 gabungan dan ujian (10). Ubah jumlah halaman atau pola kata di `SPEC` dan fungsi `j1`–`j6`. Bukan salinan buku Iqro mana pun.
+- Tailwind, font Amiri/Nunito, dan qrcodejs lokal (`css/tailwind.css`, `css/fonts.css`, `assets/fonts/`, `assets/lib/`). Tidak ada lagi ketergantungan ke CDN atau GitHub pihak lain.
 
 ## Offline
 
-- Semua file aplikasi lokal, jadi membuka `index.html` langsung dari file sudah tidak butuh internet (kecuali data halaman Iqro yang belum tersimpan).
+- Semua file aplikasi lokal, jadi membuka `index.html` langsung dari file sudah tidak butuh internet.
 - Lewat http/https, `sw.js` menyimpan seluruh aplikasi sehingga bisa dibuka offline setelah kunjungan pertama. Jalankan `node tools/make-sw.js` setiap kali ada file berubah agar pengguna mendapat versi baru.
 - Mengubah tampilan (kelas Tailwind baru)? Bangun ulang CSS: `npm i tailwindcss@3.4.17` lalu `npx tailwindcss -c tools/tailwind.config.js -i tools/tailwind.in.css -o css/tailwind.css --minify`. Kelas yang disusun dari potongan teks saat runtime tidak terdeteksi; tulis nama kelas utuh.

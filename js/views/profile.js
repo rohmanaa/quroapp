@@ -40,5 +40,5 @@ sec=(h,b)=>`<section class="${card} mt-3"><h2 class="font-black text-sm mb-1">${
 return `<div class="flex items-center gap-3 mb-4"><div><h1 class="text-3xl font-black">Tentang QURO</h1><p class="text-mute text-xs font-bold">Sumber materi dan kredit.</p></div></div>
 <section class="hero rounded-[28px] p-5 text-center"><b class="text-3xl font-black block">QURO</b><p class="text-sm font-bold opacity-90 mt-1">Belajar membaca Al-Qur’an dengan metode Iqro. Materi Iqro di QURO bebas biaya.</p></section>
 ${sec("Metode Iqro","Metode Iqro’ adalah karya KH. As’ad Humam. QURO adalah alat bantu belajar dan tidak menggantikan bimbingan guru ngaji.")}
-${sec("Sumber data","Teks halaman Iqro berasal dari proyek iqro-json oleh dyazincahya ("+lk("https://github.com/dyazincahya/iqro-json","GitHub")+"), hasil OCR yang mungkin belum sepenuhnya sesuai buku fisik. Menemukan perbedaan? "+lk("https://github.com/dyazincahya/iqro-json/issues","Laporkan koreksi")+".")}
+${sec("Materi latihan","Latihan membaca di QURO disusun oleh pengembang dengan program: huruf dan tanda baca dibuat bertahap dari fathah, kasrah, dhammah, mad, tanwin, sukun, sampai tasydid. Isinya bukan salinan buku Iqro mana pun, jadi tetap belajar dari buku Iqro bersama guru ngajimu.")}
 ${sec("Pustaka dan font","Font Amiri dan Nunito (SIL Open Font License), Tailwind CSS (MIT), dan qrcodejs (MIT).")}`};

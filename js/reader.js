@@ -30,12 +30,5 @@ function turn(d){stopSeq();if(d<0){if(pn>1)pn--;else return toast("Ini halaman p
 let swAt=0;document.addEventListener("click",e=>{if(Date.now()-swAt<600&&e.target.closest(".fsx2")){e.stopPropagation();e.preventDefault()}},true);
 document.addEventListener("touchstart",e=>{tx0=(S==="reader"&&e.touches.length===1)?e.touches[0].clientX:null},{passive:true});
 document.addEventListener("touchend",e=>{if(tx0===null)return;const dx=e.changedTouches[0].clientX-tx0;tx0=null;if(Math.abs(dx)>70){swAt=Date.now();turn(dx>0?1:-1)}},{passive:true});
-function loadPg(l,q,quiet){
-  const k=l+"-"+q,c=IQ[k];if(c&&(c.content||c.s==="load"||c.s===404))return;
-  try{const x=localStorage.getItem("iqro_pg_"+k);if(x){IQ[k]=JSON.parse(x);return}}catch(e){}
-  IQ[k]={s:"load"};
-  fetch(IQB+l+"/"+k+".json").then(r=>{if(!r.ok){IQ[k]={s:r.status===404?404:"net"};throw 0}return r.json()})
-   .then(j=>{IQ[k]=j;try{localStorage.setItem("iqro_pg_"+k,JSON.stringify(j))}catch(e){}})
-   .catch(()=>{if(IQ[k].s==="load")IQ[k]={s:"net"}})
-   .finally(()=>{if(S==="reader"&&jl+"-"+pn===k)render()});
-}
+/* Semua halaman sudah ada di IQ (dibuat oleh data/latihan.js). Tidak ada unduhan dari luar. */
+function loadPg(l,q){const k=l+"-"+q;if(!IQ[k])IQ[k]={s:404}}
