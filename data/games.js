@@ -1,0 +1,5 @@
+/* Data mini game: huruf (GL), daftar game (MG), petunjuk (GI) */
+/* ===== Mini game (Home) — 6 game, tiap game 1 soal dulu. Tambah huruf baru lewat array GL. ===== */
+const GL=[{ar:"ا",n:"Alif",lat:"ALIF",w:"Apel",e:"🍎",h:130},{ar:"ب",n:"Ba",lat:"BA",w:"Bebek",e:"🦆",h:200}];
+const MG=[["build","Susun Huruf","Eja nama huruf","mg-abc",150],["match","Memory Huruf","Balik & cocokkan · 4 level","mg-cards",200],["pick","Tebak Huruf","Apel diawali?","red-apple",12],["trace","Telusuri","Ikuti titik-titik","mg-pencil",280],["listen","Dengar & Pilih","Dengar bunyinya","speaker-high-volume",340],["find","Cari Huruf","Temukan Alif","mg-search",40],["next","Lanjutkan Huruf","Huruf setelahnya?","mg-abc",100]];
+const GI={build:"Susun nama huruf Arab ini dengan huruf Latin.",match:"Balik dua kartu, cocokkan dua huruf Arab yang sama. Tiap level 8 huruf.",pick:"Apel diawali huruf hijaiyah yang mana?",trace:"Ikuti garis putus-putus dengan jarimu, dari atas ke bawah.",listen:"Ketuk speaker, dengarkan, lalu pilih hurufnya.",next:"Pilih huruf yang datang setelah huruf ini, sesuai urutan hijaiyah.",find:"Ketuk semua huruf Alif yang bersembunyi (ada 3)."};

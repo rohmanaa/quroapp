@@ -1,0 +1,13 @@
+/* Token warna, tema terang/gelap, reset, latar halaman */
+:root{--bg:#F3FBEF;--card:#fff;--ink:#1E3A2B;--mute:#6F8A7A;--brand:#3DB54A;--bd:#2B8F39;--on:#fff;--soft:#E2F6DB;--line:#DDEFD5;--l:40%;--tl:92%;box-sizing:border-box}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0f1c14;--card:#17281d;--ink:#eaf6ee;--mute:#9bb8a5;--brand:#58d068;--bd:#2f9a41;--on:#07210f;--soft:#1e3727;--line:#29442f;--l:68%;--tl:20%;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0f1c14;--card:#17281d;--ink:#eaf6ee;--mute:#9bb8a5;--brand:#58d068;--bd:#2f9a41;--on:#07210f;--soft:#1e3727;--line:#29442f;--l:68%;--tl:20%;color-scheme:dark}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg)}
+body{min-height:100%}
+button{font:inherit;cursor:pointer;border:0;background:none;color:inherit}
+button:focus-visible{outline:3px solid #F5B83D;outline-offset:2px}
+:root{--g1:#D6F3D0;--g2:#E1E7FF;--g3:#FFF0C4;--g4:#F4FBF1;--g5:#EDF2FB}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--g1:#15402a;--g2:#1b2547;--g3:#3a3015;--g4:#0f1c14;--g5:#0c1620}}
+:root[data-theme="dark"]{--g1:#15402a;--g2:#1b2547;--g3:#3a3015;--g4:#0f1c14;--g5:#0c1620}
+html{height:100%}body{min-height:100vh;min-height:100dvh;background-color:var(--bg);background-image:radial-gradient(55% 32% at 8% 2%,var(--g1),transparent 72%),radial-gradient(50% 30% at 100% 22%,var(--g2),transparent 72%),radial-gradient(60% 34% at 0% 70%,var(--g3),transparent 72%),radial-gradient(45% 30% at 100% 100%,var(--g1),transparent 72%),linear-gradient(180deg,var(--g4),var(--g5));background-attachment:fixed;background-size:auto}

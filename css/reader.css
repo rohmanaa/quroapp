@@ -1,0 +1,60 @@
+/* Halaman Iqro (.pg/.pp), header .tbar, pita warna .bd*, mode polos .nc, scroller */
+:root{--pp:#FFFDF6;--pr:#1E3A2B}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--pp:#12231a;--pr:#EAF6EE}}
+:root[data-theme="dark"]{--pp:#12231a;--pr:#EAF6EE}
+.pg{background:var(--pp);border-radius:24px;padding:10px;border:2px solid var(--line);box-shadow:0 6px 0 var(--line)}
+.pg-in{position:relative;border:3px solid var(--pr);border-radius:8px;padding:18px 8px 12px;color:var(--pr)}
+.pg-in:before,.pg-in:after,.pg-in>i{content:"";position:absolute;width:26px;height:26px;border:3px solid var(--pr);pointer-events:none}
+.pg-in:before{top:5px;left:5px;border-right:0;border-bottom:0}
+.pg-in:after{bottom:5px;right:5px;border-left:0;border-top:0}
+.pg-in>.c1{top:5px;right:5px;border-left:0;border-bottom:0}
+.pg-in>.c2{bottom:5px;left:5px;border-right:0;border-top:0}
+.rw{border-top:2px solid color-mix(in srgb,var(--pr) 30%,transparent)}
+:root{--bl:91%}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bl:24%}}
+:root[data-theme="dark"]{--bl:24%}
+.pp{background:var(--pp);border-radius:24px;overflow:hidden;border:2px solid var(--line);box-shadow:0 6px 0 var(--line);color:var(--pr)}
+.tbar{display:flex;width:100%;align-items:stretch;font-weight:900;color:#fff;text-align:left}
+.tbar .a{flex:1;background:linear-gradient(90deg,#1F9E8F,#34B8A4);padding:11px 14px;display:flex;align-items:center;letter-spacing:.04em}
+.tbar .b{background:#7B3FA0;padding:8px 12px;display:flex;align-items:center;gap:8px}
+.band{border-radius:12px}
+.bdh{background:hsl(98 55% var(--bl))}.bdt{background:hsl(38 90% var(--bl))}
+.bd1{background:hsl(24 90% var(--bl))}.bd2{background:hsl(200 85% var(--bl))}.bd3{background:hsl(88 60% var(--bl))}
+.foot{display:flex;align-items:center;justify-content:center;gap:12px;padding:9px;color:#fff;font-weight:900;font-size:12px;letter-spacing:.12em;background:linear-gradient(90deg,#1F9E8F,#8FD14F)}
+body.fs header,body.fs #nv{display:none!important}.pkb{display:flex;flex:1;align-items:stretch;text-align:left;font-weight:900;color:inherit}.fsx2{touch-action:pan-y;display:grid;place-items:center;width:48px;flex:none;background:#D93025;color:#fff}.fsx2 svg{width:20px;height:20px}.fsx{position:fixed;top:calc(env(safe-area-inset-top,0px) + 8px);right:8px;z-index:50;width:34px;height:34px;border-radius:999px;display:grid;place-items:center;background:rgba(0,0,0,.35);color:#fff;opacity:.55}.fsx svg{width:18px;height:18px}
+.tbar .a{background:linear-gradient(90deg,#1B78C2,#3A9BE0)}
+.tbar .b{background:#F5B83D;color:#3a2a00}
+.foot{background:#1B78C2}
+.foot b{background:#F5B83D;color:#3a2a00;padding:1px 10px;border-radius:99px}
+.bd1,.bd3{background:hsl(205 85% var(--bl))}
+.bd2,.bdt{background:hsl(46 95% var(--bl))}
+.nc .band{background:color-mix(in srgb,var(--pr) 6%,transparent)}
+.nc .lt{color:var(--pr)}
+.nc .foot{background:var(--pr);color:var(--pp)}
+.nc .foot b{background:color-mix(in srgb,var(--pr) 75%,var(--pp));color:var(--pp)}
+/* Huruf Arab Iqro = hitam. Warna per aturan tajwid nanti: override .lt per kelas/atribut (mis. .lt[data-tj]) */
+:root{--blk:#111}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--blk:#F2F7F4}}
+:root[data-theme="dark"]{--blk:#F2F7F4}
+.lt{color:var(--blk)}
+.pp{color:var(--blk)}
+.pp .tbar .a{background:linear-gradient(90deg,hsl(var(--jh) 65% 36%),hsl(var(--jh) 62% 50%))}
+.pp .tbar .b{background:hsl(var(--jh) 90% 82%);color:hsl(var(--jh) 70% 16%)}
+.pp .foot{background:hsl(var(--jh) 65% 38%)}
+.pp .foot b{background:hsl(var(--jh) 90% 82%);color:hsl(var(--jh) 70% 16%)}
+.pp .bd1,.pp .bd3{background:hsl(var(--jh) 70% var(--bl))}
+.pp .bd2,.pp .bdt{background:hsl(calc(var(--jh) + 40) 85% var(--bl))}
+.nc .foot{background:var(--pr)!important;color:var(--pp)}
+.nc .foot b{background:color-mix(in srgb,var(--pr) 75%,var(--pp))!important;color:var(--pp)!important}
+.nc .band{background:color-mix(in srgb,var(--pr) 6%,transparent)!important}
+.hs{display:flex;gap:.6rem;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch;scroll-snap-type:x mandatory;scroll-padding:0 1rem;margin:0 -1rem;padding:2px 1rem 10px}.hs::-webkit-scrollbar{display:none}.hs>*{scroll-snap-align:start}
+.jt{scrollbar-width:none;scroll-behavior:smooth}.jt::-webkit-scrollbar{display:none}
+.jarr{position:absolute;top:0;width:36px;height:44px;display:grid;place-items:center;z-index:2;border-radius:16px;background:var(--card);border:2px solid var(--line);color:var(--brand)}
+
+/* Warna tajwid: tanwin, tasydid, mad. Ubah variabel di sini untuk ganti warna. */
+:root{--tj-tanwin:#D9480F;--tj-tasydid:#8B3FC4;--tj-mad:#0B7BC4}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--tj-tanwin:#FF9A5A;--tj-tasydid:#D29BF2;--tj-mad:#6CC4FF}}
+:root[data-theme="dark"]{--tj-tanwin:#FF9A5A;--tj-tasydid:#D29BF2;--tj-mad:#6CC4FF}
+.tj[data-tj="tanwin"]{color:var(--tj-tanwin)}
+.tj[data-tj="tasydid"]{color:var(--tj-tasydid)}
+.tj[data-tj="mad"]{color:var(--tj-mad)}

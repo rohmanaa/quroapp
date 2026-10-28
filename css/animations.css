@@ -1,0 +1,15 @@
+/* Transisi halaman dan animasi kedip maskot */
+@keyframes trSlide{from{opacity:0;transform:translateX(32px)}to{opacity:1;transform:none}}
+@keyframes trSlideB{from{opacity:0;transform:translateX(-32px)}to{opacity:1;transform:none}}
+@keyframes trFade{from{opacity:0}to{opacity:1}}
+@keyframes trZoom{from{opacity:0;transform:scale(.94)}to{opacity:1;transform:none}}
+@keyframes trUp{from{opacity:0;transform:translateY(26px)}to{opacity:1;transform:none}}
+.tr-slide{animation:trSlide .3s cubic-bezier(.2,.8,.2,1)}
+.tr-slideb{animation:trSlideB .3s cubic-bezier(.2,.8,.2,1)}
+.tr-fade{animation:trFade .28s ease-out}
+.tr-zoom{animation:trZoom .28s cubic-bezier(.2,.8,.2,1)}
+.tr-up{animation:trUp .3s cubic-bezier(.2,.8,.2,1)}
+@keyframes blink{0%,91%,100%{transform:scaleY(1)}95%{transform:scaleY(.08)}}
+.eye{transform-box:fill-box;transform-origin:center;animation:blink 4.6s infinite}
+body.nomb .eye{animation:none}
+@media (prefers-reduced-motion:reduce){.tr-slide,.tr-slideb,.tr-fade,.tr-zoom,.tr-up,.eye,.mas{animation:none!important}}

@@ -1,0 +1,7 @@
+/* Data contoh sosial: teman, kabar, papan peringkat */
+const fol={Salsa:1,Nadia:1,Zahra:1};
+const F=[["Salsa","Iqro 3 · Hal 12",1],["Rafi","Iqro 2 · Hal 30",0],["Nadia","Huruf hijaiyah",1],["Umar","Iqro 4 · Hal 5",0],["Zahra","Iqro 1 · Selesai",1]];
+const LV=["Salsa lagi baca Iqro 3 · Hal 12","Yey Alhamdulillah, Rafi baru selesai Iqro 2","Yay MasyaAllah, Nadia dapat 4 bintang ⭐","Umar absen hari ke-5 🔥","Yay Barakallah, Zahra baru gabung belajar!"];
+const PO=[{id:1,n:"Salsa",g:"P",t:"2 jam lalu",k:"Yey Alhamdulillah, Iqro 3 selesai!",s:"Yay Barakallah, hari ke-12 tanpa putus",i:"trophy",h:40,l:128,w:"Rafi"},{id:2,n:"Rafi",g:"L",t:"5 jam lalu",k:"Yay MasyaAllah, streak 7 hari",s:"Rajin berlatih setiap hari",i:"fire",h:18,l:96,w:"Salsa"},{id:3,n:"Nadia",g:"P",t:"Kemarin",k:"Skor 98 huruf Ba",s:"Latihan membaca nyaris sempurna",i:"hundred-points",h:200,l:74,w:"Zahra"},{id:4,n:"Umar",g:"L",t:"2 hari lalu",k:"Yay MasyaAllah, 50 halaman!",s:"Iqro 4 · Hal 5",i:"glowing-star",h:275,l:51,w:"Nadia"},{id:5,n:"Zahra",g:"P",t:"3 hari lalu",k:"Yey Alhamdulillah, Iqro 1 selesai",s:"Baru gabung, langsung semangat",i:"crown",h:330,l:33,w:"Umar"}];
+const LBD=[["Aisyah","P",3120,"Juara Iqro"],["Fatih","L",2870,"Pembaca Cepat"],["Salsa","P",2450,"Rajin Banget"],["Rafi","L",1760,"Semangat 45"],["Nadia","P",1520,"Bintang Hijaiyah"],["Umar","L",1210,"Pejuang Iqro"],["Zahra","P",980,"Murid Baru"]];
+const MD=["#FFC933","#B8C2CC","#E0955A"];
