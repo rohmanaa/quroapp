@@ -12,11 +12,21 @@ const pick=(a,r)=>a[Math.floor(r()*a.length)];
 const dist=(a,n,r)=>{const o=[];let g=0;while(o.length<n&&g++<50){const x=pick(a,r);if(!o.includes(x))o.push(x)}return o};
 function unit(t,L,v){const c=L.a,l=L.l,m=MK[v];
   if(t==="S")return[c+m[0],l+m[1]];
-  if(t==="M")return[c+m[0]+CAR[v],l+m[1]+m[1]];
+  if(t==="M")return[c+m[0]+CAR[v]+(v==="a"?"":SK),l+m[1]+m[1]]; /* waw dan ya mati wajib bersukun; alif tanpa sukun (alif bersukun = berhenti mendadak, bukan panjang) */
   if(t==="T")return[c+TN[v],l+m[1]+"N"];
   if(t==="D")return[c+SH+m[0],l+l+m[1]];
   return[c+SK,l]}
-function word(pat,vs,pool,r){let a="",l="";for(const t of pat){const L=pick(t==="S"||t==="M"?pool:NS,r);const u=unit(t,L,pick(vs,r));a+=u[0];l+=u[1]}return[a,l]}
+/* Sambungan huruf. Huruf yang tidak menyambung ke huruf sesudahnya (NJ) memutus kata.
+   Huruf RS (ج ح خ ه) bentuk tengah/akhirnya mirip satu sama lain dan mudah terbaca terbalik bila menerima sambungan
+   dari huruf sebelumnya (mis. قخص terbaca "khoqash"), jadi hanya boleh di awal kata atau setelah huruf pemutus. */
+const NJ="ادذرزو",RS="جحخه";
+function word(pat,vs,pool,r){let a="",l="",join=false;
+  for(const t of pat){const base=t==="S"||t==="M"?pool:NS;
+    let L=pick(base,r);const v=pick(vs,r);
+    if(join&&RS.indexOf(L.a)>=0){const ok=base.filter(x=>RS.indexOf(x.a)<0),r2=rng("fix|"+pat+"|"+a+"|"+l+"|"+L.a);L=pick(ok,r2)} /* pengundi cadangan: aliran acak utama tidak berubah, jadi kata yang sudah aman tetap sama */
+    const u=unit(t,L,v);a+=u[0];l+=u[1];
+    join=NJ.indexOf(t==="M"?CAR[v]:L.a)<0}
+  return[a,l]}
 const tok=(L,v)=>{const u=unit("S",L,v);return[u[0],u[1]]};
 function put(rows,r,cells){cells.forEach((c,i)=>rows.push({order_id:rows.length+1,position:{row:r,col:i+1},latin:c[1],arabic:c[0]}))}
 function uniq(n,mk,seen){let c,g=0;do{c=mk()}while(seen[c[1]]&&g++<40);seen[c[1]]=1;return c}
@@ -45,24 +55,27 @@ function wordPage(o,r){const rows=[],seen={};
   const R0=rows.length?2:1;
   for(let i=0;i<7-(rows.length?1:0);i++){const mk=()=>word(pick(o.pats,r),o.vs,o.pool,r);put(rows,R0+i,[uniq(0,mk,seen),uniq(0,mk,seen)])}
   return{topic:o.topic,rows,id:o.id,ar:o.ar}}
+function okPat(p){return /^[SMTDK]+$/.test(p)&&/^[SM]/.test(p)&&(p.indexOf("T")<0||p.indexOf("T")===p.length-1)&&!/M[KD]|KD|KK/.test(p)}
+const WP={};
+const P=(l,fb)=>{const g=l.filter(okPat);l.filter(x=>!okPat(x)&&!WP[x]).forEach(x=>{WP[x]=1;console.warn("QURO: pola \""+x+"\" dilewati (melanggar aturan, lihat data/pola.js)")});return g.length?g:fb};
 const T3=[CN.slice(0,14),CN.slice(13),CN];
 const tp=(t,v)=>{const u=unit(t,LT["ب"],v);return{latin:u[1],arab:u[0]}};
 function j3(p,r){const g=Math.floor(p/3),k=p%3,v=["a","i","u"][g],mixed=g===3,vs=mixed?["a","i","u"]:[v];
-  let pats=mixed?["MS","SM","SMS","MSS","SSM"]:["MS","SM","SMS"];
+  let pats=mixed?P(POLA.j3.campur,["MS"]):P(POLA.j3.satu,["MS"]);
   if(mixed){const pool=CN;return wordPage({pool,pats,vs,topic:{latin:"BAA BII BUU",arab:unit("M",LT["ب"],"a")[0]+" "+unit("M",LT["ب"],"i")[0]+" "+unit("M",LT["ب"],"u")[0]},id:"Bacalah dan bedakan bacaan panjang dan pendek. Panjang kira-kira dua ketukan.",ar:"اقرأ المد بصوت طويل"},r)}
   return wordPage({pool:T3[k],pats,vs,intro:v,topic:tp("M",v),id:"Bacalah huruf yang bertemu "+(v==="a"?"alif setelah fathah":v==="i"?"ya mati setelah kasrah":"waw mati setelah dhammah")+" dengan panjang, kira-kira dua ketukan.",ar:"اقرأ المد بصوت طويل"},r)}
 function j4(p,r){const ph=Math.floor(p/2);
-  if(ph===0)return wordPage({pool:CN,pats:["SK","SKS","SSK","SKSK"],vs:["a","i","u"],topic:{latin:"BAL",arab:"بَلْ"},id:"Huruf yang bertanda sukun dibaca mati, tanpa bunyi vokal.",ar:"اقرأ الحرف الساكن بدون حركة"},r);
+  if(ph===0)return wordPage({pool:CN,pats:P(POLA.j4.sukun,["SK"]),vs:["a","i","u"],topic:{latin:"BAL",arab:"بَلْ"},id:"Huruf yang bertanda sukun dibaca mati, tanpa bunyi vokal.",ar:"اقرأ الحرف الساكن بدون حركة"},r);
   const v=["a","i","u"][ph-1];
-  if(ph<4)return wordPage({pool:CN,pats:["ST","SST","MT","SMT"],vs:[v],topic:tp("T",v),id:"Tanwin dibaca dengan tambahan bunyi N di akhir kata: "+(v==="a"?"AN":v==="i"?"IN":"UN")+".",ar:"اقرأ التنوين"},r);
-  return wordPage({pool:CN,pats:["ST","SST","MT","SKT","SMT"],vs:["a","i","u"],topic:{latin:"BAN BIN BUN",arab:unit("T",LT["ب"],"a")[0]+" "+unit("T",LT["ب"],"i")[0]+" "+unit("T",LT["ب"],"u")[0]},id:"Bacalah tanwin fathatain, kasratain, dan dhammatain dengan jelas.",ar:"اقرأ التنوين والسكون"},r)}
+  if(ph<4)return wordPage({pool:CN,pats:P(POLA.j4.tanwin,["ST"]),vs:[v],topic:tp("T",v),id:"Tanwin dibaca dengan tambahan bunyi N di akhir kata: "+(v==="a"?"AN":v==="i"?"IN":"UN")+".",ar:"اقرأ التنوين"},r);
+  return wordPage({pool:CN,pats:P(POLA.j4.campur,["ST"]),vs:["a","i","u"],topic:{latin:"BAN BIN BUN",arab:unit("T",LT["ب"],"a")[0]+" "+unit("T",LT["ب"],"i")[0]+" "+unit("T",LT["ب"],"u")[0]},id:"Bacalah tanwin fathatain, kasratain, dan dhammatain dengan jelas.",ar:"اقرأ التنوين والسكون"},r)}
 function j5(p,r){const g=Math.floor(p/2),v=["a","i","u"][g];
-  if(g<3)return wordPage({pool:CN,pats:["SD","SDS","SSD"],vs:[v],topic:tp("D",v),id:"Huruf bertasydid dibaca dobel: huruf pertama mati, huruf kedua berharakat.",ar:"اقرأ الحرف المشدد مضاعفا"},r);
-  return wordPage({pool:CN,pats:["SD","SDS","SSD","SDK","SDT"].slice(0,p<8?3:5),vs:["a","i","u"],topic:{latin:"BBA BBI BBU",arab:unit("D",LT["ب"],"a")[0]+" "+unit("D",LT["ب"],"i")[0]+" "+unit("D",LT["ب"],"u")[0]},id:"Bacalah huruf bertasydid bersama mad, tanwin, dan sukun.",ar:"اقرأ الحرف المشدد مع المد والتنوين"},r)}
-function j6(p,r){const ex=p>=8;
-  return wordPage({pool:CN,pats:["SMS","MSD","SKS","SDT","SMT","SSM","SDS","SSK","SSDS","MSK"],vs:["a","i","u"],topic:{latin:ex?"UJIAN":"GABUNGAN",arab:""},id:ex?"Ujian akhir: bacalah semuanya dengan lancar dan benar, tanpa dieja.":"Gabungan semua tanda: fathah, kasrah, dhammah, mad, tanwin, sukun, tasydid. Bacalah dengan tenang.",ar:"اقرأ بطلاقة وبتأن"},r)}
+  if(g<3)return wordPage({pool:CN,pats:P(POLA.j5.dasar,["SD"]),vs:[v],topic:tp("D",v),id:"Huruf bertasydid dibaca dobel: huruf pertama mati, huruf kedua berharakat.",ar:"اقرأ الحرف المشدد مضاعفا"},r);
+  return wordPage({pool:CN,pats:P(p<8?POLA.j5.campur1:POLA.j5.campur2,["SD"]),vs:["a","i","u"],topic:{latin:"BBA BBI BBU",arab:unit("D",LT["ب"],"a")[0]+" "+unit("D",LT["ب"],"i")[0]+" "+unit("D",LT["ب"],"u")[0]},id:"Bacalah huruf bertasydid bersama mad, tanwin, dan sukun.",ar:"اقرأ الحرف المشدد مع المد والتنوين"},r)}
+function j6(p,r){const ex=p>=POLA.j6Halaman-2;
+  return wordPage({pool:CN,pats:P(POLA.j6,["SMS"]),vs:["a","i","u"],topic:{latin:ex?"UJIAN":"GABUNGAN",arab:""},id:ex?"Ujian akhir: bacalah semuanya dengan lancar dan benar, tanpa dieja.":"Gabungan semua tanda: fathah, kasrah, dhammah, mad, tanwin, sukun, tasydid. Bacalah dengan tenang.",ar:"اقرأ بطلاقة وبتأن"},r)}
 
-const SPEC=[[14,j1],[10,j2],[12,j3],[10,j4],[10,j5],[10,j6]];
+const SPEC=[[14,j1],[10,j2],[12,j3],[10,j4],[10,j5],[Math.max(3,POLA.j6Halaman|0),j6]];
 SPEC.forEach(([n,f],ji)=>{const j=ji+1;JL[j]={ok:1,n};
   for(let p=0;p<n;p++){const r=rng("quro-"+j+"-"+p),b=f(p,r);
     IQ[j+"-"+(p+1)]={level_id:j,level_title:"JILID "+j,topic:b.topic,instruction_id:b.id,instruction_en:"",instruction_ar:b.ar,content:b.rows}}});
