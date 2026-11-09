@@ -20,6 +20,7 @@ data/                 isi konten (ubah di sini untuk menambah materi)
   pola.js             pola kata Jilid 3-6 yang bisa diubah (S M T D K) + jumlah halaman Jilid 6
   latihan.js          pembuat materi latihan Jilid 1-6 (dibuat program)
   iqro1-buku.js       Iqro Jilid 1 (32 halaman) dari proyek dyazincahya/iqro-json; menggantikan Jilid 1 buatan program
+  iqro2-6-buku.js     Iqro Jilid 2-6 (30 halaman tiap jilid) dari proyek yang sama; menggantikan Jilid 2-6 buatan program
   games.js            huruf game (GL), daftar game (MG), petunjuk (GI)
   community.js        data contoh teman, kabar, papan peringkat
   tajwid.js           materi tanwin, tasydid, mad (TJ) + kata tanpa tanda (TJN)
@@ -60,7 +61,7 @@ js/
 
 - Urutan muat: `data` → `assets` → `js/*` → `js/views/*` → `games.js` → `events.js` → `main.js`. `views/learn.js` harus pertama di antara views karena membuat `V`.
 - Huruf Arab ditulis RTL dan harus berada di dalam elemen `.ar`. Jangan membalik urutan array huruf.
-- Materi latihan dibuat oleh `data/latihan.js` saat aplikasi dibuka (pengacak bersemi, jadi selalu sama). Jilid: 1 fathah (14 hal), 2 kasrah dan dhammah (10), 3 mad (12), 4 sukun dan tanwin (10), 5 tasydid (10), 6 gabungan dan ujian (10). Ubah jumlah halaman atau pola kata di `SPEC` dan fungsi `j1`–`j6`. Ini berlaku untuk Jilid 2–6 (bukan salinan buku Iqro); Jilid 1 memakai data buku di `data/iqro1-buku.js` (lihat bagian Lisensi di bawah).
+- Materi latihan dibuat oleh `data/latihan.js` saat aplikasi dibuka (pengacak bersemi, jadi selalu sama). Jilid: 1 fathah (14 hal), 2 kasrah dan dhammah (10), 3 mad (12), 4 sukun dan tanwin (10), 5 tasydid (10), 6 gabungan dan ujian (10). Ubah jumlah halaman atau pola kata di `SPEC` dan fungsi `j1`–`j6`. Itu hanya dipakai bila file data buku (`data/iqro1-buku.js`, `data/iqro2-6-buku.js`) tidak dimuat; secara bawaan Jilid 1–6 memakai data buku (lihat bagian Lisensi di bawah).
 - Aturan tulisan kata (data/latihan.js): pada mad, waw mati dan ya mati selalu diberi sukun, alif tidak (alif bersukun berarti berhenti mendadak, bukan panjang). Huruf ج ح خ ه tidak boleh menerima sambungan dari huruf sebelumnya di dalam satu kata (bentuk tengah/akhirnya mirip dan mudah terbaca terbalik, mis. قخص terbaca "khoqash"); mereka hanya muncul di awal kata atau setelah huruf pemutus (ا د ذ ر ز و). Ubah di konstanta `NJ` dan `RS`.
 - Tailwind, font Amiri/Nunito, dan qrcodejs lokal (`css/tailwind.css`, `css/fonts.css`, `assets/fonts/`, `assets/lib/`). Tidak ada lagi ketergantungan ke CDN atau GitHub pihak lain.
 
@@ -72,6 +73,6 @@ js/
 - Mengubah pola kata latihan: edit `data/pola.js` (kode S, M, T, D, K; pola yang melanggar aturan otomatis dilewati dan diberi peringatan di konsol). Lembar tinjauan untuk guru dibuat dengan `node tools/tinjau.js` (satu berkas HTML mandiri, bisa dicetak).
 - Mengubah tampilan (kelas Tailwind baru)? Bangun ulang CSS: `npm i tailwindcss@3.4.17` lalu `npx tailwindcss -c tools/tailwind.config.js -i tools/tailwind.in.css -o css/tailwind.css --minify`. Kelas yang disusun dari potongan teks saat runtime tidak terdeteksi; tulis nama kelas utuh.
 
-## Lisensi materi Iqro Jilid 1
+## Lisensi materi Iqro Jilid 1–6
 
-`data/iqro1-buku.js` adalah transkripsi buku Iqro karya KH. As'ad Humam dari https://github.com/dyazincahya/iqro-json (hasil OCR, bisa ada salah ketik). Boleh dipakai gratis untuk belajar, **tidak boleh diperjualbelikan** (hak cipta ada pada pemegang hak buku). Kalau QURO suatu saat dimonetisasi, hapus file ini dan baris `<script>`-nya di `index.html`; Jilid 1 buatan program di `data/latihan.js` otomatis dipakai lagi. Jalankan `node tools/make-sw.js` setelah mengubah file.
+`data/iqro1-buku.js` dan `data/iqro2-6-buku.js` adalah transkripsi buku Iqro karya KH. As'ad Humam dari https://github.com/dyazincahya/iqro-json (hasil OCR, bisa ada salah ketik). Boleh dipakai gratis untuk belajar, **tidak boleh diperjualbelikan** (hak cipta ada pada pemegang hak buku). Kalau QURO suatu saat dimonetisasi, hapus kedua file ini dan baris `<script>`-nya di `index.html`; Jilid 1–6 buatan program di `data/latihan.js` otomatis dipakai lagi. Jalankan `node tools/make-sw.js` setelah mengubah file.
