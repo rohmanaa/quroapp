@@ -27,7 +27,7 @@ document.addEventListener("click",e=>{
   if(a==="hearhk")say(hkEx(hk,0)[0]);
   if(a==="hear")say(L[sel][0]);
   if(a==="prev")turn(-1);
-  if(a==="next")turn(1);if(a==="pick"){pj=jl;showPick()}if(a==="fs")toggleFs();if(a==="gc"){gcat=d.c;render()}if(a==="an")showAn();if(a==="mb"){mblink=!mblink;applyMb();saveSet();if(document.getElementById("anw"))showAn()}if(a==="st")showSt();if(a==="setc"){useColor=!useColor;saveSet();render();if(document.getElementById("stw"))showSt()}if(a==="setl"){showLat=!showLat;saveSet();render();if(document.getElementById("stw"))showSt()}if(a==="retry"){delete IQ[jl+"-"+pn];render()}if(a==="soon")toast("Data Iqro "+jl+" belum tersedia")
+  if(a==="next")turn(1);if(a==="pick"){pj=jl;showPick()}if(a==="fs")toggleFs();if(a==="an")showAn();if(a==="mb"){mblink=!mblink;applyMb();saveSet();if(document.getElementById("anw"))showAn()}if(a==="st")showSt();if(a==="setc"){useColor=!useColor;saveSet();render();if(document.getElementById("stw"))showSt()}if(a==="setl"){showLat=!showLat;saveSet();render();if(document.getElementById("stw"))showSt()}if(a==="retry"){delete IQ[jl+"-"+pn];render()}if(a==="soon")toast("Data Iqro "+jl+" belum tersedia")
   if(a==="play"){if(S==="reader"){const cp=curPg();if(!cp)return toast("Halaman belum dimuat");if(play){stopSeq();render()}else playSeq(cp);return}const tx=S==="record"?sampleTxt():(curPg()?pgTxt(curPg()):"");if(!tx)return toast("Halaman belum dimuat");play=!play;if(play){if(!say(tx))play=false}else{try{speechSynthesis.cancel()}catch(e){}}if(S==="reader")render()}
   if(a==="mok"){$("#m").classList.add("hidden");mcb=null;if(mok){const f=mok;mok=null;f()}}
   if(a==="mclose"){mok=null;$("#m").classList.add("hidden");if(mcb){const f=mcb;mcb=null;f()}}

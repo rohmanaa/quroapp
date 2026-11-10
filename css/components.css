@@ -23,3 +23,6 @@ tile,.tile{border:2px solid hsl(var(--h) 70% 80%/.0)}.tile{box-shadow:0 4px 0 hs
 .modal-card .menu-icon{width:40px;height:40px;border-radius:12px;background:#e7f7ec;display:grid;place-items:center;color:#16834a}
 .modal-card .menu-item>iconify-icon{margin-left:auto;color:#6b7c72}
 .modal-open{overflow:hidden}
+/* Game layar penuh: sembunyikan header & menu bawah, iframe memenuhi layar */
+body.gm{overflow:hidden}body.gm header,body.gm #nv{display:none!important}body.gm #t{z-index:70}
+.gh{position:fixed;inset:0;z-index:60;background:var(--bg)}.gf{display:block;width:100%;height:100%;border:0;background:var(--bg)}

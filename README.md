@@ -23,9 +23,11 @@ data/                 isi konten (ubah di sini untuk menambah materi)
   games.js            daftar game (MG), kategori, dan folder tiap game (GP)
   community.js        data contoh teman, kabar, papan peringkat
   tajwid.js           materi tanwin, tasydid, mad (TJ) + kata tanpa tanda (TJN)
-games/                tiap game berdiri sendiri (satu folder = satu game)
-  _shared/kit.js      jembatan ke aplikasi (toast, suara, menang, tinggi iframe) + cadangan saat dibuka sendiri
-  _shared/kit.css     latar transparan saat ditanam
+games/                lobby + tiap game berdiri sendiri (satu folder = satu game)
+  index.html, lobby.js  lobby "Semua Game" (halaman sendiri; tombol Home di kiri atas, tanpa tombol kembali)
+  _shared/kit.js      jembatan ke aplikasi (toast, suara, koin, menang, keluar) + loading + bilah atas dengan tombol keluar
+  _shared/kit.css     gaya loading dan bilah atas
+  _shared/theme.js    tema dimuat di <head> supaya tidak berkedip
   susun-huruf/        index.html + game.js (+ style.css / aset lain milik game itu)
   memory-huruf/       index.html + game.js + style.css (.mc)
   tebak-huruf/  telusuri/  dengar-pilih/  cari-huruf/  lanjutkan-huruf/
@@ -84,10 +86,10 @@ js/
 
 ## Menambah game baru
 
-1. Buat folder `games/<nama-game>/` berisi `index.html` (salin dari game lain: memuat `../../css/*` agar gayanya sama dengan aplikasi, lalu `../_shared/kit.js` dan `game.js`).
+1. Buat folder `games/<nama-game>/` berisi `index.html` (salin dari game lain: memuat `../_shared/theme.js` di `<head>`, `../../css/*` agar gayanya sama dengan aplikasi, penanda loading `#gld` di awal `<body>`, lalu `../_shared/kit.js` dan `game.js`).
 2. Semua yang khusus game itu (soal, gambar, suara, css, model 3D) taruh di folder itu juga. Pakai kelas Tailwind yang sudah ada, atau tulis css sendiri di `style.css` milik game.
 3. Di `game.js` panggil `GK.run({slug,title,hint,init,view,act})` (lihat `games/susun-huruf/game.js`). Selesai? panggil `c.win()` di dalam `act`.
-4. Daftarkan di `data/games.js`: satu baris di `MG`, satu pasangan di `GP` (kunci → nama folder), dan kategori di `GC` (`js/games.js`).
+4. Daftarkan di `data/games.js`: satu baris di `MG`, satu pasangan di `GP` (kunci → nama folder), dan kategori di `GC` (juga di `data/games.js`, dipakai lobby).
 5. Jalankan `node tools/make-sw.js`.
 
-Game ditanam di aplikasi lewat iframe, jadi koin, tema, dan suara tetap ikut aplikasi, tetapi game bisa juga dibuka sendiri (`games/<nama>/index.html`).
+Alur: Home → (grid 3 game atau "Lihat semua") → lobby `games/index.html` → game. Aplikasi membuka lobby/game dalam iframe layar penuh (tanpa header dan menu bawah), jadi koin, tema, dan suara tetap ikut aplikasi, tetapi semuanya juga bisa dibuka sendiri (`games/index.html`, `games/<nama>/index.html`). Tombol keluar (X) di kanan atas game kembali ke lobby; game yang dibuka dari grid Home (`?from=home`) kembali ke Home. Tombol kembali HP mengikuti aturan yang sama. Loading tampil saat lobby/game dibuka (minimal 350 ms supaya tidak berkedip).

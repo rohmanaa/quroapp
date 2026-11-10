@@ -1,3 +1,15 @@
-/* Penyesuaian halaman game saat ditanam di aplikasi (iframe): latar transparan agar menyatu dengan aplikasi induk */
-html.emb,html.emb body{background:transparent!important;min-height:0!important;overflow:hidden}
-html.emb #app{padding:0 0 12px!important;max-width:none!important}
+/* Halaman game memakai css aplikasi (../../css/*). Di sini hanya yang khusus game: loading, bilah atas, tombol keluar. */
+#app{padding-top:calc(1rem + env(safe-area-inset-top,0px))!important;padding-bottom:calc(1.5rem + env(safe-area-inset-bottom,0px))!important}
+/* Loading layar penuh saat halaman game/lobby dibuka */
+.gld{position:fixed;inset:0;z-index:200;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;background:var(--bg);color:var(--ink);font-weight:900;font-size:15px;transition:opacity .25s ease}
+.gld.out{opacity:0;pointer-events:none}
+.gsp{width:56px;height:56px;border-radius:50%;border:6px solid var(--line);border-top-color:var(--brand);animation:gspin .8s linear infinite}
+@keyframes gspin{to{transform:rotate(360deg)}}
+@media (prefers-reduced-motion:reduce){.gsp{animation-duration:2.4s}}
+/* Bilah atas: judul + koin + tombol keluar (kanan atas). Lobby: tombol Home di kiri. */
+.gbar{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.gbar h1{flex:1;min-width:0;font-size:1.5rem;line-height:1.2;font-weight:900;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.gtt{flex:1;min-width:0}.gtt h1{display:block}
+.gtt p{font-size:12px;font-weight:700;color:var(--mute)}
+.gcoin{display:inline-flex;align-items:center;gap:4px;font-size:12px;font-weight:900;padding:6px 10px;border-radius:999px;background:var(--soft);color:var(--brand);flex:none}
+.gbar .ib{flex:none}

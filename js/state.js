@@ -8,7 +8,7 @@ function setTheme(m){TH=m;try{localStorage.setItem("iqro_th",m)}catch(e){}const 
 setTheme(["light","dark"].includes(TH)?TH:"system");
 let U=null,G="",RS=1,otpC="",qi=0,had=0,sc=null,lk={};try{const a=lsj("iqro_acc",x=>isO(x)&&typeof x.name==="string"&&x.name.length<=20,null);if(a&&localStorage.getItem("iqro_ses")==="1")U=a}catch(e){}
 let S=U?"home":"login",pg=0,sel=0,play=false,rec=0,coins=130,ci=2,claimed=false,tabF=0,li=0;
-let jl=1,pn=1,showLat=true,iqDN={},iqLast={},fsOn=false,pj=1,useColor=true,petOpen=false,fz=1,BK=null,trans="slide",mblink=true,navDir=1,fromGames=false,gcat="Semua";
+let jl=1,pn=1,showLat=true,iqDN={},iqLast={},fsOn=false,pj=1,useColor=true,petOpen=false,fz=1,BK=null,trans="slide",mblink=true,navDir=1,fromGames=false;
 try{const z=JSON.parse(localStorage.getItem("iqro_last"));if(z&&JL[z.j]&&JL[z.j].ok){jl=z.j;pn=z.p||1}iqLast=lsj("iqro_lastj",isO,{});iqDN=lsj("iqro_done",isO,{})}catch(e){}
 const persist=()=>{try{iqLast[jl]=pn;localStorage.setItem("iqro_lastj",JSON.stringify(iqLast));localStorage.setItem("iqro_last",JSON.stringify({j:jl,p:pn}));localStorage.setItem("iqro_done",JSON.stringify(iqDN))}catch(e){}};
 let useTj=true,iqQZ={},iqPosts=[];

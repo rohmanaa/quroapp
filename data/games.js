@@ -1,3 +1,5 @@
 /* Daftar game (MG) dan folder tiap game (GP). Isi tiap game ada di games/<folder>/ (index.html + game.js + aset sendiri). */
 const MG=[["build","Susun Huruf","Eja nama huruf","mg-abc",150],["match","Memory Huruf","Balik & cocokkan · 4 level","mg-cards",200],["pick","Tebak Huruf","Apel diawali?","red-apple",12],["trace","Telusuri","Ikuti titik-titik","mg-pencil",280],["listen","Dengar & Pilih","Dengar bunyinya","speaker-high-volume",340],["find","Cari Huruf","Temukan Alif","mg-search",40],["next","Lanjutkan Huruf","Huruf setelahnya?","mg-abc",100]];
 const GP={build:"susun-huruf",match:"memory-huruf",pick:"tebak-huruf",trace:"telusuri",listen:"dengar-pilih",find:"cari-huruf",next:"lanjutkan-huruf"};
+/* Kategori tampilan di lobby */
+const GC={build:"Susun",match:"Memori",pick:"Tebak",trace:"Menulis",listen:"Suara",find:"Tebak",next:"Urutan"};
