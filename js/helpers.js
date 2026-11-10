@@ -1,4 +1,6 @@
 /* Helper tampilan: lt, coin, qr, av, pb, card, tileH, hkTile, cover, sw, pet, shr, $ */
+/* Escape teks dari pengguna sebelum masuk innerHTML (nama, postingan, dll). Aman juga untuk atribut ber-kutip. */
+const esc=s=>String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const lt=s=>{const c=BS[s[0]]||s[0];return CM[c]===undefined?`<span class="text-mute">${s}</span>`:`<span class="lt" style="--h:${CM[c]}">${useTj?tjh(s):s}</span>`};
 const coin=(c="w-5 h-5")=>`<span class="inline-grid place-items-center ${c} rounded-full font-black text-[10px] shrink-0" style="background:#FFC933;color:#B36B00;box-shadow:inset 0 -2px 0 #E59A00">★</span>`;
 const qr=()=>{let r=7,c="";for(let y=0;y<21;y++)for(let x=0;x<21;x++){const f=(x<7&&y<7)||(x>13&&y<7)||(x<7&&y>13);let on;if(f){const a=x>13?x-14:x,b=y>13?y-14:y;on=a==0||a==6||b==0||b==6||(a>1&&a<5&&b>1&&b<5)}else{r=(r*1103515245+12345)&2147483647;on=(r>>8)%2==0}if(on)c+=`<rect x="${x}" y="${y}" width="1" height="1" rx=".2"/>`}return `<svg viewBox="0 0 21 21" class="w-full" fill="#3DB54A" aria-hidden="true">${c}</svg>`};

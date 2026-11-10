@@ -6,7 +6,7 @@ document.addEventListener("click",e=>{const t=e.target.closest("[data-act]");if(
   if(a==="rback"){RS=1;render()}
   if(a==="otp"){otpC=""+(1000+Math.floor(Math.random()*9000));toast("Kode demo: "+otpC);let n=30;t.disabled=true;clearInterval(window.oi);window.oi=setInterval(()=>{const b=$("#ob");if(!b||--n<=0){clearInterval(window.oi);if(b){b.disabled=false;b.textContent="Kirim ulang"}return}b.textContent=n+" dtk"},1000)}
   if(a==="login"){const p=chk();if(!p)return;const c=acc();if(!c||c.phone!==p){toast("Nomor belum terdaftar, yuk daftar dulu");RS=1;return go("reg")}U=c;ses(1);otpC="";go("home")}
-  if(a==="regdone"){const n=v("fn");if(!n)return toast("Isi nama panggilan dulu");const p=chk();if(!p)return;U={name:n,g:G,phone:p};try{localStorage.setItem("iqro_acc",JSON.stringify(U))}catch(e){}ses(1);otpC="";go("home");modal({center:1,t:"Yay Barakallah, "+n+"!",p:"Yey Alhamdulillah, akunmu sudah jadi! Yuk Bismillah, kita belajar huruf hijaiyah.",stars:3,b:"Bismillah siap!"})}
+  if(a==="regdone"){const n=v("fn");if(!n)return toast("Isi nama panggilan dulu");const p=chk();if(!p)return;U={name:n,g:G,phone:p};try{localStorage.setItem("iqro_acc",JSON.stringify(U))}catch(e){}ses(1);otpC="";go("home");modal({center:1,t:"Yay Barakallah, "+esc(n)+"!",p:"Yey Alhamdulillah, akunmu sudah jadi! Yuk Bismillah, kita belajar huruf hijaiyah.",stars:3,b:"Bismillah siap!"})}
   if(a==="guest"){U={name:"Tamu",g:"L"};go("home")}
   if(a==="out")modal({t:"Yakin mau keluar?",p:"Kamu bisa masuk lagi kapan saja, yuk lanjut belajar nanti!",b:"Batal",y:"Ya, keluar",ok:()=>{U=null;ses(0);G="";RS=1;go("login")}});
   if(a==="hearq")say(L[qi][0]);
@@ -40,8 +40,8 @@ document.addEventListener("click",e=>{
   if(a==="toggleauto"||a==="privacy")toast("Pengaturan diperbarui");
   if(a==="follow")toast("Yuk belajar bareng "+d.n+"!");
   if(a==="tf"){tabF=+d.i;render()}
-  if(a==="fo"){if(fol[d.n])modal({t:"Berhenti mengikuti?",p:"Kamu tidak akan melihat kabar "+d.n+" lagi di daftar ikutanmu.",b:"Batal",y:"Ya, berhenti",ok:()=>{fol[d.n]=false;render()}});else{fol[d.n]=true;render()}}
-  if(a==="watch")modal({t:"Live: "+d.n,p:d.n+" sedang membaca Iqro 3 · Hal 12. Kirim semangat!",b:"Kirim Love ❤️"});
+  if(a==="fo"){if(fol[d.n])modal({t:"Berhenti mengikuti?",p:"Kamu tidak akan melihat kabar "+esc(d.n)+" lagi di daftar ikutanmu.",b:"Batal",y:"Ya, berhenti",ok:()=>{fol[d.n]=false;render()}});else{fol[d.n]=true;render()}}
+  if(a==="watch")modal({t:"Live: "+esc(d.n),p:esc(d.n)+" sedang membaca Iqro 3 · Hal 12. Kirim semangat!",b:"Kirim Love ❤️"});
   if(a==="share")shr("Yey Alhamdulillah, aku dapat 4 bintang di QURO! Yuk belajar Iqro bareng!");
   if(a==="sh"){const m="Yuk Bismillah, belajar Iqro bareng aku di QURO!",u=encodeURIComponent(location.href);if(d.k==="wa")window.open("https://wa.me/?text="+encodeURIComponent(m)+"%20"+u,"_blank");else if(d.k==="tg")window.open("https://t.me/share/url?url="+u+"&text="+encodeURIComponent(m),"_blank");else shr(m)}
   if(a==="bm"){const k=jl+"-"+pn;if(iqBM[k])modal({t:"Hapus penanda?",p:"Halaman ini akan dihapus dari daftar penandamu.",b:"Batal",y:"Ya, hapus",ok:()=>{delete iqBM[k];saveBM();render();toast("Penanda dihapus")}});else{iqBM[k]=1;saveBM();render();toast("Halaman ditandai")}}

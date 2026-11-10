@@ -4,7 +4,7 @@ V.home=()=>`
 <div class="flex justify-end mb-3"><button data-go="daily" class="px-3 py-1.5 rounded-full font-black text-sm flex items-center gap-1.5" style="background:#FFC933;color:#7A4500" aria-label="Misi dan koin">${coin("w-5 h-5")}${coins}</button></div>
 <section class="hero rounded-[32px] p-5 pr-36">
   <p class="text-sm font-bold opacity-90">Assalamu’alaikum,</p>
-  <h1 class="text-3xl font-black leading-tight">Ahlan, ${U.name}!</h1>
+  <h1 class="text-3xl font-black leading-tight">Ahlan, ${esc(U.name)}!</h1>
   <p class="text-sm font-bold mt-2 opacity-90">Iqro ${jl} · Halaman ${pn}</p>
   <div class="h-2 w-full bg-white/25 rounded-full overflow-hidden mt-1.5"><span class="block h-full bg-white rounded-full" style="width:${Math.round(pn/JL[jl].n*100)}%"></span></div>
   <button data-go="reader" class="btn btn-w mt-4 !py-2.5">Lanjutkan ${ic("ar","w-4 h-4")}</button>
