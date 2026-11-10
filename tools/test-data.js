@@ -43,5 +43,10 @@ refs.forEach(u=>{if(!fs.existsSync(path.join(R,u)))bad("index.html memanggil "+u
 ["games/index.html","games/lobby.js","js/backup.js","js/update.js","js/ptr.js"].forEach(u=>{if(fs.existsSync(path.join(R,u))&&!sw.includes(u))bad(u+" belum ada di cache offline: jalankan node tools/make-sw.js")});
 console.log("   "+refs.length+" file dirujuk");
 
+/* 4. nomor versi konsisten */
+console.log("4. Nomor versi");
+try{const vj=JSON.parse(fs.readFileSync(path.join(R,"version.json"),"utf8")),vs=fs.readFileSync(path.join(R,"js/version.js"),"utf8"),m=vs.match(/APP_VERSION="([\d.]+)"/);
+ if(!m||m[1]!==vj.major+"."+vj.build)bad("js/version.js tidak sama dengan version.json: jalankan node tools/make-sw.js");else console.log("   v"+m[1])}catch(e){bad("version.json / js/version.js tidak terbaca: jalankan node tools/make-sw.js")}
+
 console.log(err?"\nGAGAL: "+err+" masalah"+(warn?", "+warn+" catatan":""):"\nLOLOS"+(warn?" ("+warn+" catatan)":""));
 process.exit(err?1:0);

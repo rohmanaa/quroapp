@@ -40,3 +40,7 @@ return `<div class="flex items-center gap-3 mb-4"><div><h1 class="text-3xl font-
 ${sec("Metode Iqro","Metode Iqro’ adalah karya KH. As’ad Humam. QURO adalah alat bantu belajar dan tidak menggantikan bimbingan guru ngaji.")}
 ${sec("Materi latihan","Iqro Jilid 1–6 di QURO bersumber dari transkripsi buku Iqro karya KH. As’ad Humam oleh proyek ${lk(\"https://github.com/dyazincahya/iqro-json\",\"iqro-json\")} (hasil OCR, sebagian mungkin belum 100% sama dengan buku asli). Materi ini gratis untuk belajar dan tidak boleh diperjualbelikan karena hak ciptanya milik pemegang hak buku Iqro. Tetap belajar dari buku Iqro bersama guru ngajimu.")}
 ${sec("Pustaka dan font","Font Amiri dan Nunito (SIL Open Font License), Tailwind CSS (MIT), dan qrcodejs (MIT).")}`};
+/* Nomor versi (js/version.js dibuat otomatis tiap push oleh tools/make-sw.js) */
+{const verLine=(c)=>`<p class="text-center text-mute text-[11px] font-bold ${c}">QURO v${APP_VERSION} · ${APP_DATE}</p>`;
+const _pf=V.profile,_ab=V.about;V.profile=()=>_pf()+verLine("mt-6 mb-2");V.about=()=>_ab()+verLine("mt-5")}
+

@@ -100,4 +100,5 @@ Alur: Home → (grid 3 game atau "Lihat semua") → lobby `games/index.html` →
 - `js/update.js`: banner "Versi baru QURO tersedia" saat service worker baru aktif; app juga mengecek versi baru saat dibuka kembali (maks. 1x per 30 menit).
 - `js/ptr.js`: tarik ke bawah untuk menyegarkan halaman yang sedang dibuka.
 - `tools/test-data.js`: tes cepat tanpa dependensi, jalankan `node tools/test-data.js` sebelum push. Memeriksa sintaks semua file JS, data Iqro Jilid 1–6 (sel kosong, huruf Latin di sisi Arab, posisi ganda), dan bahwa semua file yang dipanggil `index.html` ada dan masuk cache offline.
+- **Nomor versi** (tampil di Profil paling bawah dan di Tentang & kredit, mis. `v1.27`): `node tools/make-sw.js` menaikkan build 1 setiap isi file berubah dan menulisnya ke `version.json` serta `js/version.js` (jangan diedit tangan). Menjalankannya berulang tanpa perubahan tidak menaikkan nomor. Ubah angka depan lewat `major` di `version.json`.
 
