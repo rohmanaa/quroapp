@@ -47,7 +47,7 @@ body.fs header,body.fs #nv{display:none!important}.pkb{display:flex;flex:1;align
 .nc .foot{background:var(--pr)!important;color:var(--pp)}
 .nc .foot b{background:color-mix(in srgb,var(--pr) 75%,var(--pp))!important;color:var(--pp)!important}
 .nc .band{background:color-mix(in srgb,var(--pr) 6%,transparent)!important}
-.hs{display:flex;gap:.6rem;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch;scroll-snap-type:x mandatory;scroll-padding:0 1rem;margin:0 -1rem;padding:2px 1rem 10px}.hs::-webkit-scrollbar{display:none}.hs>*{scroll-snap-align:start}
+.hs{display:flex;gap:.6rem;overflow-x:auto;overscroll-behavior-x:contain;scrollbar-width:none;-webkit-overflow-scrolling:touch;scroll-snap-type:x mandatory;scroll-padding:0 1rem;margin:0 -1rem;padding:2px 1rem 10px}.hs::-webkit-scrollbar{display:none}.hs>*{scroll-snap-align:start}
 .jt{scrollbar-width:none;scroll-behavior:smooth}.jt::-webkit-scrollbar{display:none}
 .jarr{position:absolute;top:0;width:36px;height:44px;display:grid;place-items:center;z-index:2;border-radius:16px;background:var(--card);border:2px solid var(--line);color:var(--brand)}
 

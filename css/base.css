@@ -11,4 +11,7 @@ button:focus-visible{outline:3px solid #F5B83D;outline-offset:2px}
 :root{--g1:#D6F3D0;--g2:#E1E7FF;--g3:#FFF0C4;--g4:#F4FBF1;--g5:#EDF2FB}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--g1:#15402a;--g2:#1b2547;--g3:#3a3015;--g4:#0f1c14;--g5:#0c1620}}
 :root[data-theme="dark"]{--g1:#15402a;--g2:#1b2547;--g3:#3a3015;--g4:#0f1c14;--g5:#0c1620}
-html{height:100%}body{min-height:100vh;min-height:100dvh;background-color:var(--bg);background-image:radial-gradient(55% 32% at 8% 2%,var(--g1),transparent 72%),radial-gradient(50% 30% at 100% 22%,var(--g2),transparent 72%),radial-gradient(60% 34% at 0% 70%,var(--g3),transparent 72%),radial-gradient(45% 30% at 100% 100%,var(--g1),transparent 72%),linear-gradient(180deg,var(--g4),var(--g5));background-attachment:fixed;background-size:auto}
+html{height:100%}body{min-height:100vh;min-height:100dvh;background-color:var(--bg)}
+/* Latar gradasi ditaruh di lapisan sendiri yang menempel di layar (position:fixed) supaya tidak digambar ulang tiap frame saat scroll.
+   Sebelumnya memakai background-attachment:fixed pada body, yang membuat scroll berat di Chrome HP. */
+body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;background-image:radial-gradient(55% 32% at 8% 2%,var(--g1),transparent 72%),radial-gradient(50% 30% at 100% 22%,var(--g2),transparent 72%),radial-gradient(60% 34% at 0% 70%,var(--g3),transparent 72%),radial-gradient(45% 30% at 100% 100%,var(--g1),transparent 72%),linear-gradient(180deg,var(--g4),var(--g5));transform:translateZ(0)}
