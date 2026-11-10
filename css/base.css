@@ -4,6 +4,7 @@
 :root[data-theme="dark"]{--bg:#0f1c14;--card:#17281d;--ink:#eaf6ee;--mute:#9bb8a5;--brand:#58d068;--bd:#2f9a41;--on:#07210f;--soft:#1e3727;--line:#29442f;--l:68%;--tl:20%;color-scheme:dark}
 *{box-sizing:border-box}
 html,body{margin:0;background:var(--bg)}
+html,body{overflow-x:hidden;overflow-x:clip}
 body{min-height:100%}
 button{font:inherit;cursor:pointer;border:0;background:none;color:inherit}
 button:focus-visible{outline:3px solid #F5B83D;outline-offset:2px}

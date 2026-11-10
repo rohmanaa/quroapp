@@ -13,3 +13,5 @@
 .eye{transform-box:fill-box;transform-origin:center;animation:blink 4.6s infinite}
 body.nomb .eye{animation:none}
 @media (prefers-reduced-motion:reduce){.tr-slide,.tr-slideb,.tr-fade,.tr-zoom,.tr-up,.eye,.mas{animation:none!important}}
+
+#bi[data-m="tabs"]>button>span{transition:transform .22s cubic-bezier(.2,.8,.2,1),background-color .22s ease}
