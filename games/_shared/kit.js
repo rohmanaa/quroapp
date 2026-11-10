@@ -20,7 +20,7 @@ function loading(){let e=document.getElementById("gld");if(!e){e=document.create
 function ready(slug){const e=document.getElementById("gld"),left=Math.max(0,350-(window.performance?performance.now():350));if(e)setTimeout(()=>{e.classList.add("out");setTimeout(()=>e.remove(),300)},left);send({type:"ready",slug:slug})}
 /* Navigasi: Home (dari lobby), lobby (keluar dari game). Game yang dibuka dari grid Home (?from=home) keluar langsung ke Home. */
 function home(){if(emb)send({type:"exit"});else location.href=ROOT}
-function lobby(){loading();location.replace(LOBBY)}
+function lobby(){loading();try{sessionStorage.setItem("gl_back","1")}catch(e){}location.replace(LOBBY)}
 function exit(){if(from==="home")home();else lobby()}
 function setCoins(n){cn=+n;const e=document.getElementById("gcn");if(e)e.textContent=cn}
 addEventListener("message",e=>{const m=e.data;if(e.source!==parent||!m||m.quro!==1)return;if(m.type==="coins")setCoins(m.n);else if(m.type==="back")(backFn||exit)()});

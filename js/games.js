@@ -11,6 +11,6 @@ addEventListener("message",e=>{const f=document.getElementById("gf"),m=e.data;if
  if(m.type==="ready"){gmOk=1;gmSend({type:"coins",n:coins})}
  else if(m.type==="toast")toast(String(m.t));
  else if(m.type==="say")say(String(m.t));
- else if(m.type==="exit")go("home");
+ else if(m.type==="exit"){navDir=-1;go("home")}
  else if(m.type==="win"){const k=String(m.slug||"game").slice(0,40);let got=0;if(!GD[k]){GD[k]=1;coins+=10;got=1;gmSend({type:"coins",n:coins})}
   modal({center:1,t:esc(m.t),p:(got?"+10 koin masuk! ":"")+esc(m.p),stars:3,b:esc(m.b||"Lanjut"),cb:m.again?()=>gmSend({type:"next"}):null})}});
