@@ -85,7 +85,7 @@ function postAch(o){if(!U)return;const t=o.text,i=t.indexOf("! ")+1;iqPosts.unsh
 document.addEventListener("keydown",e=>{if(e.key==="Escape")closeShare()});
 document.addEventListener("click",e=>{const t=e.target.closest("[data-s2]");if(!t||!SHO)return;const v=t.dataset.s2,x=encodeURIComponent(SHO.text+" "+location.href);
  if(v==="x")return closeShare();if(v==="post")return postAch(SHO);
- if(v==="wa")window.open("https://wa.me/?text="+x,"_blank");else if(v==="tg")window.open("https://t.me/share/url?url="+encodeURIComponent(location.href)+"&text="+encodeURIComponent(SHO.text),"_blank");
+ if(v==="wa")window.open("https://wa.me/?text="+x,"_blank","noopener,noreferrer");else if(v==="tg")window.open("https://t.me/share/url?url="+encodeURIComponent(location.href)+"&text="+encodeURIComponent(SHO.text),"_blank","noopener,noreferrer");
  else if(v==="copy"){try{navigator.clipboard.writeText(SHO.text+" "+location.href);toast("Yey Alhamdulillah, tautan disalin!")}catch(e){toast("Salin: "+location.href)}}else shr(SHO.text)});
 
 /* ===== Penangan klik ===== */
