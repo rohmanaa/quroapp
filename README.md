@@ -24,7 +24,7 @@ data/                 isi konten (ubah di sini untuk menambah materi)
   community.js        data contoh teman, kabar, papan peringkat
   tajwid.js           materi tanwin, tasydid, mad (TJ) + kata tanpa tanda (TJN)
 games/                lobby + tiap game berdiri sendiri (satu folder = satu game)
-  index.html, lobby.js  lobby "Semua Game" (halaman sendiri; tombol Home di kiri atas, tanpa tombol kembali)
+  index.html, lobby.js  lobby "Semua Game" (halaman sendiri; tombol Home di kanan atas, tanpa tombol kembali)
   _shared/kit.js      jembatan ke aplikasi (toast, suara, koin, menang, keluar) + loading + bilah atas dengan tombol keluar
   _shared/kit.css     gaya loading dan bilah atas
   _shared/theme.js    tema dimuat di <head> supaya tidak berkedip
