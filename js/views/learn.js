@@ -1,5 +1,9 @@
 /* Layar belajar: home, books, huruf, harakat, bookdetail, reader */
 const V={};
+const absen=()=>`<section class="${card} mt-4"><div class="flex justify-between items-center mb-3"><h3 class="font-black">Absen 7 hari</h3><span class="text-xs font-extrabold text-brand">${ci} hari beruntun 🔥</span></div>
+<div class="grid grid-cols-7 gap-1.5 text-center">${[1,2,3,4,5,6,7].map(n=>{const dn=n<=ci,nx=n===ci+1&&!claimed;return `<div><div class="aspect-square rounded-2xl grid place-items-center text-xs font-black ${dn?"bg-brand text-on":"bg-soft text-mute"} ${nx?"ring-4 ring-gold":""}" style="${dn?"box-shadow:0 3px 0 var(--bd)":""}">${dn?ic("check","w-4 h-4"):n===7?ic("star","w-4 h-4"):"+"+n}</div><small class="text-[9px] font-extrabold text-mute">${n===7?"Bonus":"H"+n}</small></div>`}).join("")}</div></section>`;
+const gamesHome=()=>`<div class="flex items-center justify-between mt-5 mb-3"><h2 class="font-bold text-lg">Game</h2><button data-go="games" class="text-brand font-black text-sm">Lihat semua</button></div>
+<section class="grid grid-cols-3 gap-3">${MG.slice(0,3).map(([k,tt,d,e,h],i)=>`<button data-go="game" data-gm="${i}" class="tile rounded-[24px] p-3 text-center" style="--h:${h}"><span class="block w-12 h-12 mx-auto rounded-2xl bg-white/60 grid place-items-center">${fe(e,"w-9 h-9")}</span><b class="block text-xs mt-2 leading-tight" style="color:var(--ink)">${tt}</b></button>`).join("")}</section>`;
 V.home=()=>`
 <div class="flex justify-end mb-3"><button data-go="daily" class="px-3 py-1.5 rounded-full font-black text-sm flex items-center gap-1.5" style="background:#FFC933;color:#7A4500" aria-label="Misi dan koin">${coin("w-5 h-5")}${coins}</button></div>
 <section class="hero rounded-[32px] p-5 pr-36">
@@ -11,11 +15,12 @@ V.home=()=>`
   <div class="absolute right-2 bottom-1">${mas("w-32")}</div>
 </section>
 <section class="${card} mt-4 !p-3 grid grid-cols-2 gap-3 items-center"><div><div class="flex items-center gap-1.5 text-brand mb-1">${ic("target","w-4 h-4")}<b class="text-sm">Target hari ini</b></div><p class="font-black text-xl">${todayMin()} <small class="text-mute text-xs">/ ${goal} menit</small></p>${pb(goalPct())}</div><div class="flex items-center gap-3 border-l border-line pl-3"><span class="w-11 h-11 rounded-2xl grid place-items-center bg-soft" style="color:#FFB72B">${ic("flame","w-6 h-6")}</span><div><b class="block text-xl font-black leading-tight">${streakN()} hari</b><small class="text-mute text-xs font-bold">Streak</small></div></div></section>
-<section class="grid grid-cols-3 gap-3 mt-4">
+${absen()}
+<section class="grid grid-cols-2 gap-3 mt-4">
 <button data-go="huruf" class="${card} !p-3 text-center"><span class="w-12 h-12 mx-auto rounded-2xl grid place-items-center bg-soft text-brand"><span class="ar text-[32px] leading-none pt-1">ق</span></span><b class="block text-sm mt-2">Huruf</b></button>
 <button data-go="daily" class="${card} !p-3 text-center"><span class="block w-12 mx-auto">${fe("wrapped-gift","w-12 h-12")}</span><b class="block text-sm mt-1">Misi</b>${claimed?"":`<small class="text-brand text-[11px] font-black">+5 hari ini</small>`}</button>
-<button data-go="games" class="${card} !p-3 text-center"><span class="block w-12 mx-auto">${fe(MG[0][3],"w-12 h-12")}</span><b class="block text-sm mt-1">Game</b></button>
-</section>`;
+</section>
+${gamesHome()}`;
 V.books=()=>`
 <h1 class="text-3xl font-black">Iqro</h1><p class="text-mute text-sm mb-4">Sedikit demi sedikit, menjadi kebiasaan.</p>
 <div dir="ltr" class="hs mb-4">
