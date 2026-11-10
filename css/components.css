@@ -41,3 +41,8 @@ html,body{overscroll-behavior-y:contain}
 .rpt-b{width:100%;max-width:28rem;background:var(--card);color:var(--ink);border:2px solid var(--line);border-bottom:0;border-radius:28px 28px 0 0;padding:20px 20px calc(env(safe-area-inset-bottom,0px) + 20px)}
 .rpt-t{width:100%;margin-top:12px;padding:12px 14px;border-radius:16px;border:2px solid var(--line);background:var(--bg);color:var(--ink);font:inherit;font-weight:600;resize:none}
 .rpt-t:focus{outline:none;border-color:var(--brand)}
+/* Kelancaran scroll (js/perf.js): jeda animasi dekoratif saat menggulir; Mode hemat mematikannya */
+html.scr .fl,html.scr .fl2,html.scr .mas,html.scr .eye,html.scr .live,html.scr .wv{animation-play-state:paused!important}
+html.lite .fl,html.lite .fl2,html.lite .mas,html.lite .eye,html.lite .live,html.lite .wv,html.lite .tr-slide,html.lite .tr-slideb,html.lite .tr-fade,html.lite .tr-zoom,html.lite .tr-up{animation:none!important}
+html.lite body::before{display:none}
+.fpsb{position:fixed;left:12px;right:12px;top:calc(env(safe-area-inset-top,0px) + 10px);z-index:99;max-width:28rem;margin:0 auto;padding:10px 16px;border-radius:20px;background:var(--ink);color:var(--bg);font-weight:800;font-size:13px;text-align:center}
