@@ -4,7 +4,7 @@
    (disimpan di version.json, ditulis ke js/version.js); menjalankan skrip ini berulang tanpa perubahan tidak menaikkannya. */
 const fs=require("fs"),path=require("path"),crypto=require("crypto");
 const root=path.join(__dirname,"..");
-const skip=new Set(["tools","node_modules","sw.js","README.md",".git","backup","version.json"]);
+const skip=new Set(["tools","tests","node_modules","sw.js","README.md",".git",".github",".gitignore","backup","version.json"]);
 const files=[];
 (function walk(d){for(const n of fs.readdirSync(d).sort()){if(d===root&&skip.has(n))continue;const p=path.join(d,n);fs.statSync(p).isDirectory()?walk(p):files.push(path.relative(root,p).split(path.sep).join("/"))}})(root);
 /* 1) nomor versi: hash isi file (tanpa js/version.js sendiri) dibanding hash terakhir */

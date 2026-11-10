@@ -1,7 +1,7 @@
 /* Cadangkan & pulihkan progres (file JSON), laporan salah tulis materi, dan penyimpanan koin.
    Semua data ada di perangkat (localStorage); file cadangan membuatnya aman dari hapus data situs / ganti HP. */
 (function(){
-const KEYS=["iqro_acc","iqro_th","iqro_set","iqro_last","iqro_lastj","iqro_done","iqro_quiz","iqro_posts","iqro_time","iqro_goal","iqro_gmsg","iqro_bm","iqro_coins","iqro_reports"];
+const KEYS=["iqro_acc","iqro_th","iqro_set","iqro_last","iqro_lastj","iqro_done","iqro_quiz","iqro_posts","iqro_time","iqro_goal","iqro_gmsg","iqro_bm","iqro_coins","iqro_absen","iqro_reports"];
 const lsGet=k=>{try{return localStorage.getItem(k)}catch(e){return null}},lsSet=(k,v)=>{try{localStorage.setItem(k,v);return true}catch(e){return false}};
 /* ---- koin: sebelumnya hilang tiap app ditutup, sekarang disimpan ---- */
 try{const c=lsGet("iqro_coins");if(c!==null&&/^\d{1,7}$/.test(c))coins=+c}catch(e){}
@@ -28,7 +28,7 @@ const CHK={iqro_acc:s=>{const v=J(s);return isO(v)&&typeof v.name==="string"&&v.
  iqro_th:s=>["light","dark","system"].includes(s),iqro_set:s=>isO(J(s)),iqro_last:s=>{const v=J(s);return isO(v)&&Number.isInteger(v.j)&&v.j>=1&&v.j<=6},
  iqro_lastj:s=>isO(J(s)),iqro_done:s=>isO(J(s)),iqro_quiz:s=>isO(J(s)),iqro_time:s=>isO(J(s)),iqro_bm:s=>isO(J(s)),
  iqro_posts:s=>{const v=J(s);return Array.isArray(v)&&v.length<=500&&v.every(x=>isO(x)&&typeof x.n==="string")},
- iqro_goal:s=>/^\d{1,3}$/.test(s),iqro_gmsg:s=>typeof s==="string"&&s.length<=200,iqro_coins:s=>/^\d{1,7}$/.test(s),
+ iqro_goal:s=>/^\d{1,3}$/.test(s),iqro_gmsg:s=>typeof s==="string"&&s.length<=200,iqro_coins:s=>/^\d{1,7}$/.test(s),iqro_absen:s=>{const v=J(s);return isO(v)&&Number.isInteger(v.c)&&v.c>=0&&v.c<=7&&typeof v.d==="string"&&v.d.length<=10},
  iqro_reports:s=>{const v=J(s);return Array.isArray(v)&&v.length<=300&&v.every(x=>isO(x)&&typeof x.t==="string")}};
 function importFile(f){if(!f)return;if(f.size>2e6)return toast("File terlalu besar");const r=new FileReader();
  r.onerror=()=>toast("File tidak bisa dibaca");

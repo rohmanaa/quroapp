@@ -32,7 +32,7 @@ document.addEventListener("click",e=>{
   if(a==="mok"){$("#m").classList.add("hidden");mcb=null;if(mok){const f=mok;mok=null;f()}}
   if(a==="mclose"){mok=null;$("#m").classList.add("hidden");if(mcb){const f=mcb;mcb=null;f()}}
   if(a==="sp"){$("#sp").classList.add("out");setTimeout(()=>$("#sp").remove(),700)}
-  if(a==="claim"){if(claimed)return toast("Hadiah hari ini sudah diambil");claimed=true;ci=Math.min(ci+1,7);coins+=5;render();modal({center:1,t:"Yey Alhamdulillah, hadiah diambil!",p:"+5 koin masuk! Insya Allah, besok datang lagi ya!",stars:3,b:"Yey Alhamdulillah!"})}
+  if(a==="claim"){if(claimed)return toast("Hadiah hari ini sudah diambil");claimed=true;ci=Math.min(ci+1,7);coins+=5;absSave();render();modal({center:1,t:"Yey Alhamdulillah, hadiah diambil!",p:"+5 koin masuk! Insya Allah, besok datang lagi ya!",stars:3,b:"Yey Alhamdulillah!"})}
   if(a==="tl"){tabL=+d.i;render()}
   if(a==="th"){setTheme(d.m);render()}
   if(a==="settarget"){goal=+d.v;saveGoal();render();toast("Target "+d.v+" menit dipilih. Bismillah!")}

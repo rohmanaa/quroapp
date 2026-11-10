@@ -1,0 +1,7 @@
+{
+  "name": "quro-tests",
+  "private": true,
+  "description": "Tes asap QURO (jsdom). Dipisah dari akar repo agar hosting statis tidak ikut memasang paket.",
+  "scripts": { "test": "node smoke.js" },
+  "devDependencies": { "jsdom": "^26.0.0" }
+}
