@@ -32,3 +32,12 @@ html,body{overscroll-behavior-y:contain}
 .ptr.snap{transition:transform .22s ease,opacity .22s ease}.ptr.ready{background:var(--soft)}
 .ptr.spin svg{animation:ptrspin .8s linear infinite}@keyframes ptrspin{to{transform:rotate(360deg)}}
 @media (prefers-reduced-motion:reduce){.ptr.spin svg{animation-duration:2.4s}}
+/* Banner versi baru (js/update.js) */
+.upd{position:fixed;left:12px;right:12px;top:calc(env(safe-area-inset-top,0px) + 10px);z-index:85;max-width:28rem;margin:0 auto;display:flex;align-items:center;gap:8px;padding:8px 8px 8px 16px;border-radius:22px;background:var(--card);color:var(--ink);border:2px solid var(--brand);box-shadow:0 4px 0 var(--line);font-weight:800;font-size:13px}
+.upd .go{background:var(--brand);color:var(--on);border-radius:999px;padding:8px 14px;font-weight:900;font-size:13px;flex:none}
+.upd .cl{width:32px;height:32px;border-radius:999px;display:grid;place-items:center;color:var(--mute);flex:none}
+/* Dialog lapor salah tulis (js/backup.js) */
+.rpt{position:fixed;inset:0;z-index:95;display:flex;align-items:flex-end;justify-content:center;background:rgba(0,0,0,.45)}
+.rpt-b{width:100%;max-width:28rem;background:var(--card);color:var(--ink);border:2px solid var(--line);border-bottom:0;border-radius:28px 28px 0 0;padding:20px 20px calc(env(safe-area-inset-bottom,0px) + 20px)}
+.rpt-t{width:100%;margin-top:12px;padding:12px 14px;border-radius:16px;border:2px solid var(--line);background:var(--bg);color:var(--ink);font:inherit;font-weight:600;resize:none}
+.rpt-t:focus{outline:none;border-color:var(--brand)}

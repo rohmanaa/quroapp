@@ -93,3 +93,11 @@ js/
 5. Jalankan `node tools/make-sw.js`.
 
 Alur: Home → (grid 3 game atau "Lihat semua") → lobby `games/index.html` → game. Aplikasi membuka lobby/game dalam iframe layar penuh (tanpa header dan menu bawah), jadi koin, tema, dan suara tetap ikut aplikasi, tetapi semuanya juga bisa dibuka sendiri (`games/index.html`, `games/<nama>/index.html`). Tombol keluar (X) di kanan atas game kembali ke lobby; game yang dibuka dari grid Home (`?from=home`) kembali ke Home. Tombol kembali HP mengikuti aturan yang sama. Loading tampil saat lobby/game dibuka (minimal 350 ms supaya tidak berkedip).
+
+## Cadangan, laporan, banner versi, dan tes
+
+- `js/backup.js`: layar **Profil → Cadangkan & pulihkan** (ekspor/impor file JSON; tiap kunci dicek bentuknya sebelum ditulis, sesi login tidak ikut), penyimpanan koin (`iqro_coins`), dan tombol **Lapor** di Reader (disimpan di `iqro_reports`, bisa disalin dari layar cadangan).
+- `js/update.js`: banner "Versi baru QURO tersedia" saat service worker baru aktif; app juga mengecek versi baru saat dibuka kembali (maks. 1x per 30 menit).
+- `js/ptr.js`: tarik ke bawah untuk menyegarkan halaman yang sedang dibuka.
+- `tools/test-data.js`: tes cepat tanpa dependensi, jalankan `node tools/test-data.js` sebelum push. Memeriksa sintaks semua file JS, data Iqro Jilid 1–6 (sel kosong, huruf Latin di sisi Arab, posisi ganda), dan bahwa semua file yang dipanggil `index.html` ada dan masuk cache offline.
+

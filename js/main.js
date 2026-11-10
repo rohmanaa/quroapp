@@ -5,7 +5,7 @@ $("#spm").innerHTML=mas("w-44");setTimeout(()=>{const e=$("#sp");if(e)$("#sp [da
 /* Muat ulang (refresh/Chrome/versi baru): kembali ke halaman yang sama, bukan ke Home */
 let restoreY=0;
 try{const nv=performance.getEntriesByType&&performance.getEntriesByType("navigation")[0],isReload=nv?nv.type==="reload":(performance.navigation&&performance.navigation.type===1),z=JSON.parse(sessionStorage.getItem("quro_scr")||"null");
- const OK=["home","books","record","community","profile","progress","badges","target","about","theme","notifications","audio","privacy","daily","leaderboard","friends","bookdetail","reader","huruf","harakat","games","game","share"];
+ const OK=["home","books","record","community","profile","progress","badges","target","about","theme","notifications","audio","privacy","daily","leaderboard","friends","bookdetail","reader","huruf","harakat","games","game","share","backup"];
  if(isReload&&U&&z&&OK.includes(z.s)&&typeof V[z.s]==="function"){
   if(JL[z.j]&&JL[z.j].ok)jl=z.j;if(z.p>0&&z.p<=JL[jl].n)pn=z.p;if(MG[z.g])GM=z.g;tabF=+z.t||0;S=z.s;restoreY=+sessionStorage.getItem("quro_y")||0;
   const sp=$("#sp");if(sp)sp.remove()}}catch(e){}
