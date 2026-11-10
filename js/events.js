@@ -18,7 +18,7 @@ document.addEventListener("click",e=>{const t=e.target.closest("[data-act]");if(
 document.addEventListener("click",e=>{
   const t=e.target.closest("[data-go],[data-back],[data-act],[data-hk],[data-hx],[data-h],[data-j],[data-pg],[data-cell]");if(!t)return;
   const d=t.dataset;
-  if(d.t!==undefined)tabF=+d.t;if(d.gm!==undefined){GM=+d.gm;ginit()}if(d.j!==undefined){const j=+d.j;if(!JL[j].ok)return toast("Iqro "+j+" segera hadir");jl=j;pn=iqLast[j]||1}if(d.pg!==undefined){pn=+d.pg;return go("reader")}if(d.cell!==undefined){const cp=curPg(),cc=cp&&cp.content.find(x=>x.order_id==d.cell);if(cc){stopSeq();hi=cc.order_id;render();say(cl(cc.arabic));setTimeout(()=>{if(hi===cc.order_id){hi=0;render()}},1200)}return}if(d.go)return go(d.go);
+  if(d.t!==undefined)tabF=+d.t;if(d.gm!==undefined)GM=+d.gm;if(d.j!==undefined){const j=+d.j;if(!JL[j].ok)return toast("Iqro "+j+" segera hadir");jl=j;pn=iqLast[j]||1}if(d.pg!==undefined){pn=+d.pg;return go("reader")}if(d.cell!==undefined){const cp=curPg(),cc=cp&&cp.content.find(x=>x.order_id==d.cell);if(cc){stopSeq();hi=cc.order_id;render();say(cl(cc.arabic));setTimeout(()=>{if(hi===cc.order_id){hi=0;render()}},1200)}return}if(d.go)return go(d.go);
   if(d.back!==undefined){navDir=-1;return go(S==="game"&&fromGames?"games":(BK&&!B[BK]?BK:B[S]))}
   if(d.hk!==undefined){hk=+d.hk;say(hkEx(hk,0)[0]);if(S!=="harakat")return go("harakat");render();const c=$("#hktab"),e=c&&c.querySelector(".on");if(e)c.scrollLeft=e.offsetLeft-c.clientWidth/2+e.offsetWidth/2;return}
   if(d.hx!==undefined){say(hkEx(hk,+d.hx)[0]);return}

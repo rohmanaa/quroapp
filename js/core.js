@@ -10,7 +10,7 @@ function bar(){
   reader:`<span class="flex-1"></span><button data-act="next" class="ib" aria-label="Halaman berikutnya">${ic("cl")}</button><button data-act="pick" class="px-4 h-11 rounded-full bg-soft text-brand text-sm font-black inline-flex items-center justify-center gap-1" aria-label="Pilih halaman">${pn} / ${JL[jl].n}${ic("cd","w-4 h-4")}</button><button data-act="prev" class="ib" aria-label="Halaman sebelumnya">${ic("cr")}</button>`}[S];
   $("#bi").dataset.m="x";$("#bi").innerHTML=back+(x||"");$("#bi").style.width=x?"":"fit-content";$("#bi").style.padding=x?"":"8px";
 }
-function render(){$("#app").innerHTML=V[S]();bar();if(S==="game")tinit()}
+function render(){$("#app").innerHTML=V[S]();bar()}
 function go(s){if(play)stopSeq();if(fsOn&&s!=="reader")toggleFs();if(B[s]&&!B[S])BK=S;fromGames=(S==="games"&&s==="game")||(S==="game"&&s==="game"&&fromGames);let dir=navDir;navDir=1;if(dir>0&&!B[S]&&!B[s]){const ti=k=>TABS.findIndex(t=>t[0]===k);if(ti(s)<ti(S))dir=-1}const same=s===S;S=s;scrollTo(0,0);render();if(!same)anim(dir)}
 let mcb=null,mok=null;
 /* modal(o): default = bottom drawer. Pass center:1 for "finish/reward" moments (centered popup). */

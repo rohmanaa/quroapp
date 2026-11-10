@@ -9,7 +9,6 @@ index.html            kerangka halaman + urutan muat file
 css/
   base.css            token warna, tema terang/gelap, reset, latar
   components.css      .ar, tombol, hero, tile, modal umum
-  games.css           kartu memori (.mc)
   share.css           modal bagikan profil
   reader.css          halaman Iqro (.pp), header .tbar, pita warna, mode polos .nc
   animations.css      transisi halaman, kedip maskot
@@ -21,9 +20,15 @@ data/                 isi konten (ubah di sini untuk menambah materi)
   latihan.js          pembuat materi latihan Jilid 1-6 (dibuat program)
   iqro1-buku.js       Iqro Jilid 1 (32 halaman) dari proyek dyazincahya/iqro-json; menggantikan Jilid 1 buatan program
   iqro2-6-buku.js     Iqro Jilid 2-6 (30 halaman tiap jilid) dari proyek yang sama; menggantikan Jilid 2-6 buatan program
-  games.js            huruf game (GL), daftar game (MG), petunjuk (GI)
+  games.js            daftar game (MG), kategori, dan folder tiap game (GP)
   community.js        data contoh teman, kabar, papan peringkat
   tajwid.js           materi tanwin, tasydid, mad (TJ) + kata tanpa tanda (TJN)
+games/                tiap game berdiri sendiri (satu folder = satu game)
+  _shared/kit.js      jembatan ke aplikasi (toast, suara, menang, tinggi iframe) + cadangan saat dibuka sendiri
+  _shared/kit.css     latar transparan saat ditanam
+  susun-huruf/        index.html + game.js (+ style.css / aset lain milik game itu)
+  memory-huruf/       index.html + game.js + style.css (.mc)
+  tebak-huruf/  telusuri/  dengar-pilih/  cari-huruf/  lanjutkan-huruf/
 assets/
   mascot.js           SVG maskot
   emoji.js            kumpulan emoji SVG (IE), fe(), fl()
@@ -44,7 +49,7 @@ js/
     social.js         friends, leaderboard, reels, community
     preferences.js    target, notifications, audio, privacy, theme
     practice.js       record
-  games.js            mini game
+  games.js            daftar game + pembungkus iframe + penerima pesan dari game
   events.js           penangan klik utama
   main.js             render pertama
   share-profile.js    modal bagikan profil
@@ -76,3 +81,13 @@ js/
 ## Lisensi materi Iqro Jilid 1–6
 
 `data/iqro1-buku.js` dan `data/iqro2-6-buku.js` adalah transkripsi buku Iqro karya KH. As'ad Humam dari https://github.com/dyazincahya/iqro-json (hasil OCR, bisa ada salah ketik). Boleh dipakai gratis untuk belajar, **tidak boleh diperjualbelikan** (hak cipta ada pada pemegang hak buku). Kalau QURO suatu saat dimonetisasi, hapus kedua file ini dan baris `<script>`-nya di `index.html`; Jilid 1–6 buatan program di `data/latihan.js` otomatis dipakai lagi. Jalankan `node tools/make-sw.js` setelah mengubah file.
+
+## Menambah game baru
+
+1. Buat folder `games/<nama-game>/` berisi `index.html` (salin dari game lain: memuat `../../css/*` agar gayanya sama dengan aplikasi, lalu `../_shared/kit.js` dan `game.js`).
+2. Semua yang khusus game itu (soal, gambar, suara, css, model 3D) taruh di folder itu juga. Pakai kelas Tailwind yang sudah ada, atau tulis css sendiri di `style.css` milik game.
+3. Di `game.js` panggil `GK.run({slug,title,hint,init,view,act})` (lihat `games/susun-huruf/game.js`). Selesai? panggil `c.win()` di dalam `act`.
+4. Daftarkan di `data/games.js`: satu baris di `MG`, satu pasangan di `GP` (kunci → nama folder), dan kategori di `GC` (`js/games.js`).
+5. Jalankan `node tools/make-sw.js`.
+
+Game ditanam di aplikasi lewat iframe, jadi koin, tema, dan suara tetap ikut aplikasi, tetapi game bisa juga dibuka sendiri (`games/<nama>/index.html`).
