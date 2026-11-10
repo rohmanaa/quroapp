@@ -6,6 +6,15 @@ const sampleTxt=()=>cl(IQ["1-1"].content[1].arabic);
 const rowsOf=p=>{const m={};p.content.forEach(c=>(m[c.position.row]=m[c.position.row]||[]).push(c));return Object.keys(m).sort((a,b)=>a-b).map(r=>m[r].sort((a,b)=>a.position.col-b.position.col))};
 const toAr=n=>String(n).replace(/\d/g,d=>"٠١٢٣٤٥٦٧٨٩"[d]);
 let hi=0,seq=0,tx0=null;
+/* Pas-kan ukuran huruf tiap baris halaman Iqro agar tidak melewati lebar kartu (baris dengan 10+ huruf).
+   Ukur lebar isi tiap sel, lalu perkecil huruf satu baris sampai semua sel muat. */
+function fitRows(){document.querySelectorAll(".pp [data-rf]").forEach(r=>{const bs=[...r.children],ars=bs.map(b=>b.querySelector(".ar"));if(!bs.length||ars.some(a=>!a))return;
+ ars.forEach(a=>a.style.fontSize="");let f=parseFloat(getComputedStyle(ars[0]).fontSize)||30;
+ for(let k=0;k<4;k++){let ratio=1;bs.forEach((b,i)=>{const a=ars[i],cb=getComputedStyle(b),cw=b.clientWidth-parseFloat(cb.paddingLeft)-parseFloat(cb.paddingRight),g=parseFloat(getComputedStyle(a).columnGap)||0,ch=[...a.children];
+   const nw=ch.reduce((t,x)=>t+x.getBoundingClientRect().width,0)+g*Math.max(0,ch.length-1);if(nw>cw+.5)ratio=Math.min(ratio,cw/nw)});
+  if(ratio>=1)break;f=Math.max(12,Math.floor(f*ratio*.97));ars.forEach(a=>a.style.fontSize=f+"px")}})}
+addEventListener("resize",()=>{if(typeof S!=="undefined"&&S==="reader")fitRows()});
+
 const cellH=(c,z)=>`<button data-cell="${c.order_id}" class="band bd${Math.min(c.position.col,3)} w-full px-1 ${showLat?"py-2":"py-1"} text-center transition ${hi===c.order_id?"ring-2 ring-brand scale-[1.03]":""}"><span class="ar flex justify-center gap-1.5 ${z} leading-[1.2] overflow-visible" style="padding-top:.38em;padding-bottom:${showLat?".3em":".1em"}">${c.arabic.split(/\s+/).map(t=>t==="="?'<span class="text-mute">=</span>':lt(t)).join("")}</span>${showLat?`<small dir="ltr" class="block text-[11px] font-bold opacity-70 mt-1" style="color:var(--blk)">${c.latin}</small>`:""}</button>`;
 function pickHTML(){const o=JL[pj];return `<div id="pkw" class="fixed inset-0 z-[9000] flex items-end justify-center"><div data-pk="x" class="absolute inset-0 bg-black/50"></div><div class="up relative bg-card border-2 border-b-0 border-line rounded-t-[32px] w-full max-w-md p-5 max-h-[85dvh] overflow-auto" style="padding-bottom:calc(1.25rem + env(safe-area-inset-bottom,0px))" role="dialog" aria-modal="true" aria-label="Pilih jilid dan halaman">
 <div class="flex items-center justify-between mb-3"><h3 class="font-black text-lg">Pilih jilid & halaman</h3><button data-pk="x" class="ib" aria-label="Tutup">${ic("x")}</button></div>
