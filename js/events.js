@@ -43,6 +43,7 @@ document.addEventListener("click",e=>{
   if(a==="fo"){if(fol[d.n])modal({t:"Berhenti mengikuti?",p:"Kamu tidak akan melihat kabar "+esc(d.n)+" lagi di daftar ikutanmu.",b:"Batal",y:"Ya, berhenti",ok:()=>{fol[d.n]=false;render()}});else{fol[d.n]=true;render()}}
   if(a==="watch")modal({t:"Live: "+esc(d.n),p:esc(d.n)+" sedang membaca Iqro 3 · Hal 12. Kirim semangat!",b:"Kirim Love ❤️"});
   if(a==="share")shr("Yey Alhamdulillah, aku dapat 4 bintang di QURO! Yuk belajar Iqro bareng!");
+  if(a==="shp"&&typeof openShareProfileModal==="function"){openShareProfileModal();return}
   if(a==="sh"){const m="Yuk Bismillah, belajar Iqro bareng aku di QURO!",u=encodeURIComponent(location.href);if(d.k==="wa")window.open("https://wa.me/?text="+encodeURIComponent(m)+"%20"+u,"_blank","noopener,noreferrer");else if(d.k==="tg")window.open("https://t.me/share/url?url="+u+"&text="+encodeURIComponent(m),"_blank","noopener,noreferrer");else shr(m)}
   if(a==="bm"){const k=jl+"-"+pn;if(iqBM[k])modal({t:"Hapus penanda?",p:"Halaman ini akan dihapus dari daftar penandamu.",b:"Batal",y:"Ya, hapus",ok:()=>{delete iqBM[k];saveBM();render();toast("Penanda dihapus")}});else{iqBM[k]=1;saveBM();render();toast("Halaman ditandai")}}
   if(a==="bell")modal({t:"Yah, belum ada kabar nih",p:"Belum ada notifikasi baru. Yuk belajar dulu hari ini!",b:"Yuk Bismillah"});
