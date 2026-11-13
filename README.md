@@ -108,3 +108,18 @@ Alur: Home → (grid 3 game atau "Lihat semua") → lobby `games/index.html` →
 - `node tools/test-data.js`: sintaks semua JS, data Iqro 1-6, file yang dirujuk `index.html` ada di cache offline, nomor versi.
 - `cd tests && npm install && node smoke.js`: memuat aplikasi sungguhan di jsdom. Menguji home, absen 7 hari (tersimpan, lanjut, putus), koin, ketujuh game, halaman Tanda baca, semua halaman Iqro, dan keamanan nama pengguna. jsdom tidak punya layout, jadi tampilan (tinggi iframe, kanvas, pas lebar) tetap dicek di HP.
 - GitHub Actions: salin `cek.yml` ke `.github/workflows/cek.yml` (lewat web GitHub atau token dengan izin Workflows). Ia menjalankan keduanya tiap push dan gagal bila `sw.js`/nomor versi belum diperbarui (`node tools/make-sw.js`).
+
+## Akun & sinkronisasi (Supabase)
+
+Login memakai email + kata sandi, progres disinkronkan ke Supabase. Offline-first: tanpa internet atau tanpa akun (mode tamu) aplikasi tetap jalan dari data di HP.
+
+- `js/cloud-config.js`: URL project + kunci **publishable** (publik). Jangan pernah menaruh kunci secret/service_role di repo. Kosongkan untuk mematikan fitur akun.
+- `js/cloud.js`: daftar, masuk, keluar, dan sinkronisasi lewat fetch (tanpa SDK). Data digabung (union / ambil terbesar), penulisan ke server memakai pembanding `updated_at` sehingga tidak menimpa data dari HP lain.
+- `supabase/schema.sql`: tabel `profiles` dan `progress` + RLS (tiap pengguna hanya bisa akses barisnya sendiri) + pembuat profil otomatis. Tempel di Supabase -> SQL Editor -> Run.
+- Yang disinkronkan: halaman Iqro selesai, bintang kuis, waktu belajar, bookmark, koin, absen, posisi baca, pengaturan. Tema, laporan, dan postingan komunitas belum.
+- Satu HP dipakai akun lain: progres akun sebelumnya dibuang dari HP (tetap aman di server), tidak dicampur.
+
+Pengaturan Supabase yang perlu dilakukan sekali (Dashboard):
+1. SQL Editor: jalankan `supabase/schema.sql`.
+2. Authentication -> Sign In / Providers -> Email: untuk tahap awal matikan **Confirm email** (tanpa SMTP sendiri, email bawaan Supabase hanya terkirim ke anggota tim dan dibatasi 2/jam). Nyalakan lagi setelah SMTP (Brevo/Resend) dipasang.
+3. Authentication -> URL Configuration: Site URL `https://quroapp.vercel.app`.

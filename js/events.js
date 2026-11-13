@@ -5,10 +5,12 @@ document.addEventListener("click",e=>{const t=e.target.closest("[data-act]");if(
   if(a==="rnext"){if(!G)return toast("Eits, pilih dulu ya!");RS=2;render()}
   if(a==="rback"){RS=1;render()}
   if(a==="otp"){otpC=""+(1000+Math.floor(Math.random()*9000));toast("Kode demo: "+otpC);let n=30;t.disabled=true;clearInterval(window.oi);window.oi=setInterval(()=>{const b=$("#ob");if(!b||--n<=0){clearInterval(window.oi);if(b){b.disabled=false;b.textContent="Kirim ulang"}return}b.textContent=n+" dtk"},1000)}
+  if(a==="login"&&cloudOn())return CL.doLogin(v("fe").toLowerCase(),($("#fw")||{}).value||"");
   if(a==="login"){const p=chk();if(!p)return;const c=acc();if(!c||c.phone!==p){toast("Nomor belum terdaftar, yuk daftar dulu");RS=1;return go("reg")}U=c;ses(1);otpC="";go("home")}
+  if(a==="regdone"&&cloudOn())return CL.doRegister(v("fn"),v("fe").toLowerCase(),($("#fw")||{}).value||"");
   if(a==="regdone"){const n=v("fn");if(!n)return toast("Isi nama panggilan dulu");const p=chk();if(!p)return;U={name:n,g:G,phone:p};try{localStorage.setItem("iqro_acc",JSON.stringify(U))}catch(e){}ses(1);otpC="";go("home");modal({center:1,t:"Yay Barakallah, "+esc(n)+"!",p:"Yey Alhamdulillah, akunmu sudah jadi! Yuk Bismillah, kita belajar huruf hijaiyah.",stars:3,b:"Bismillah siap!"})}
   if(a==="guest"){U={name:"Tamu",g:"L"};go("home")}
-  if(a==="out")modal({t:"Yakin mau keluar?",p:"Kamu bisa masuk lagi kapan saja, yuk lanjut belajar nanti!",b:"Batal",y:"Ya, keluar",ok:()=>{U=null;ses(0);G="";RS=1;go("login")}});
+  if(a==="out")modal({t:"Yakin mau keluar?",p:"Kamu bisa masuk lagi kapan saja, yuk lanjut belajar nanti!",b:"Batal",y:"Ya, keluar",ok:()=>{if(cloudOn()&&CL.signedIn())return CL.doLogout();U=null;ses(0);G="";RS=1;go("login")}});
   if(a==="hearq")say(L[qi][0]);
   if(a==="qp"||a==="qn"){qi=(qi+(a==="qn"?1:9))%10;rec=0;render()}
   if(a==="mine")toast(had?"Memutar rekamanmu…":"Belum ada rekaman, rekam dulu ya");
