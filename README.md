@@ -78,6 +78,7 @@ js/
 - Semua file aplikasi lokal, jadi membuka `index.html` langsung dari file sudah tidak butuh internet.
 - Lewat http/https, `sw.js` menyimpan seluruh aplikasi sehingga bisa dibuka offline setelah kunjungan pertama. Jalankan `node tools/make-sw.js` setiap kali ada file berubah agar pengguna mendapat versi baru.
 - Bisa dipasang di layar utama HP (PWA): `manifest.webmanifest` dan `icons/`. Di Android Chrome pilih menu ⋮ lalu “Instal aplikasi”; di iPhone Safari pilih Bagikan lalu “Tambah ke Layar Utama”. Syaratnya dibuka lewat https (atau localhost). Ikon dibuat ulang dengan `python3 tools/make-icons.py` (huruf ق, font Amiri).
+- Ikon aplikasi dan favicon (wajah burung hud-hud, gaya penuh-kotak) dibuat dari gambar di `tools/ikon-sumber/` lewat `python3 tools/make-icons-maskot.py`, lalu jalankan `node tools/make-sw.js`. `tools/make-icons.js` dan `tools/make-icons.py` adalah skrip ikon lama (buku dan huruf ق) dan tidak dipakai lagi.
 - Mengubah pola kata latihan: edit `data/pola.js` (kode S, M, T, D, K; pola yang melanggar aturan otomatis dilewati dan diberi peringatan di konsol). Lembar tinjauan untuk guru dibuat dengan `node tools/tinjau.js` (satu berkas HTML mandiri, bisa dicetak).
 - Mengubah tampilan (kelas Tailwind baru)? Bangun ulang CSS: `npm i tailwindcss@3.4.17` lalu `npx tailwindcss -c tools/tailwind.config.js -i tools/tailwind.in.css -o css/tailwind.css --minify`. Kelas yang disusun dari potongan teks saat runtime tidak terdeteksi; tulis nama kelas utuh.
 
