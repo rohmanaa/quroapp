@@ -15,7 +15,7 @@ function anHTML(){return `<div id="anw" class="fixed inset-0 z-[9000] flex items
 <div class="flex items-center justify-between mb-3"><h3 class="font-black text-lg">Animasi</h3><button data-an="x" class="ib" aria-label="Tutup">${ic("x")}</button></div>
 <p class="text-xs font-black text-mute uppercase mb-2">Transisi halaman</p>
 <div class="grid grid-cols-2 gap-2 mb-2">${TR.map(([k,t,d])=>`<button data-an="${k}" class="rounded-2xl p-3 text-left border-2 ${trans===k?"border-brand bg-soft":"border-line"}"><b class="block text-sm">${t}</b><small class="text-mute text-[11px] font-semibold">${d}</small></button>`).join("")}</div>
-<div class="h-px bg-line my-1"></div>${sw(mblink,"mb","Maskot berkedip","Mata maskot berkedip pelan")}</div></div>`}
+<div class="h-px bg-line my-1"></div>${sw(mblink,"mb","Maskot bergoyang","Maskot bergoyang pelan")}</div></div>`}
 function showAn(){closeAn();document.body.insertAdjacentHTML("beforeend",anHTML())}
 function closeAn(){const e=document.getElementById("anw");if(e)e.remove()}
 document.addEventListener("keydown",e=>{if(e.key==="Escape")closeAn()});

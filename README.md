@@ -11,7 +11,7 @@ css/
   components.css      .ar, tombol, hero, tile, modal umum
   share.css           modal bagikan profil
   reader.css          halaman Iqro (.pp), header .tbar, pita warna, mode polos .nc
-  animations.css      transisi halaman, kedip maskot
+  animations.css      transisi halaman, goyang maskot
 data/                 isi konten (ubah di sini untuk menambah materi)
   letters.js          30 huruf (L), PG
   harakat.js          harakat (HK, HKC)
@@ -32,7 +32,8 @@ games/                lobby + tiap game berdiri sendiri (satu folder = satu game
   memory-huruf/       index.html + game.js + style.css (.mc)
   tebak-huruf/  telusuri/  dengar-pilih/  cari-huruf/  lanjutkan-huruf/
 assets/
-  mascot.js           SVG maskot
+  mascot.js           mas(kelas, mood): memasang gambar maskot burung hud-hud
+  mascot/             14 gambar WebP transparan: utama, melambai, 6 ekspresi (senang, semangat, ngantuk, sedih, rayakan, bingung), iqro1-6 (aksesori tiap jilid)
   emoji.js            kumpulan emoji SVG (IE), fe(), fl()
 js/
   icons.js            ikon garis

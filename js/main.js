@@ -1,7 +1,7 @@
 /* Mulai aplikasi: logo, splash, render pertama */
 $("#logo").innerHTML='<span class="ar text-[30px] leading-none pt-1">ق</span>';$("#bell").innerHTML=ic("bell");
 setInterval(()=>{li=(li+1)%LV.length;const e=$("#lv");if(e)e.textContent=LV[li]},3500);
-$("#spm").innerHTML=mas("w-44");setTimeout(()=>{const e=$("#sp");if(e)$("#sp [data-act=sp]").click()},3000);
+$("#spm").innerHTML=mas("w-44","melambai");setTimeout(()=>{const e=$("#sp");if(e)$("#sp [data-act=sp]").click()},3000);
 /* Muat ulang (refresh/Chrome/versi baru): kembali ke halaman yang sama, bukan ke Home */
 let restoreY=0;
 try{const nv=performance.getEntriesByType&&performance.getEntriesByType("navigation")[0],isReload=nv?nv.type==="reload":(performance.navigation&&performance.navigation.type===1),z=JSON.parse(sessionStorage.getItem("quro_scr")||"null");
