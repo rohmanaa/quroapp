@@ -145,10 +145,11 @@ async function boot(base,store={},opt={}){
   ok("tab "+t+": 6 contoh, satu anak langsung per sel",ex.length===6&&ex.every(e=>e.children.length===1))}
 
  console.log("6. Semua halaman Iqro dirender tanpa galat");
- const jl=w.eval("JSON.stringify(Object.keys(JL).filter(j=>JL[j].ok).map(j=>[+j,JL[j].n]))");let pages=0,e0=errs.length;
+ w.eval("lockOn=false"); const jl=w.eval("JSON.stringify(Object.keys(JL).filter(j=>JL[j].ok).map(j=>[+j,JL[j].n]))");let pages=0,e0=errs.length;
  for(const [j,n] of JSON.parse(jl)){for(let p=1;p<=n;p++){w.eval(`jl=${j};pn=${p};go("reader")`);pages++;
    if(!w.document.querySelector(".pp [data-rf]")&&!w.document.querySelector(".pp"))ok("Iqro "+j+" hal "+p+" tergambar",false)}}
  ok(pages+" halaman Iqro dirender tanpa galat JS",errs.length===e0,errs.slice(e0,e0+2).join(" | "));
+ w.eval("lockOn=true");
 
  console.log("7. Keamanan: nama pengguna tidak menjalankan HTML");
  const xs=await boot(base,{},{name:"<svg onload=a()>"});
@@ -237,6 +238,51 @@ async function boot(base,store={},opt={}){
  const cfg=fs.readFileSync(path.join(ROOT,"js/cloud-config.js"),"utf8").replace(/\/\*[\s\S]*?\*\//g,"");
  ok("konfigurasi hanya berisi kunci publishable (bukan secret/service_role)",/sb_publishable_/.test(cfg)&&!/sb_secret_|service_role|eyJ[A-Za-z0-9_-]{20,}/.test(cfg));
  [u1,u2].forEach(x=>x.w.close());mk.close();
+
+ console.log("9. Kunci level berurutan (kuis halaman + kuis jilid)");
+ const L1=await boot(base);const e=x=>L1.w.eval(x);
+ e("iqDN={};iqQZ={};lockOn=true");
+ ok("pengguna baru: Hal 1 terbuka, Hal 2 terkunci",e("pgOpen(1,1)")===true&&e("pgOpen(1,2)")===false);
+ ok("pengguna baru: Iqro 1 terbuka, Iqro 2 terkunci",e("jOpen(1)")===true&&e("jOpen(2)")===false);
+ ok("sampul Iqro 2 menampilkan kunci & 'Terkunci'",/Terkunci/.test(e("cover(2)"))&&/bg-black\/50/.test(e("cover(2)"))&&!/Terkunci/.test(e("cover(1)")));
+ e('iqQZ["p1-1"]={s:2,r:2,n:3}');ok("2 bintang belum lulus (min. 3)",e("pgOpen(1,2)")===false);
+ e('iqQZ["p1-1"]={s:3,r:3,n:4}');ok("3 bintang lulus -> Hal 2 terbuka, Hal 3 tetap terkunci",e("pgOpen(1,2)")===true&&e("pgOpen(1,3)")===false);
+ e('iqDN={"1-1":1,"1-2":1,"1-3":1};iqQZ={}');
+ ok("pengguna lama: halaman yang pernah dibuka tetap terbuka (1-3), berikutnya (4) terkunci",e("pgOpen(1,3)")===true&&e("pgOpen(1,4)")===false);
+ e('iqDN={"2-1":1}');ok("pengguna lama: Iqro yang sudah dimulai tetap terbuka",e("jOpen(2)")===true&&e("jOpen(3)")===false);
+ e('iqDN={};iqQZ={"j1":{s:2}}');ok("Kuis Jilid 2 bintang belum membuka Iqro 2",e("jOpen(2)")===false);
+ e('iqQZ={"j1":{s:3}}');ok("Kuis Jilid 3 bintang membuka Iqro 2",e("jOpen(2)")===true);
+ e('iqDN={};jl=1');ok("Kuis Jilid baru terbuka setelah semua halaman dibuka",e("jqOpen(1)")===false);
+ e('iqDN=Object.fromEntries(Array.from({length:JL[1].n},(_,i)=>["1-"+(i+1),1]))');ok("semua halaman dibuka -> Kuis Jilid terbuka",e("jqOpen(1)")===true);
+ e("lockOn=false");ok("kunci dimatikan: semua terbuka",e("pgOpen(1,9)&&jOpen(6)&&jqOpen(1)")===true);e("lockOn=true");
+ // navigasi: tombol halaman berikutnya, picker, dan jaring pengaman
+ e('iqDN={"1-1":1};iqQZ={};jl=1;pn=1;go("reader")');L1.w.document.querySelector('[data-act="next"]')&&L1.w.document.querySelector('[data-act="next"]').click();await sleep(80);
+ ok("tombol berikutnya di halaman terkunci: muncul dialog, tetap di Hal 1",e("pn")===1&&/masih terkunci/.test(L1.w.document.getElementById("m").innerHTML));
+ L1.w.document.querySelector('#m [data-act="mclose"].btn')&&L1.w.document.querySelector('#m [data-act="mclose"].btn').click();
+ e('jl=1;pn=7;go("reader")');ok("lompat paksa ke Hal 7: dikembalikan ke halaman terbuka",e("pn")===1);
+ e('jl=3;pn=2;go("reader")');ok("lompat paksa ke Iqro 3 terkunci: kembali ke Iqro 1",e("jl")===1);
+ e('iqDN={"1-1":1};iqQZ={};go("bookdetail");jl=1;go("bookdetail")');
+ ok("detail jilid: Hal 2+ berikon kunci, Hal 1 tidak",/data-pg="2"[^>]*opacity-60/.test(L1.w.document.getElementById("app").innerHTML)&&!/data-pg="1"[^>]*opacity-60/.test(L1.w.document.getElementById("app").innerHTML));
+ L1.w.document.querySelector('[data-pg="3"]').click();await sleep(60);
+ ok("ketuk halaman terkunci di detail: dialog dengan tombol 'Mulai kuis'",/masih terkunci/.test(L1.w.document.getElementById("m").innerHTML)&&/Mulai kuis Hal 1/.test(L1.w.document.getElementById("m").innerHTML));
+ L1.w.document.querySelector('#m [data-act="mclose"].btn')&&L1.w.document.querySelector('#m [data-act="mclose"].btn').click();
+ // hasil kuis: lulus membuka halaman / jilid, gagal memberi petunjuk
+ e('iqDN={"1-1":1};iqQZ={};lockOn=true;jl=1;pn=1;qzStart("p")');
+ e("QZ.right=QZ.qs.length;qzFinish()");
+ ok("lulus kuis halaman: tersimpan 4 bintang & pesan 'Halaman 2 terbuka'",e('iqQZ["p1-1"].s')===4&&/Halaman 2 terbuka/.test(e("QZ.unlock"))&&e("pgOpen(1,2)")===true);
+ ok("layar hasil menampilkan pesan terbuka",/Halaman 2 terbuka/.test(L1.w.document.getElementById("app").innerHTML));
+ e('iqDN={"1-2":1};iqQZ={};jl=1;pn=2;qzStart("p")');e("QZ.right=1;qzFinish()");
+ ok("gagal kuis (1 benar): pesan butuh minimal 3 bintang, Hal 3 tetap terkunci",/minimal 3 bintang/.test(e("QZ.need"))&&e("pgOpen(1,3)")===false);
+ e('iqDN=Object.fromEntries(Array.from({length:JL[1].n},(_,i)=>["1-"+(i+1),1]));iqQZ={};jl=1;qzStart("j")');
+ e("QZ.right=QZ.qs.length;qzFinish()");ok("lulus Kuis Jilid: pesan 'Iqro 2 terbuka' & Iqro 2 terbuka",/Iqro 2 terbuka/.test(e("QZ.unlock"))&&e("jOpen(2)")===true);
+ e('iqDN={"1-1":1};iqQZ={};jl=1;go("bookdetail");qzStart("j")');
+ ok("Kuis Jilid ditolak sebelum semua halaman dibuka",e("S")!=="quiz");
+ // saklar di Pengaturan
+ e('go("target")');ok("Target belajar: ada saklar Kunci level berurutan (menyala)",/Kunci level berurutan/.test(L1.w.document.getElementById("app").innerHTML)&&/aria-checked="true"/.test(L1.w.document.getElementById("app").innerHTML));
+ L1.w.document.querySelector('[data-act="togglelock"]').click();await sleep(50);
+ ok("saklar dimatikan: tersimpan & halaman terbuka",e("lockOn")===false&&L1.w.localStorage.getItem("iqro_lock")==="0"&&e("pgOpen(1,20)")===true);
+ L1.w.close();
+ const L2=await boot(base,{iqro_lock:"0"});ok("pilihan 'kunci mati' dipulihkan saat dibuka lagi",L2.w.eval("lockOn")===false);L2.w.close();
  w.close();srv.close();
  console.log("\n"+(fail?"GAGAL: ":"LOLOS: ")+pass+" lulus, "+fail+" gagal");process.exit(fail?1:0)
 })().catch(e=>{console.error(e);process.exit(1)});

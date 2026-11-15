@@ -28,13 +28,15 @@ function qzBuild(kind){
 const qzKey=()=>QZ.kind==="p"?"p"+QZ.jl+"-"+QZ.pn:QZ.kind==="j"?"j"+QZ.jl:"tj";
 const qzTitle=()=>QZ.kind==="p"?"Kuis Iqro "+QZ.jl+" · Hal "+QZ.pn:QZ.kind==="j"?"Kuis Jilid Iqro "+QZ.jl:"Kuis tanda baca";
 function qzStart(kind){
+  if(kind==="j"&&!jqOpen(jl))return toast("Buka semua halaman Iqro "+jl+" dulu untuk Kuis Jilid");
   const qs=qzBuild(kind);
   if(!qs||!qs.length)return toast(kind==="j"?"Buka dulu beberapa halaman Iqro "+jl+" ya":"Halaman belum dimuat");
   stopSeq();QZ={kind,jl,pn,qs,i:0,pick:-1,right:0,stars:0,fresh:[]};go("quiz");
 }
 function qzFinish(){
   const n=QZ.qs.length,r=QZ.right,f=r/n,s=r===n?4:f>=.66?3:f>=.4?2:r>0?1:0,k=qzKey(),old=(iqQZ[k]||{}).s||0,before=BDG().filter(x=>x[2]).map(x=>x[0]);
-  QZ.stars=s;if(s>old){coins+=(s-old)*2;iqQZ[k]={s,r,n}}else if(!iqQZ[k])iqQZ[k]={s:0,r,n};
+  const was=qOk(k);QZ.stars=s;if(s>old){coins+=(s-old)*2;iqQZ[k]={s,r,n}}else if(!iqQZ[k])iqQZ[k]={s:0,r,n};
+  QZ.unlock="";QZ.need="";if(lockOn){const now=qOk(k),nx=QZ.kind==="p"?(QZ.pn<JL[QZ.jl].n?"Halaman "+(QZ.pn+1):""):QZ.kind==="j"?(JL[QZ.jl+1]&&JL[QZ.jl+1].ok?"Iqro "+(QZ.jl+1):""):"";if(nx){if(now&&!was)QZ.unlock=nx+" terbuka! Alhamdulillah";else if(!now)QZ.need="Butuh minimal "+LOCK_MIN+" bintang untuk membuka "+nx}}
   saveQZ();QZ.fresh=BDG().filter(x=>x[2]&&!before.includes(x[0])).map(x=>x[0]);QZ.gain=Math.max(0,s-old);go("quizres");
 }
 
@@ -50,6 +52,7 @@ ${d?`<div class="rounded-2xl px-4 py-3 mt-4 text-sm font-black ${ok?"bg-soft tex
 V.quizres=()=>{const q=QZ,n=q.stars,m=["Tidak apa-apa, ayo belajar dulu lalu coba lagi","Semangat! Ayo coba lagi","Bagus! Sedikit lagi bintangmu penuh","Yey Alhamdulillah, hampir sempurna!","Yay MasyaAllah! Sempurna!"][n];
  return `<section class="hero rounded-[32px] p-4 pb-5 text-center"><div class="flex justify-center items-end gap-2 mb-2">${[1,2,3,4].map(i=>`<span class="st ${i<=n?"":"off"} ${i%2?"":"-mt-4"}">${ic("star","w-11 h-11")}</span>`).join("")}</div>
 <div class="bg-card text-ink rounded-[28px] p-5 pt-3 border-4 border-[#FFE27A] relative"><div class="flex justify-center -mt-14">${mas("w-20",["bingung","semangat","senang","rayakan","rayakan"][n])}</div><h2 class="text-xl font-black mt-1">${m}</h2><div class="text-7xl font-black text-brand leading-tight mt-2">${q.right}<small class="text-3xl text-mute">/${q.qs.length}</small></div><p class="font-extrabold text-brand text-sm">${qzTitle()}</p>
+${q.unlock?`<div class="flex items-center justify-center gap-2 bg-soft text-brand rounded-2xl p-3 mt-4 font-black text-sm">${ic("lock","w-5 h-5")}${q.unlock}</div>`:q.need?`<p class="text-xs text-mute font-bold mt-3">${q.need}</p>`:""}
 ${q.fresh.length?`<div class="text-left bg-soft rounded-2xl p-3 mt-4"><b class="text-sm">Lencana baru!</b><p class="text-xs text-mute font-semibold mt-1">${q.fresh.join(", ")}</p></div>`:""}
 ${q.gain?`<p class="flex items-center justify-center gap-1.5 text-sm font-black mt-3">${coin()}+${q.gain*2} koin masuk</p>`:""}</div></section>
 ${n>0?`<button data-act="shareres" data-k="quiz" class="btn w-full mt-5">Bagikan ke Komunitas +2 ${coin("w-5 h-5")}</button>`:""}
@@ -57,8 +60,8 @@ ${n>0?`<button data-act="shareres" data-k="quiz" class="btn w-full mt-5">Bagikan
 <button data-act="qzdone" class="w-full mt-3 py-3 font-black text-brand">Selesai</button>`};
 
 /* ===== Kartu pemicu di layar lain ===== */
-const qzCard=()=>{const q=iqQZ["p"+jl+"-"+pn];return `<section class="${card} mt-4 !p-3.5 flex items-center gap-3"><span class="w-11 h-11 rounded-2xl bg-soft grid place-items-center shrink-0" style="color:#FFB72B">${ic("star","w-6 h-6")}</span><div class="flex-1 min-w-0"><b class="block text-sm">Kuis halaman ${pn}</b><small class="text-mute text-[11px] font-semibold">${q?"Bintangmu: "+"★".repeat(q.s)+(q.s?"":"belum ada")+" · coba lagi?":"3 soal singkat, dapat bintang!"}</small></div><button data-act="qzpage" class="btn !py-2 !px-4 text-sm">${q?"Ulangi":"Mulai"}</button></section>`};
-const jqCard=()=>{const q=iqQZ["j"+jl];return `<section class="${card} mt-4 !p-3.5 flex items-center gap-3"><span class="w-11 h-11 rounded-2xl bg-soft grid place-items-center shrink-0" style="color:#FFB72B">${ic("trophy","w-6 h-6")}</span><div class="flex-1 min-w-0"><b class="block text-sm">Kuis Jilid ${jl}</b><small class="text-mute text-[11px] font-semibold">${q?"Bintangmu: "+"★".repeat(q.s)+(q.s?"":"belum ada"):"5 soal dari halaman yang sudah kamu buka"}</small></div><button data-act="qzjilid" class="btn !py-2 !px-4 text-sm">${q?"Ulangi":"Mulai"}</button></section>`};
+const qzCard=()=>{const q=iqQZ["p"+jl+"-"+pn];return `<section class="${card} mt-4 !p-3.5 flex items-center gap-3"><span class="w-11 h-11 rounded-2xl bg-soft grid place-items-center shrink-0" style="color:#FFB72B">${ic("star","w-6 h-6")}</span><div class="flex-1 min-w-0"><b class="block text-sm">Kuis halaman ${pn}</b><small class="text-mute text-[11px] font-semibold">${q?"Bintangmu: "+"★".repeat(q.s)+(q.s?"":"belum ada")+" · coba lagi?":"3 soal singkat, dapat bintang!"}${lockHintP()}</small></div><button data-act="qzpage" class="btn !py-2 !px-4 text-sm">${q?"Ulangi":"Mulai"}</button></section>`};
+const jqCard=()=>{const q=iqQZ["j"+jl];return `<section class="${card} mt-4 !p-3.5 flex items-center gap-3"><span class="w-11 h-11 rounded-2xl bg-soft grid place-items-center shrink-0" style="color:#FFB72B">${ic("trophy","w-6 h-6")}</span><div class="flex-1 min-w-0"><b class="block text-sm">Kuis Jilid ${jl}</b><small class="text-mute text-[11px] font-semibold">${q?"Bintangmu: "+"★".repeat(q.s)+(q.s?"":"belum ada"):"5 soal dari halaman yang sudah kamu buka"}${lockHintJ()?" · "+lockHintJ():""}</small></div><button data-act="qzjilid" class="btn !py-2 !px-4 text-sm">${q?"Ulangi":"Mulai"}</button></section>`};
 const tjCard=()=>`<button data-go="tajwid" class="${card} !w-[88%] shrink-0 flex items-center gap-4 text-left"><div dir="ltr" class="grid grid-cols-3 gap-1 shrink-0">${["بٌ","بٍ","بَّ","بِّ","بَا","بِي"].map(w=>`<span class="ar rounded-lg w-9 h-9 grid place-items-center text-2xl bg-soft" style="padding-top:.2em"><span>${tjh(w)}</span></span>`).join("")}</div><div class="flex-1"><b>Tanda baca lanjutan</b><p class="text-mute text-xs">Tanwin, tasydid, dan mad dengan warna tajwid.</p></div><span class="text-brand">${ic("cr")}</span></button>`;
 
 /* ===== Layar tajwid ===== */

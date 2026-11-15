@@ -127,3 +127,12 @@ Pengaturan Supabase yang perlu dilakukan sekali (Dashboard):
 1. SQL Editor: jalankan `supabase/schema.sql`.
 2. Authentication -> Sign In / Providers -> Email: untuk tahap awal matikan **Confirm email** (tanpa SMTP sendiri, email bawaan Supabase hanya terkirim ke anggota tim dan dibatasi 2/jam). Nyalakan lagi setelah SMTP (Brevo/Resend) dipasang.
 3. Authentication -> URL Configuration: Site URL `https://quroapp.vercel.app`.
+
+## Kunci level berurutan
+
+`js/lock.js`. Halaman berikutnya terbuka setelah lulus kuis halaman sebelumnya, dan Iqro berikutnya setelah lulus Kuis Jilid sebelumnya (Kuis Jilid sendiri terbuka setelah semua halaman jilid itu dibuka). Lulus = minimal `LOCK_MIN` (3) bintang.
+
+- Pengguna lama tidak terkunci dari yang sudah mereka buka: halaman dan Iqro yang pernah dibuka tetap terbuka, hanya yang berikutnya yang butuh lulus kuis.
+- Bisa dimatikan di Profil -> Target belajar -> "Kunci level berurutan" (`iqro_lock` = `0`).
+- Dasarnya `iqDN` (halaman dibuka) dan `iqQZ` (bintang kuis), jadi ikut tersinkron antar HP.
+- Jaring pengaman `lockFix()` di `V.reader` mengembalikan ke halaman terbuka bila ada jalur lain (penanda, tautan lama) yang menuju halaman terkunci.
