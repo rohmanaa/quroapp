@@ -12,7 +12,8 @@ core/                 kerangka bersama
   state.js            state + localStorage          core.js     go(), render, bilah bawah, modal, toast
   helpers.js          fungsi tampilan kecil         events.js   penangan klik utama
   icons.js            ikon garis                    main.js     mulai aplikasi, pulihkan layar
-  nav-fix.js ptr.js perf.js offline.js update.js    version.js  (dibuat tools/make-sw.js, jangan diedit)
+  routes.js           tabel fitur lazy + pemuat      nav-fix.js ptr.js perf.js offline.js update.js
+  version.js          (dibuat tools/make-sw.js, jangan diedit)
 fitur/                satu folder = satu fitur: layar + data + gayanya sendiri
   belajar/            home, books, bookdetail, reader, huruf, harakat, record
     views.js practice.js reader.js settings.js progress.js tajwid.js lock.js  reader.css
@@ -36,7 +37,12 @@ supabase/  tests/  tools/   skema server, tes asap (jsdom), alat build (make-sw,
 
 Memuat belakangan (lazy): `fitur/belajar/data/iqro2-6-buku.js` (±300 KB) baru diambil saat Iqro 2-6 pertama kali dibuka (pembaca atau kuis), lewat `loadBook26()`/`bookGate()` di `iqro-lazy.js`. Jumlah halaman tiap jilid dicatat di `iqro-lazy.js` (`BOOK26_N`) supaya sampul, progres, dan kunci level tidak berubah; `tools/test-data.js` menjaga angkanya sama dengan isi buku. Berkas tetap masuk cache offline.
 
-Menambah fitur baru: buat `fitur/<nama>/` berisi layar (`V.nama=...`), data, dan CSS-nya; daftarkan `<script>` di `index.html` (setelah file yang dibutuhkan), lalu `node tools/make-sw.js`.
+Fitur lazy (`core/routes.js`): `pengaturan` (preferences.js), `profil` (profile.js, share-profile.js, share.css), dan `latihan` (practice.js) tidak ada di `index.html`. `go("<layar>")` memuatnya saat pertama dibuka, dan sisanya dimuat saat browser menganggur (kecuali mode hemat data). Kode inti yang ikut mengubah layar lazy memakai `onFeature("<fitur>",()=>{...})` (contoh: kartu Mode hemat di `perf.js`). `tools/test-data.js` menjaga: berkasnya ada dan masuk cache offline, daftar layar cocok dengan `V.*` di berkas, dan tidak ada kode awal yang memanggil isi fitur lazy.
+
+Menambah fitur baru:
+- Biasa (dimuat di awal): buat `fitur/<nama>/` berisi layar (`V.nama=...`), data, dan CSS-nya; daftarkan `<script>` di `index.html` (setelah file yang dibutuhkan).
+- Lazy (ringan, layar saja): daftarkan di `LAZY` pada `core/routes.js` dan jangan tulis `<script>`-nya di `index.html`. Fitur yang fungsinya dipanggil kode lain (kuis, toko, komunitas, akun) sengaja tidak lazy.
+- Lalu `node tools/make-sw.js`.
 
 ## Kuis, bintang, dan komunitas
 

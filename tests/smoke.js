@@ -48,10 +48,11 @@ async function boot(base,store={},opt={}){
    w.speechSynthesis={cancel(){},speak(){},getVoices(){return[]}};w.SpeechSynthesisUtterance=function(){};
    if(opt.login!==false){w.localStorage.setItem("iqro_acc",JSON.stringify({name:opt.name||"Uji",g:"L",phone:"081234567"}));w.localStorage.setItem("iqro_ses","1")}
    for(const k in store)w.localStorage.setItem(k,store[k]);
+   if(opt.saveData)Object.defineProperty(w.navigator,'connection',{value:{saveData:true},configurable:true});
    if(opt.reload){w.sessionStorage.setItem('quro_scr',JSON.stringify(opt.reload));w.performance.getEntriesByType=()=>[{type:'reload'}]}
    if(opt.cloud){w.__QURO_CLOUD=opt.cloud;w.fetch=(u,o)=>{o=o||{};const {signal,...r}=o;return opt.offline?Promise.reject(new Error('offline')):fetch(u,r)}}
    w.addEventListener("error",e=>errs.push(e.message))}});
- await sleep(1400);return {w:d.window,errs}}
+ await sleep(1400);if(!opt.lazy)await d.window.eval('Promise.all(Object.keys(LAZY).map(loadFeature))');return {w:d.window,errs}}
 
 (async()=>{
  await new Promise(r=>srv.listen(0,r));const base="http://localhost:"+srv.address().port;
@@ -306,6 +307,32 @@ async function boot(base,store={},opt={}){
  const R1=await boot(base,{iqro_lock:"0"},{reload:{s:"reader",j:1,p:7}});
  ok("muat ulang di Iqro 1: langsung tampil, data Iqro 2-6 tetap tidak dimuat",R1.w.eval("S")==="reader"&&R1.w.eval("pn")===7&&R1.w.eval("BOOK26")===false);R1.w.close();
  Z.w.close();
+
+ console.log("11. Fitur lazy (pengaturan, profil, latihan) dimuat belakangan");
+ const Y=await boot(base,{},{lazy:true,saveData:true});const y=x=>Y.w.eval(x);const sc=n=>[...Y.w.document.scripts].some(t=>t.src.includes(n));
+ ok("di awal: berkas fitur lazy belum dimuat & layarnya belum ada",!sc("preferences.js")&&!sc("profile.js")&&!sc("practice.js")&&!sc("share-profile.js")&&["profile","theme","record"].every(n=>y("V."+n)===undefined)&&y("Object.keys(featDone).length")===0);
+ ok("share.css belum dimuat & kotak bagikan tetap tersembunyi",!Y.w.document.querySelector('link[href*="share.css"]')&&Y.w.document.getElementById("shareProfileModal").hasAttribute("hidden"));
+ ok("mode hemat data: tidak memuat di latar belakang",await (async()=>{await sleep(2800);return y("Object.keys(featDone).length")===0})());
+ y('go("profile")');await sleep(700);
+ ok("buka Profil: fitur dimuat lalu layar tampil",y("S")==="profile"&&typeof y("V.profile")==="function"&&y("featDone.profil")===true&&/Profil|profil/.test(Y.w.document.getElementById("app").innerHTML)&&!!Y.w.document.querySelector('link[href*="share.css"]'));
+ ok("Profil: urutan berkas benar (share-profile setelah profile)",y("typeof openShareProfileModal")==="function");
+ const shp=Y.w.document.querySelector('[data-act="shp"]');ok("Profil: tombol bagikan ada",!!shp);if(shp){shp.click();await sleep(80);ok("tombol bagikan membuka kotak (CSS lazy bekerja)",Y.w.document.getElementById("shareProfileModal").classList.contains("open"))}
+ y('closeShareProfileModal&&closeShareProfileModal()');
+ y('go("theme")');await sleep(700);
+ ok("buka Tampilan: kartu 'Mode hemat' dari perf.js ikut muncul (onFeature)",y("S")==="theme"&&/Mode hemat/.test(Y.w.document.getElementById("app").innerHTML)&&/Uji kelancaran/.test(Y.w.document.getElementById("app").innerHTML));
+ y('go("record")');await sleep(500);ok("buka Latihan (record): fitur dimuat",y("S")==="record"&&typeof y("V.record")==="function");
+ y('go("target")');await sleep(150);ok("Target belajar tampil dan saklar kunci ada",y("S")==="target"&&/Kunci level berurutan/.test(Y.w.document.getElementById("app").innerHTML));
+ // gagal memuat
+ const Yf=await boot(base,{},{lazy:true,saveData:true});Yf.w.eval('window.__t=[];(function(){const o=toast;toast=function(t){window.__t.push(String(t));return o(t)}})();loadFeature=()=>Promise.reject(new Error("x"))');
+ Yf.w.eval('go("badges")');await sleep(150);
+ ok("gagal memuat: toast 'belum bisa dimuat' dan tetap di Home",Yf.w.eval("window.__t").some(t=>/Belum bisa dimuat/.test(t))&&Yf.w.eval("S")==="home");Yf.w.close();
+ // muat ulang di layar lazy
+ const Yr=await boot(base,{},{lazy:true,saveData:true,reload:{s:"progress",j:1,p:1}});
+ ok("muat ulang di layar Progres: tunggu fitur lalu tampil di layar yang sama",Yr.w.eval("S")==="progress"&&typeof Yr.w.eval("V.progress")==="function");Yr.w.close();
+ // pemuatan di latar belakang saat menganggur
+ const Yp=await boot(base,{},{lazy:true});await sleep(3600);
+ ok("tanpa mode hemat: sisa fitur dimuat saat menganggur (buka layar pertama kali jadi instan)",Yp.w.eval("Object.keys(LAZY).every(k=>featDone[k]===true)"));Yp.w.close();
+ Y.w.close();
  w.close();srv.close();
  console.log("\n"+(fail?"GAGAL: ":"LOLOS: ")+pass+" lulus, "+fail+" gagal");process.exit(fail?1:0)
 })().catch(e=>{console.error(e);process.exit(1)});

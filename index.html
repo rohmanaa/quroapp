@@ -30,7 +30,6 @@
 <link rel="stylesheet" href="css/fonts.css">
 <link rel="stylesheet" href="css/base.css">
 <link rel="stylesheet" href="css/components.css">
-<link rel="stylesheet" href="fitur/profil/share.css">
 <link rel="stylesheet" href="fitur/belajar/reader.css">
 <link rel="stylesheet" href="css/animations.css">
 <link rel="stylesheet" href="css/tailwind.css">
@@ -59,7 +58,7 @@
 </div>
 <div id="t" class="hidden fixed left-1/2 -translate-x-1/2 bottom-28 bg-brand text-on text-sm font-extrabold px-5 py-3 rounded-full shadow-[0_5px_0_var(--bd)] z-50"></div>
 <!-- Profile Share Modal v2 -->
-<div id="shareProfileModal" class="sm" aria-hidden="true">
+<div id="shareProfileModal" class="sm" aria-hidden="true" hidden>
   <div class="sm-in" role="dialog" aria-modal="true" aria-labelledby="smT">
     <div class="sm-top">
       <div><h2 id="smT" class="sm-t">Bagikan profilmu</h2><p class="sm-s">Ajak teman belajar Iqro bareng!</p></div>
@@ -100,13 +99,11 @@
 <script src="fitur/belajar/tajwid.js"></script>
 <script src="fitur/belajar/reader.js"></script>
 <script src="fitur/belajar/settings.js"></script>
+<script src="core/routes.js"></script>
 <script src="core/core.js"></script>
 <script src="fitur/belajar/views.js"></script>
-<script src="fitur/profil/profile.js"></script>
 <script src="fitur/akun/auth.js"></script>
 <script src="fitur/komunitas/social.js"></script>
-<script src="fitur/pengaturan/preferences.js"></script>
-<script src="fitur/belajar/practice.js"></script>
 <script src="fitur/toko/shop.js"></script>
 <script src="fitur/kuis/quiz.js"></script>
 <script src="fitur/belajar/lock.js"></script>
@@ -118,7 +115,6 @@
 <script src="fitur/akun/cloud.js"></script>
 <script src="core/perf.js"></script>
 <script src="core/main.js"></script>
-<script src="fitur/profil/share-profile.js"></script>
 <script src="core/nav-fix.js"></script>
 <script src="core/ptr.js"></script>
 <script src="core/offline.js"></script>

@@ -10,10 +10,10 @@ const apply=()=>root.classList.toggle("lite",lite);apply();
 /* 1) jeda animasi saat scroll */
 let scr=0,tm=0;addEventListener("scroll",()=>{if(!scr){scr=1;root.classList.add("scr")}clearTimeout(tm);tm=setTimeout(()=>{scr=0;root.classList.remove("scr")},160)},{passive:true});
 /* 2) tombol di layar Tampilan */
-const baseTheme=V.theme;
+onFeature("pengaturan",()=>{const baseTheme=V.theme;
 V.theme=()=>baseTheme()+`
 <section class="${card} mt-4 !p-4"><div class="flex items-center justify-between gap-3"><div><b class="block">Mode hemat</b><small class="text-mute text-xs font-semibold">Kurangi animasi dan efek latar supaya scroll lebih ringan.</small></div><button data-act="lite" role="switch" aria-checked="${lite}" aria-label="Mode hemat" class="w-14 h-8 rounded-full ${lite?"bg-brand":"bg-soft"} p-1 shrink-0"><span class="block w-6 h-6 rounded-full bg-white shadow ${lite?"ml-6":""}"></span></button></div></section>
-<section class="${card} mt-3 !p-4"><b class="block">Uji kelancaran</b><small class="text-mute text-xs font-semibold block mb-3">Menggulir Home, Komunitas, dan Reader otomatis sekitar 15 detik lalu menampilkan FPS. Jangan sentuh layar selama uji.</small><button data-act="fps" class="btn btn-w w-full" style="border:2px solid var(--line)">Mulai uji</button></section>`;
+<section class="${card} mt-3 !p-4"><b class="block">Uji kelancaran</b><small class="text-mute text-xs font-semibold block mb-3">Menggulir Home, Komunitas, dan Reader otomatis sekitar 15 detik lalu menampilkan FPS. Jangan sentuh layar selama uji.</small><button data-act="fps" class="btn btn-w w-full" style="border:2px solid var(--line)">Mulai uji</button></section>`;});
 /* 3) uji kelancaran: gulir otomatis (naik-turun) sambil mencatat waktu tiap frame */
 let running=0;const wait=ms=>new Promise(r=>setTimeout(r,ms));
 function measure(ms){return new Promise(res=>{const el=document.scrollingElement||document.documentElement;let last=0,t0=0,n=0,worst=0,jank=0,total=0;

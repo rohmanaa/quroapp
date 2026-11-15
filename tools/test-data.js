@@ -46,6 +46,23 @@ refs.forEach(u=>{if(!fs.existsSync(path.join(R,u)))bad("index.html memanggil "+u
 ["games/index.html","games/lobby.js","fitur/pengaturan/backup.js","core/update.js","core/ptr.js"].forEach(u=>{if(fs.existsSync(path.join(R,u))&&!sw.includes(u))bad(u+" belum ada di cache offline: jalankan node tools/make-sw.js")});
 console.log("   "+refs.length+" file dirujuk");
 
+/* 3b. fitur yang dimuat belakangan (core/routes.js) */
+console.log("3b. Fitur lazy (core/routes.js)");
+{const rs=fs.readFileSync(path.join(R,"core/routes.js"),"utf8"),m=rs.match(/const LAZY=(\{[\s\S]*?\});\nconst featDone/);
+ if(!m)bad("core/routes.js: tabel LAZY tidak terbaca");else{
+ const LAZY=new Function("return "+m[1])(),ALLOW=new Set(["openShareProfileModal","closeShareProfileModal"]);
+ const lazyFiles=new Set(Object.values(LAZY).flatMap(f=>[].concat(f.js||[],f.css||[])));
+ const walk=d=>fs.readdirSync(path.join(R,d),{withFileTypes:true}).flatMap(e=>e.isDirectory()?(e.name==="node_modules"?[]:walk(d+"/"+e.name)):e.name.endsWith(".js")?[d+"/"+e.name]:[]);
+ const eager=[...walk("core"),...walk("fitur")].filter(f=>!lazyFiles.has(f)&&!/\/data\//.test(f)||/iqro-lazy|data\/(letters|harakat|iqro|pola|latihan)\.js/.test(f));
+ for(const k in LAZY){const f=LAZY[k],files=[].concat(f.js||[],f.css||[]);
+  files.forEach(u=>{if(!fs.existsSync(path.join(R,u)))bad("LAZY."+k+": "+u+" tidak ada");else{if(!sw.includes(u))bad(u+" (lazy) belum ada di cache offline: jalankan node tools/make-sw.js");if(html.includes('"'+u+'"'))bad(u+" ada di LAZY tetapi juga dimuat di index.html")}});
+  const src=(f.js||[]).map(u=>fs.existsSync(path.join(R,u))?fs.readFileSync(path.join(R,u),"utf8"):"").join("\n");
+  const defined=[...new Set([...src.matchAll(/\bV\.([A-Za-z0-9_]+)\s*=/g)].map(x=>x[1]))].sort(),declared=[...f.screens].sort();
+  if(defined.join()!==declared.join())bad("LAZY."+k+": daftar layar ("+declared.join(",")+") tidak sama dengan V.* yang didefinisikan berkasnya ("+defined.join(",")+")");
+  const names=new Set([...src.matchAll(/^(?:const|let|var)\s+([A-Za-z_$][\w$]*)/gm),...src.matchAll(/^function\s+([A-Za-z_$][\w$]*)/gm)].map(x=>x[1]));
+  for(const e of eager){const t=fs.readFileSync(path.join(R,e),"utf8");for(const n of names){if(ALLOW.has(n))continue;if(new RegExp("(?<![\\w$.])"+n.replace(/\$/g,"\\$")+"(?![\\w$])").test(t))bad("fitur lazy '"+k+"' tidak boleh dipakai kode awal: "+e+" memakai "+n+" (pindahkan ke fitur itu, atau jadikan fitur ini eager)")}}}
+ console.log("   "+Object.keys(LAZY).length+" fitur lazy: "+Object.keys(LAZY).join(", "))}}
+
 /* 4. nomor versi konsisten */
 console.log("4. Nomor versi");
 try{const vj=JSON.parse(fs.readFileSync(path.join(R,"version.json"),"utf8")),vs=fs.readFileSync(path.join(R,"core/version.js"),"utf8"),m=vs.match(/APP_VERSION="([\d.]+)"/);
