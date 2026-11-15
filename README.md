@@ -54,7 +54,7 @@ js/
     preferences.js    target, notifications, audio, privacy, theme
     practice.js       record
   games.js            daftar game + pembungkus iframe + penerima pesan dari game
-  shop.js             Toko Maskot: beli dengan koin, pakai di Home, bagikan sebagai stiker WhatsApp (kanvas 512×512, WebP < 100 KB, lewat Web Share; tanpa paket stiker resmi karena itu butuh aplikasi Android). Data di `iqro_shop` = {own, use, spent}
+  shop.js             Toko Maskot: beli dengan koin, pakai di Home, simpan stiker 512×512 WebP, dan unduh paket `.wastickers` (ZIP buatan `js/zipstore.js`: cover.png, title.txt, author.txt, stiker .webp) untuk diimpor lewat Sticker Maker. Mengirim lewat menu Bagikan tidak dipakai: WhatsApp menganggapnya foto dan latar transparan jadi hitam. Data di `iqro_shop` = {own, use, spent}
   events.js           penangan klik utama
   main.js             render pertama
   share-profile.js    modal bagikan profil

@@ -115,7 +115,14 @@ async function boot(base,store={},opt={}){
   let r3=mg2({iqro_coins:"5"},{iqro_coins:"9"});ok("sinkron: tanpa data toko, aturan lama (koin terbesar)",r3.iqro_coins==="9"&&r3.iqro_shop===undefined);
   let r4=mg2({iqro_coins:"60",iqro_shop:JSON.stringify({own:["utama","senang"],use:"senang",spent:20})},{iqro_coins:"50",iqro_shop:JSON.stringify({own:["utama","iqro2"],use:"iqro2",spent:60})});
   const o4=JSON.parse(r4.iqro_shop);ok("sinkron: dua HP sama-sama belanja = barang digabung, koin tidak negatif",o4.own.join()==="utama,senang,iqro2"&&o4.spent===60&&+r4.iqro_coins===Math.max(60+20,50+60)-60,JSON.stringify(r4));
-  mw.w.close()}
+  mw.w.close();
+  {const vm=require("vm"),fs2=require("fs"),pa=require("path"),ctx={TextEncoder,Blob};vm.createContext(ctx);vm.runInContext(fs2.readFileSync(pa.join(__dirname,"..","js","zipstore.js"),"utf8"),ctx);
+   const A=[104,105],B=[1,2,3,4,5],buf=Buffer.from(await ctx.zipStore([{n:"a.txt",d:new Uint8Array(A)},{n:"b.webp",d:new Uint8Array(B)}]).arrayBuffer());
+   const e=buf.length-22,cnt=buf.readUInt16LE(e+10),cdOff=buf.readUInt32LE(e+16);let p2=cdOff,got=[];
+   for(let i=0;i<cnt;i++){const sz=buf.readUInt32LE(p2+24),nl=buf.readUInt16LE(p2+28),lo=buf.readUInt32LE(p2+42),nm=buf.slice(p2+46,p2+46+nl).toString(),dat=buf.slice(lo+30+nl,lo+30+nl+sz);got.push(nm+":"+[...dat].join());p2+=46+nl}
+   ok("paket stiker: ZIP valid (isi dan nama berkas utuh)",buf.readUInt32LE(0)===0x04034b50&&buf.readUInt32LE(e)===0x06054b50&&cnt===2&&got.join("|")==="a.txt:104,105|b.webp:1,2,3,4,5",got.join("|"))}
+  const pk=await boot(base);let tmsg="";pk.w.eval("shopPack()");await sleep(50);
+  ok("paket stiker: kurang dari 3 stiker = ditolak dengan pesan",/minimal 3/.test(pk.w.document.body.textContent)&&!pk.errs.length);pk.w.close();}
  console.log("4. Game: tiap folder memuat dan menggambar");
  const GP=w.eval("GP"),MGk=w.eval("MG.map(g=>g[0])");
  for(let i=0;i<MGk.length;i++){const slug=GP[MGk[i]];
