@@ -4,62 +4,39 @@ Dibuka langsung dengan klik dua kali `index.html` (tanpa server, tanpa build). S
 
 ## Struktur
 
+Satu aplikasi (SPA) tanpa build, dibagi per fitur. Game punya halaman sendiri (iframe); layar biasa tetap satu aplikasi karena berbagi state, bilah bawah, dan transisi.
+
 ```
-index.html            kerangka halaman + urutan muat file
-css/
-  base.css            token warna, tema terang/gelap, reset, latar
-  components.css      .ar, tombol, hero, tile, modal umum
-  share.css           modal bagikan profil
-  reader.css          halaman Iqro (.pp), header .tbar, pita warna, mode polos .nc
-  animations.css      transisi halaman, goyang maskot
-data/                 isi konten (ubah di sini untuk menambah materi)
-  letters.js          30 huruf (L), PG
-  harakat.js          harakat (HK, HKC)
-  iqro.js             warna jilid (CVH), wadah JL dan IQ
-  pola.js             pola kata Jilid 3-6 yang bisa diubah (S M T D K) + jumlah halaman Jilid 6
-  latihan.js          pembuat materi latihan Jilid 1-6 (dibuat program)
-  iqro1-buku.js       Iqro Jilid 1 (32 halaman) dari proyek dyazincahya/iqro-json; menggantikan Jilid 1 buatan program
-  iqro2-6-buku.js     Iqro Jilid 2-6 (30 halaman tiap jilid) dari proyek yang sama; menggantikan Jilid 2-6 buatan program
-  games.js            daftar game (MG), kategori, dan folder tiap game (GP)
-  shop.js             katalog Toko Maskot (SHOP): id gambar, nama, harga koin
-  community.js        data contoh teman, kabar, papan peringkat
-  tajwid.js           materi tanwin, tasydid, mad (TJ) + kata tanpa tanda (TJN)
+index.html            kerangka halaman + urutan muat file (urutan penting: variabel global saling dibaca)
+core/                 kerangka bersama
+  state.js            state + localStorage          core.js     go(), render, bilah bawah, modal, toast
+  helpers.js          fungsi tampilan kecil         events.js   penangan klik utama
+  icons.js            ikon garis                    main.js     mulai aplikasi, pulihkan layar
+  nav-fix.js ptr.js perf.js offline.js update.js    version.js  (dibuat tools/make-sw.js, jangan diedit)
+fitur/                satu folder = satu fitur: layar + data + gayanya sendiri
+  belajar/            home, books, bookdetail, reader, huruf, harakat, record
+    views.js practice.js reader.js settings.js progress.js tajwid.js lock.js  reader.css
+    data/             letters harakat iqro pola latihan iqro1-buku  iqro-lazy.js  iqro2-6-buku.js (dimuat belakangan)
+  kuis/               quiz.js (kuis halaman/jilid/tajwid, bintang, tajwid)      data/tajwid.js
+  profil/             profile.js (progres, profil, misi, badge, tentang), share-profile.js, share.css
+  pengaturan/         preferences.js (target, notifikasi, audio, privasi, tema), backup.js
+  komunitas/          social.js (teman, papan peringkat, kabar, komunitas)      data/community.js
+  akun/               auth.js, cloud.js, cloud-config.js (Supabase)
+  toko/               shop.js (Toko Maskot)                                     data/shop.js
+  game/               games.js (daftar game + pembungkus iframe)                data/games.js
+css/                  gaya bersama: base, components, animations, fonts, tailwind
 games/                lobby + tiap game berdiri sendiri (satu folder = satu game)
-  index.html, lobby.js  lobby "Semua Game" (halaman sendiri; tombol Home di kanan atas, tanpa tombol kembali)
-  _shared/kit.js      jembatan ke aplikasi (toast, suara, koin, menang, keluar) + loading + bilah atas dengan tombol keluar
-  _shared/kit.css     gaya loading dan bilah atas
-  _shared/theme.js    tema dimuat di <head> supaya tidak berkedip
-  susun-huruf/        index.html + game.js (+ style.css / aset lain milik game itu)
-  memory-huruf/       index.html + game.js + style.css (.mc)
-  tebak-huruf/  telusuri/  dengar-pilih/  cari-huruf/  lanjutkan-huruf/
-assets/
-  mascot.js           mas(kelas, mood): memasang gambar maskot burung hud-hud
-  mascot/             14 gambar WebP transparan: utama, melambai, 6 ekspresi (senang, semangat, ngantuk, sedih, rayakan, bingung), iqro1-6 (aksesori tiap jilid)
-  emoji.js            kumpulan emoji SVG (IE), fe(), fl()
-js/
-  icons.js            ikon garis
-  helpers.js          fungsi kecil untuk tampilan (lt, card, tileH, cover, pet, ...)
-  state.js            state + localStorage
-  tajwid.js           pewarnaan tajwid (tjh); warna di fitur/belajar/reader.css (.tj[data-tj])
-  quiz.js             kuis halaman/jilid/tajwid, bintang, lembar bagikan, posting ke Komunitas, layar tajwid
-  progress.js         streak, target harian, waktu belajar, unduh offline, badge
-  reader.js           pembaca Iqro, pilih jilid/halaman, layar penuh, geser, muat halaman
-  settings.js         sheet pengaturan baca dan animasi
-  core.js             render(), go(), modal(), toast(), suara
-  views/              satu file per kelompok layar; semuanya mengisi objek V
-    learn.js          home, books, huruf, harakat, bookdetail, reader (membuat const V)
-    profile.js        progress, profile, daily, share, result, badges, about
-    auth.js           login, reg
-    social.js         friends, leaderboard, reels, community
-    preferences.js    target, notifications, audio, privacy, theme
-    practice.js       record
-  games.js            daftar game + pembungkus iframe + penerima pesan dari game
-  shop.js             Toko Maskot: beli dengan koin, pakai di Home, dan pakai sebagai reaksi di Komunitas (kabar teman) dan Leaderboard. Data: `iqro_shop` = {own, use, spent} dan `iqro_react` = {"p:<id kabar>" atau "u:<nama>": id maskot}
-  events.js           penangan klik utama
-  main.js             render pertama
-  share-profile.js    modal bagikan profil
-  nav-fix.js          perbaikan menu bawah di HP
+  index.html, lobby.js  lobby "Semua Game"
+  _shared/              kit.js kit.css theme.js (jembatan ke aplikasi, loading, bilah atas)
+  susun-huruf/ memory-huruf/ tebak-huruf/ telusuri/ dengar-pilih/ cari-huruf/ lanjutkan-huruf/
+assets/               mascot.js, mascot/ (14 WebP), emoji.js, fonts, lib
+icons/                ikon aplikasi dan favicon
+supabase/  tests/  tools/   skema server, tes asap (jsdom), alat build (make-sw, test-data, make-icons)
 ```
+
+Memuat belakangan (lazy): `fitur/belajar/data/iqro2-6-buku.js` (±300 KB) baru diambil saat Iqro 2-6 pertama kali dibuka (pembaca atau kuis), lewat `loadBook26()`/`bookGate()` di `iqro-lazy.js`. Jumlah halaman tiap jilid dicatat di `iqro-lazy.js` (`BOOK26_N`) supaya sampul, progres, dan kunci level tidak berubah; `tools/test-data.js` menjaga angkanya sama dengan isi buku. Berkas tetap masuk cache offline.
+
+Menambah fitur baru: buat `fitur/<nama>/` berisi layar (`V.nama=...`), data, dan CSS-nya; daftarkan `<script>` di `index.html` (setelah file yang dibutuhkan), lalu `node tools/make-sw.js`.
 
 ## Kuis, bintang, dan komunitas
 

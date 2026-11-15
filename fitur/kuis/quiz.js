@@ -28,6 +28,7 @@ function qzBuild(kind){
 const qzKey=()=>QZ.kind==="p"?"p"+QZ.jl+"-"+QZ.pn:QZ.kind==="j"?"j"+QZ.jl:"tj";
 const qzTitle=()=>QZ.kind==="p"?"Kuis Iqro "+QZ.jl+" · Hal "+QZ.pn:QZ.kind==="j"?"Kuis Jilid Iqro "+QZ.jl:"Kuis tanda baca";
 function qzStart(kind){
+  if((kind==="p"||kind==="j")&&needBook(jl))return bookGate(()=>qzStart(kind));
   if(kind==="j"&&!jqOpen(jl))return toast("Buka semua halaman Iqro "+jl+" dulu untuk Kuis Jilid");
   const qs=qzBuild(kind);
   if(!qs||!qs.length)return toast(kind==="j"?"Buka dulu beberapa halaman Iqro "+jl+" ya":"Halaman belum dimuat");

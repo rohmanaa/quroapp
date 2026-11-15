@@ -48,6 +48,7 @@ async function boot(base,store={},opt={}){
    w.speechSynthesis={cancel(){},speak(){},getVoices(){return[]}};w.SpeechSynthesisUtterance=function(){};
    if(opt.login!==false){w.localStorage.setItem("iqro_acc",JSON.stringify({name:opt.name||"Uji",g:"L",phone:"081234567"}));w.localStorage.setItem("iqro_ses","1")}
    for(const k in store)w.localStorage.setItem(k,store[k]);
+   if(opt.reload){w.sessionStorage.setItem('quro_scr',JSON.stringify(opt.reload));w.performance.getEntriesByType=()=>[{type:'reload'}]}
    if(opt.cloud){w.__QURO_CLOUD=opt.cloud;w.fetch=(u,o)=>{o=o||{};const {signal,...r}=o;return opt.offline?Promise.reject(new Error('offline')):fetch(u,r)}}
    w.addEventListener("error",e=>errs.push(e.message))}});
  await sleep(1400);return {w:d.window,errs}}
@@ -145,7 +146,7 @@ async function boot(base,store={},opt={}){
   ok("tab "+t+": 6 contoh, satu anak langsung per sel",ex.length===6&&ex.every(e=>e.children.length===1))}
 
  console.log("6. Semua halaman Iqro dirender tanpa galat");
- w.eval("lockOn=false"); const jl=w.eval("JSON.stringify(Object.keys(JL).filter(j=>JL[j].ok).map(j=>[+j,JL[j].n]))");let pages=0,e0=errs.length;
+ w.eval("lockOn=false");await w.eval("loadBook26()"); const jl=w.eval("JSON.stringify(Object.keys(JL).filter(j=>JL[j].ok).map(j=>[+j,JL[j].n]))");let pages=0,e0=errs.length;
  for(const [j,n] of JSON.parse(jl)){for(let p=1;p<=n;p++){w.eval(`jl=${j};pn=${p};go("reader")`);pages++;
    if(!w.document.querySelector(".pp [data-rf]")&&!w.document.querySelector(".pp"))ok("Iqro "+j+" hal "+p+" tergambar",false)}}
  ok(pages+" halaman Iqro dirender tanpa galat JS",errs.length===e0,errs.slice(e0,e0+2).join(" | "));
@@ -260,7 +261,7 @@ async function boot(base,store={},opt={}){
  ok("tombol berikutnya di halaman terkunci: muncul dialog, tetap di Hal 1",e("pn")===1&&/masih terkunci/.test(L1.w.document.getElementById("m").innerHTML));
  L1.w.document.querySelector('#m [data-act="mclose"].btn')&&L1.w.document.querySelector('#m [data-act="mclose"].btn').click();
  e('jl=1;pn=7;go("reader")');ok("lompat paksa ke Hal 7: dikembalikan ke halaman terbuka",e("pn")===1);
- e('jl=3;pn=2;go("reader")');ok("lompat paksa ke Iqro 3 terkunci: kembali ke Iqro 1",e("jl")===1);
+ e('jl=3;pn=2;go("reader")');await sleep(700);ok("lompat paksa ke Iqro 3 terkunci: kembali ke Iqro 1",e("jl")===1);
  e('iqDN={"1-1":1};iqQZ={};go("bookdetail");jl=1;go("bookdetail")');
  ok("detail jilid: Hal 2+ berikon kunci, Hal 1 tidak",/data-pg="2"[^>]*opacity-60/.test(L1.w.document.getElementById("app").innerHTML)&&!/data-pg="1"[^>]*opacity-60/.test(L1.w.document.getElementById("app").innerHTML));
  L1.w.document.querySelector('[data-pg="3"]').click();await sleep(60);
@@ -283,6 +284,28 @@ async function boot(base,store={},opt={}){
  ok("saklar dimatikan: tersimpan & halaman terbuka",e("lockOn")===false&&L1.w.localStorage.getItem("iqro_lock")==="0"&&e("pgOpen(1,20)")===true);
  L1.w.close();
  const L2=await boot(base,{iqro_lock:"0"});ok("pilihan 'kunci mati' dipulihkan saat dibuka lagi",L2.w.eval("lockOn")===false);L2.w.close();
+
+ console.log("10. Iqro 2-6 dimuat belakangan (lazy)");
+ const Z=await boot(base,{iqro_lock:"0"});const z=x=>Z.w.eval(x);
+ ok("di awal: data buku Iqro 2-6 belum dimuat",z("BOOK26")===false&&![...Z.w.document.scripts].some(x=>/iqro2-6-buku/.test(x.src)));
+ ok("jumlah halaman Iqro 2-6 sudah diketahui (30) tanpa memuat",[2,3,4,5,6].every(j=>z("JL["+j+"].n")===30)&&z("IQ['2-1']")===undefined);
+ z('go("books")');z('jl=3;go("bookdetail")');ok("sampul & detail Iqro 3 tampil tanpa memuat data buku",z("BOOK26")===false&&/data-pg="30"/.test(Z.w.document.getElementById("app").innerHTML));
+ z('jl=1;pn=1;go("reader")');ok("membuka Iqro 1 tidak memuat data Iqro 2-6",z("BOOK26")===false&&z("S")==="reader");
+ z('jl=3;pn=4;go("reader")');await sleep(900);
+ ok("membuka Iqro 3: data dimuat lalu pembaca tampil",z("BOOK26")===true&&z("S")==="reader"&&z("jl")===3&&z("pn")===4&&!!Z.w.document.querySelector(".pp")&&z("IQ['3-4'].content.length")>0);
+ ok("isi halaman dari buku (bukan latihan buatan)",z("IQ['3-4'].level_title")==="JILID 3"&&z("Object.keys(IQ).filter(k=>/^[2-6]-/.test(k)).length")===150);
+ z('iqDN={};iqQZ={};jl=4;pn=2;iqDN["4-1"]=1;iqDN["4-2"]=1;go("bookdetail");qzStart("p")');await sleep(300);
+ ok("kuis halaman Iqro 4: soal dibangun dari isi buku",z("S")==="quiz"&&z("QZ.qs.length")>0);
+ // gagal memuat: pesan jelas, tidak berpindah layar
+ const F=await boot(base,{iqro_lock:"0"});F.w.eval('window.__t=[];(function(){const o=toast;toast=function(t){window.__t.push(String(t));return o(t)}})();loadBook26=()=>Promise.reject(new Error("x"))');
+ F.w.eval('go("bookdetail");jl=5;pn=1;go("reader")');await sleep(150);
+ ok("gagal memuat: toast 'belum bisa dimuat' dan tetap di layar semula",F.w.eval("window.__t").some(t=>/belum bisa dimuat/.test(t))&&F.w.eval("S")==="bookdetail");F.w.close();
+ // muat ulang di pembaca Iqro 3 -> tunggu data, kembali ke halaman yang sama
+ const R=await boot(base,{iqro_lock:"0"},{reload:{s:"reader",j:3,p:5}});
+ ok("muat ulang di Iqro 3 hal 5: kembali ke pembaca setelah data dimuat",R.w.eval("S")==="reader"&&R.w.eval("jl")===3&&R.w.eval("pn")===5&&R.w.eval("BOOK26")===true&&!!R.w.document.querySelector(".pp"));R.w.close();
+ const R1=await boot(base,{iqro_lock:"0"},{reload:{s:"reader",j:1,p:7}});
+ ok("muat ulang di Iqro 1: langsung tampil, data Iqro 2-6 tetap tidak dimuat",R1.w.eval("S")==="reader"&&R1.w.eval("pn")===7&&R1.w.eval("BOOK26")===false);R1.w.close();
+ Z.w.close();
  w.close();srv.close();
  console.log("\n"+(fail?"GAGAL: ":"LOLOS: ")+pass+" lulus, "+fail+" gagal");process.exit(fail?1:0)
 })().catch(e=>{console.error(e);process.exit(1)});

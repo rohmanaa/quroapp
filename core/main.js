@@ -10,4 +10,5 @@ try{const nv=performance.getEntriesByType&&performance.getEntriesByType("navigat
   if(JL[z.j]&&JL[z.j].ok)jl=z.j;if(z.p>0&&z.p<=JL[jl].n)pn=z.p;if(MG[z.g])GM=z.g;tabF=+z.t||0;S=z.s;restoreY=+sessionStorage.getItem("quro_y")||0;
   const sp=$("#sp");if(sp)sp.remove()}}catch(e){}
 addEventListener("pagehide",()=>{try{sessionStorage.setItem("quro_y",String(window.scrollY||0))}catch(e){}});
-render();if(restoreY)scrollTo(0,restoreY);
+const bootRender=()=>{render();if(restoreY)scrollTo(0,restoreY)};
+if(S==="reader"&&needBook(jl))bookGate(bootRender,()=>{S="home";bootRender()});else bootRender();

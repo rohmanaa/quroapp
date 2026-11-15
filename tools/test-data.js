@@ -14,8 +14,9 @@ console.log("   "+js.length+" file diperiksa");
 /* 2. data Iqro (dimuat seperti browser: iqro.js, pola.js, latihan.js, lalu data buku) */
 console.log("2. Data Iqro");
 try{
- const files=["fitur/belajar/data/iqro.js","fitur/belajar/data/pola.js","fitur/belajar/data/latihan.js","fitur/belajar/data/iqro1-buku.js","fitur/belajar/data/iqro2-6-buku.js"].filter(f=>fs.existsSync(path.join(R,f)));
- const {JL,IQ}=new Function(files.map(f=>fs.readFileSync(path.join(R,f),"utf8")).join("\n")+";return {JL,IQ}")();
+ const files=["fitur/belajar/data/iqro.js","fitur/belajar/data/pola.js","fitur/belajar/data/latihan.js","fitur/belajar/data/iqro1-buku.js","fitur/belajar/data/iqro-lazy.js","fitur/belajar/data/iqro2-6-buku.js"].filter(f=>fs.existsSync(path.join(R,f)));
+ const {JL,IQ,BOOK26_N}=new Function(files.map(f=>fs.readFileSync(path.join(R,f),"utf8")).join("\n")+";return {JL,IQ,BOOK26_N}")();
+ for(const j in BOOK26_N)if(JL[j].n!==BOOK26_N[j])bad("iqro-lazy.js: jumlah halaman Iqro "+j+" ("+BOOK26_N[j]+") tidak sama dengan isi buku ("+JL[j].n+")");
  let pages=0,cells=0;
  for(let j=1;j<=6;j++){
   if(!JL[j]||!JL[j].ok){bad("Jilid "+j+" tidak aktif");continue}
@@ -38,6 +39,8 @@ try{
 /* 3. file yang dipakai index.html ada dan masuk cache offline */
 console.log("3. index.html dan cache offline (sw.js)");
 const html=fs.readFileSync(path.join(R,"index.html"),"utf8"),sw=fs.readFileSync(path.join(R,"sw.js"),"utf8");
+if(/<script[^>]+iqro2-6-buku\.js/.test(html))bad("index.html memuat iqro2-6-buku.js di awal; harusnya lewat iqro-lazy.js (dimuat belakangan)");
+if(!sw.includes("iqro2-6-buku.js"))bad("iqro2-6-buku.js tidak ada di cache offline (butuh untuk mode offline)");
 const refs=[...html.matchAll(/<(?:script[^>]*\ssrc|link[^>]*\shref)="([^"#?]+)"/g)].map(m=>m[1]).filter(u=>!/^(https?:)?\/\//.test(u));
 refs.forEach(u=>{if(!fs.existsSync(path.join(R,u)))bad("index.html memanggil "+u+" tetapi file tidak ada");else if(!sw.includes(u)&&u!=="sw.js")bad(u+" belum ada di cache offline: jalankan node tools/make-sw.js")});
 ["games/index.html","games/lobby.js","fitur/pengaturan/backup.js","core/update.js","core/ptr.js"].forEach(u=>{if(fs.existsSync(path.join(R,u))&&!sw.includes(u))bad(u+" belum ada di cache offline: jalankan node tools/make-sw.js")});
