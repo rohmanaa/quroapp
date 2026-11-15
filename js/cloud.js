@@ -5,7 +5,7 @@ const CL=(function(){
 const C=(typeof QURO_CLOUD!=="undefined"&&QURO_CLOUD)||{},on=!!(C.url&&C.key);
 const SK="quro_sb",OWN="quro_owner",LAST="quro_sync_at";
 /* kunci yang ikut disinkronkan (bukan tema, laporan, atau postingan komunitas) */
-const KEYS=["iqro_done","iqro_quiz","iqro_time","iqro_bm","iqro_coins","iqro_absen","iqro_last","iqro_lastj","iqro_set","iqro_goal","iqro_gmsg"];
+const KEYS=["iqro_done","iqro_quiz","iqro_time","iqro_bm","iqro_coins","iqro_absen","iqro_last","iqro_lastj","iqro_set","iqro_goal","iqro_gmsg","iqro_shop"];
 const ls=k=>{try{return localStorage.getItem(k)}catch(e){return null}},lss=(k,v)=>{try{localStorage.setItem(k,v)}catch(e){}},lsd=k=>{try{localStorage.removeItem(k)}catch(e){}};
 const J=s=>{try{return JSON.parse(s)}catch(e){return undefined}};
 const O=v=>!!v&&typeof v==="object"&&!Array.isArray(v);
@@ -53,7 +53,10 @@ function merge(l,c){const o={},P=k=>J(k),om=(a,b,f)=>{a=O(a)?a:{};b=O(b)?b:{};co
  pick("iqro_absen",(a,b)=>{if(!O(a))return b;if(!O(b))return a;return String(b.d)>String(a.d)||(b.d===a.d&&b.c>a.c)?b:a});
  pick("iqro_last",a=>a);                       /* posisi baca terakhir: milik perangkat ini bila ada */
  ["iqro_set","iqro_goal","iqro_gmsg"].forEach(k=>{const v=l[k]!==undefined?l[k]:c[k];if(v!==undefined)o[k]=v});
- const cl=l.iqro_coins!==undefined||c.iqro_coins!==undefined?Math.max(+l.iqro_coins||0,+c.iqro_coins||0):undefined;if(cl!==undefined)o.iqro_coins=String(cl);
+ pick("iqro_shop",(a,b)=>{const x=O(a)?a:{},y=O(b)?b:{};return{own:[...new Set([].concat(Array.isArray(x.own)?x.own:[],Array.isArray(y.own)?y.own:[]))],use:x.use||y.use||"utama",spent:Math.max(+x.spent||0,+y.spent||0)}});
+ /* koin = (total diperoleh) - (total dibelanjakan): keduanya hanya naik, jadi ambil yang terbesar masing-masing; tanpa data toko hasilnya sama dengan aturan lama (ambil koin terbesar) */
+ const sp=x=>{const v=x.iqro_shop!==undefined?J(x.iqro_shop):undefined;return O(v)?Math.max(0,+v.spent||0):0},sl=sp(l),sc=sp(c);
+ const cl=l.iqro_coins!==undefined||c.iqro_coins!==undefined?Math.max(0,Math.max((+l.iqro_coins||0)+sl,(+c.iqro_coins||0)+sc)-Math.max(sl,sc)):undefined;if(cl!==undefined)o.iqro_coins=String(cl);
  return o}
 
 /* koin: ambil yang terbesar antara memori dan penyimpanan, agar data lama tidak menimpa data baru */
@@ -80,6 +83,7 @@ async function sync(opt){opt=opt||{};if(!on||busy)return{skip:1};const s=sess();
  try{const t=await token();if(!t)return{fail:"sesi"};let changed=false;
   for(let k=0;k<4;k++){const p=await pull(s,t);if(p.fail)return p;
    const local=snap(),m=merge(local,p.cloud);KEYS.forEach(x=>{if(m[x]!==undefined&&m[x]!==local[x]){lss(x,m[x]);changed=true}});
+   if(changed){try{if(m.iqro_coins!==undefined&&typeof coins==="number")coins=Math.max(0,+m.iqro_coins||0);if(typeof shopLoad==="function")SH=shopLoad()}catch(e){}}
    const now=snap();
    if(canon(now)===canon(p.cloud)){lss(LAST,String(Date.now()));return{ok:1,changed}}
    const w=await put(s,t,now,false);if(w.fail)return w;if(w.ok){lss(LAST,String(Date.now()));return{ok:1,changed}}}

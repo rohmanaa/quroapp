@@ -21,6 +21,7 @@ data/                 isi konten (ubah di sini untuk menambah materi)
   iqro1-buku.js       Iqro Jilid 1 (32 halaman) dari proyek dyazincahya/iqro-json; menggantikan Jilid 1 buatan program
   iqro2-6-buku.js     Iqro Jilid 2-6 (30 halaman tiap jilid) dari proyek yang sama; menggantikan Jilid 2-6 buatan program
   games.js            daftar game (MG), kategori, dan folder tiap game (GP)
+  shop.js             katalog Toko Maskot (SHOP): id gambar, nama, harga koin
   community.js        data contoh teman, kabar, papan peringkat
   tajwid.js           materi tanwin, tasydid, mad (TJ) + kata tanpa tanda (TJN)
 games/                lobby + tiap game berdiri sendiri (satu folder = satu game)
@@ -53,6 +54,7 @@ js/
     preferences.js    target, notifications, audio, privacy, theme
     practice.js       record
   games.js            daftar game + pembungkus iframe + penerima pesan dari game
+  shop.js             Toko Maskot: beli dengan koin, pakai di Home, bagikan sebagai stiker WhatsApp (kanvas 512×512, WebP < 100 KB, lewat Web Share; tanpa paket stiker resmi karena itu butuh aplikasi Android). Data di `iqro_shop` = {own, use, spent}
   events.js           penangan klik utama
   main.js             render pertama
   share-profile.js    modal bagikan profil
@@ -118,7 +120,7 @@ Login memakai email + kata sandi, progres disinkronkan ke Supabase. Offline-firs
 - `js/cloud-config.js`: URL project + kunci **publishable** (publik). Jangan pernah menaruh kunci secret/service_role di repo. Kosongkan untuk mematikan fitur akun.
 - `js/cloud.js`: daftar, masuk, keluar, dan sinkronisasi lewat fetch (tanpa SDK). Data digabung (union / ambil terbesar), penulisan ke server memakai pembanding `updated_at` sehingga tidak menimpa data dari HP lain.
 - `supabase/schema.sql`: tabel `profiles` dan `progress` + RLS (tiap pengguna hanya bisa akses barisnya sendiri) + pembuat profil otomatis. Tempel di Supabase -> SQL Editor -> Run.
-- Yang disinkronkan: halaman Iqro selesai, bintang kuis, waktu belajar, bookmark, koin, absen, posisi baca, pengaturan. Tema, laporan, dan postingan komunitas belum.
+- Yang disinkronkan: halaman Iqro selesai, bintang kuis, waktu belajar, bookmark, koin (dihitung total diperoleh dikurangi total dibelanjakan, jadi belanja di Toko tidak "dikembalikan" saat sinkron), barang Toko, absen, posisi baca, pengaturan. Tema, laporan, dan postingan komunitas belum.
 - Satu HP dipakai akun lain: progres akun sebelumnya dibuang dari HP (tetap aman di server), tidak dicampur.
 
 Pengaturan Supabase yang perlu dilakukan sekali (Dashboard):

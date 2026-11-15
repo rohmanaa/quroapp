@@ -86,6 +86,36 @@ async function boot(base,store={},opt={}){
  const gd=await boot(base,{iqro_gd:JSON.stringify({d:today(),k:{"susun-huruf":1}})});ok("gerbang game hari ini dipulihkan",gd.w.eval("GD['susun-huruf']")===1);gd.w.close();
  const gy=await boot(base,{iqro_gd:JSON.stringify({d:daysAgo(1),k:{"susun-huruf":1}})});ok("gerbang game kemarin dibuang",gy.w.eval("GD['susun-huruf']")===undefined);gy.w.close();
 
+ console.log("3b. Toko maskot: beli, pakai, simpan, tidak 'dikembalikan' saat sinkron");
+ {const sp=await boot(base),A=()=>sp.w.document.getElementById("app").innerHTML;
+  sp.w.eval("go('shop')");
+  ok("toko: layar tampil dengan 14 maskot",/Toko Maskot/.test(A())&&sp.w.eval("SHOP.length")===14&&sp.w.document.querySelectorAll("#app img[src^='assets/mascot/']").length===14);
+  ok("toko: awalnya hanya Quro Baca yang dimiliki",sp.w.eval("SH.own.join()")==="utama"&&sp.w.eval("SH.use")==="utama");
+  sp.w.eval("coins=100;shopBuy('melambai')");
+  ok("toko: beli memotong koin dan memberi barang",sp.w.eval("coins")===80&&sp.w.eval("shopHas('melambai')"));
+  ok("toko: pembelian tersimpan (iqro_shop dan koin)",sp.w.localStorage.getItem("iqro_coins")==="80"&&JSON.parse(sp.w.localStorage.getItem("iqro_shop")).spent===20&&JSON.parse(sp.w.localStorage.getItem("iqro_shop")).own.includes("melambai"));
+  sp.w.eval("coins=5;shopBuy('iqro6')");
+  ok("toko: koin kurang = tidak jadi beli",sp.w.eval("coins")===5&&!sp.w.eval("shopHas('iqro6')"));
+  sp.w.eval("coins=80;shopBuy('melambai')");
+  ok("toko: tidak bisa beli dua kali",sp.w.eval("coins")===80);
+  sp.w.eval("shopUse('iqro6')");ok("toko: tidak bisa memakai yang belum dimiliki",sp.w.eval("SH.use")==="utama");
+  sp.w.eval("shopUse('melambai');go('home')");
+  ok("toko: maskot pilihan tampil di Home",/assets\/mascot\/melambai\.webp/.test(A()));
+  ok("toko: ada kartu Toko di Home",!!sp.w.document.querySelector('#app [data-go="shop"]'));
+  ok("toko: tanpa galat",sp.errs.length===0,sp.errs.slice(0,2).join(" | "));sp.w.close();
+  const rl=await boot(base,{iqro_coins:"80",iqro_shop:JSON.stringify({own:["utama","melambai","hacker"],use:"melambai",spent:20})});
+  ok("toko: dipulihkan saat dibuka lagi (id tak dikenal dibuang)",rl.w.eval("SH.own.join()")==="utama,melambai"&&rl.w.eval("SH.use")==="melambai"&&rl.w.eval("SH.spent")===20);rl.w.close();
+  const bd=await boot(base,{iqro_shop:"{rusak"});ok("toko: data rusak diabaikan",bd.w.eval("SH.own.join()")==="utama"&&bd.w.eval("SH.spent")===0);bd.w.close();
+  const mw=await boot(base),mg2=(a,b)=>mw.w.eval("CL.merge("+JSON.stringify(a)+","+JSON.stringify(b)+")");
+  const own=n=>JSON.stringify({own:["utama","melambai"],use:"utama",spent:n});
+  let r1=mg2({iqro_coins:"80",iqro_shop:own(20)},{iqro_coins:"100"});
+  ok("sinkron: belanja di HP ini tidak dikembalikan oleh data awan lama",r1.iqro_coins==="80"&&JSON.parse(r1.iqro_shop).spent===20,JSON.stringify(r1));
+  let r2=mg2({iqro_coins:"100"},{iqro_coins:"70",iqro_shop:own(30)});
+  ok("sinkron: belanja di HP lain memotong koin di sini",r2.iqro_coins==="70"&&JSON.parse(r2.iqro_shop).own.includes("melambai"),JSON.stringify(r2));
+  let r3=mg2({iqro_coins:"5"},{iqro_coins:"9"});ok("sinkron: tanpa data toko, aturan lama (koin terbesar)",r3.iqro_coins==="9"&&r3.iqro_shop===undefined);
+  let r4=mg2({iqro_coins:"60",iqro_shop:JSON.stringify({own:["utama","senang"],use:"senang",spent:20})},{iqro_coins:"50",iqro_shop:JSON.stringify({own:["utama","iqro2"],use:"iqro2",spent:60})});
+  const o4=JSON.parse(r4.iqro_shop);ok("sinkron: dua HP sama-sama belanja = barang digabung, koin tidak negatif",o4.own.join()==="utama,senang,iqro2"&&o4.spent===60&&+r4.iqro_coins===Math.max(60+20,50+60)-60,JSON.stringify(r4));
+  mw.w.close()}
  console.log("4. Game: tiap folder memuat dan menggambar");
  const GP=w.eval("GP"),MGk=w.eval("MG.map(g=>g[0])");
  for(let i=0;i<MGk.length;i++){const slug=GP[MGk[i]];

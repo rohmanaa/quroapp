@@ -1,5 +1,5 @@
 /* Inti: navigasi (go), render, bar bawah, modal, toast, suara */
-const B={badges:"profile",game:"home",leaderboard:"community",games:"home",about:"profile",theme:"profile",daily:"home",huruf:"books",harakat:"books",bookdetail:"books",reader:"books",share:"profile",friends:"profile",progress:"profile",target:"profile",notifications:"profile",audio:"profile",privacy:"profile",result:"record",quiz:"books",quizres:"books",tajwid:"books"};
+const B={badges:"profile",game:"home",leaderboard:"community",games:"home",about:"profile",theme:"profile",daily:"home",shop:"home",huruf:"books",harakat:"books",bookdetail:"books",reader:"books",share:"profile",friends:"profile",progress:"profile",target:"profile",notifications:"profile",audio:"profile",privacy:"profile",result:"record",quiz:"books",quizres:"books",tajwid:"books"};
 const TABS=[["home","Home","home"],["books","Iqro","book"],["record","Latihan","mic"],["community","Komunitas","users"],["profile","Profil","user"]];
 function bar(){
   const au=S==="login"||S==="reg";$("nav").style.display=au?"none":"";document.querySelector("header").style.display=au?"none":"";if(au)return;
