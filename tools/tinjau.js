@@ -2,7 +2,7 @@
    Hasilnya satu berkas HTML mandiri (font ikut tertanam), nyaman dibuka di HP atau dicetak. */
 const fs=require("fs"),path=require("path");
 const root=path.join(__dirname,"..");
-const src=["data/iqro.js","data/pola.js","data/latihan.js","js/tajwid.js"].map(f=>fs.readFileSync(path.join(root,f),"utf8")).join("\n");
+const src=["fitur/belajar/data/iqro.js","fitur/belajar/data/pola.js","fitur/belajar/data/latihan.js","fitur/belajar/tajwid.js"].map(f=>fs.readFileSync(path.join(root,f),"utf8")).join("\n");
 const {IQ,JL,POLA,tjh}=new Function("console",src+";return{IQ,JL,POLA,tjh}")({warn(){}});
 const b64=f=>fs.readFileSync(path.join(root,"assets/fonts",f)).toString("base64");
 const esc=s=>String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;");

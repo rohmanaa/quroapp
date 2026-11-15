@@ -1,7 +1,7 @@
 /* Iqro Jilid 2-6 (masing-masing 30 halaman) - transkripsi dari proyek dyazincahya/iqro-json (https://github.com/dyazincahya/iqro-json).
    Isi buku: Iqro karya KH. As'ad Humam. Dipakai untuk belajar gratis; TIDAK BOLEH diperjualbelikan karena hak cipta ada pada pemegang hak bukunya.
-   Hasil OCR, sebagian mungkin belum 100% sama dengan buku asli. Dimuat setelah data/latihan.js sehingga menggantikan Jilid 2-6 buatan program.
-   Format tiap halaman sama dengan data/iqro1-buku.js. */
+   Hasil OCR, sebagian mungkin belum 100% sama dengan buku asli. Dimuat setelah fitur/belajar/data/latihan.js sehingga menggantikan Jilid 2-6 buatan program.
+   Format tiap halaman sama dengan fitur/belajar/data/iqro1-buku.js. */
 (function(){
 const B=[
 [2,[

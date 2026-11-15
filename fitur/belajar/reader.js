@@ -39,5 +39,5 @@ function turn(d){stopSeq();if(d<0){if(pn>1)pn--;else return toast("Ini halaman p
 let swAt=0;document.addEventListener("click",e=>{if(Date.now()-swAt<600&&e.target.closest(".fsx2")){e.stopPropagation();e.preventDefault()}},true);
 document.addEventListener("touchstart",e=>{tx0=(S==="reader"&&e.touches.length===1)?e.touches[0].clientX:null},{passive:true});
 document.addEventListener("touchend",e=>{if(tx0===null)return;const dx=e.changedTouches[0].clientX-tx0;tx0=null;if(Math.abs(dx)>70){swAt=Date.now();turn(dx>0?1:-1)}},{passive:true});
-/* Semua halaman sudah ada di IQ (dibuat oleh data/latihan.js). Tidak ada unduhan dari luar. */
+/* Semua halaman sudah ada di IQ (dibuat oleh fitur/belajar/data/latihan.js). Tidak ada unduhan dari luar. */
 function loadPg(l,q){const k=l+"-"+q;if(!IQ[k])IQ[k]={s:404}}

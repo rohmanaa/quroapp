@@ -235,7 +235,7 @@ async function boot(base,store={},opt={}){
  await cf.w.eval('CL.doRegister("Ani","ani@mail.id","katasandi3")');await sleep(150);
  ok("konfirmasi email: muncul 'Cek emailmu', belum ada sesi",/Cek emailmu/.test(cf.w.document.getElementById("m").innerHTML)&&!cf.w.localStorage.getItem("quro_sb")&&cf.w.eval("U")===null);cf.w.close();
  // 8j. kunci rahasia tidak ada di kode
- const cfg=fs.readFileSync(path.join(ROOT,"js/cloud-config.js"),"utf8").replace(/\/\*[\s\S]*?\*\//g,"");
+ const cfg=fs.readFileSync(path.join(ROOT,"fitur/akun/cloud-config.js"),"utf8").replace(/\/\*[\s\S]*?\*\//g,"");
  ok("konfigurasi hanya berisi kunci publishable (bukan secret/service_role)",/sb_publishable_/.test(cfg)&&!/sb_secret_|service_role|eyJ[A-Za-z0-9_-]{20,}/.test(cfg));
  [u1,u2].forEach(x=>x.w.close());mk.close();
 

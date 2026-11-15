@@ -40,7 +40,7 @@ js/
   icons.js            ikon garis
   helpers.js          fungsi kecil untuk tampilan (lt, card, tileH, cover, pet, ...)
   state.js            state + localStorage
-  tajwid.js           pewarnaan tajwid (tjh); warna di css/reader.css (.tj[data-tj])
+  tajwid.js           pewarnaan tajwid (tjh); warna di fitur/belajar/reader.css (.tj[data-tj])
   quiz.js             kuis halaman/jilid/tajwid, bintang, lembar bagikan, posting ke Komunitas, layar tajwid
   progress.js         streak, target harian, waktu belajar, unduh offline, badge
   reader.js           pembaca Iqro, pilih jilid/halaman, layar penuh, geser, muat halaman
@@ -71,8 +71,8 @@ js/
 
 - Urutan muat: `data` → `assets` → `js/*` → `js/views/*` → `games.js` → `events.js` → `main.js`. `views/learn.js` harus pertama di antara views karena membuat `V`.
 - Huruf Arab ditulis RTL dan harus berada di dalam elemen `.ar`. Jangan membalik urutan array huruf.
-- Materi latihan dibuat oleh `data/latihan.js` saat aplikasi dibuka (pengacak bersemi, jadi selalu sama). Jilid: 1 fathah (14 hal), 2 kasrah dan dhammah (10), 3 mad (12), 4 sukun dan tanwin (10), 5 tasydid (10), 6 gabungan dan ujian (10). Ubah jumlah halaman atau pola kata di `SPEC` dan fungsi `j1`–`j6`. Itu hanya dipakai bila file data buku (`data/iqro1-buku.js`, `data/iqro2-6-buku.js`) tidak dimuat; secara bawaan Jilid 1–6 memakai data buku (lihat bagian Lisensi di bawah).
-- Aturan tulisan kata (data/latihan.js): pada mad, waw mati dan ya mati selalu diberi sukun, alif tidak (alif bersukun berarti berhenti mendadak, bukan panjang). Huruf ج ح خ ه tidak boleh menerima sambungan dari huruf sebelumnya di dalam satu kata (bentuk tengah/akhirnya mirip dan mudah terbaca terbalik, mis. قخص terbaca "khoqash"); mereka hanya muncul di awal kata atau setelah huruf pemutus (ا د ذ ر ز و). Ubah di konstanta `NJ` dan `RS`.
+- Materi latihan dibuat oleh `fitur/belajar/data/latihan.js` saat aplikasi dibuka (pengacak bersemi, jadi selalu sama). Jilid: 1 fathah (14 hal), 2 kasrah dan dhammah (10), 3 mad (12), 4 sukun dan tanwin (10), 5 tasydid (10), 6 gabungan dan ujian (10). Ubah jumlah halaman atau pola kata di `SPEC` dan fungsi `j1`–`j6`. Itu hanya dipakai bila file data buku (`fitur/belajar/data/iqro1-buku.js`, `fitur/belajar/data/iqro2-6-buku.js`) tidak dimuat; secara bawaan Jilid 1–6 memakai data buku (lihat bagian Lisensi di bawah).
+- Aturan tulisan kata (fitur/belajar/data/latihan.js): pada mad, waw mati dan ya mati selalu diberi sukun, alif tidak (alif bersukun berarti berhenti mendadak, bukan panjang). Huruf ج ح خ ه tidak boleh menerima sambungan dari huruf sebelumnya di dalam satu kata (bentuk tengah/akhirnya mirip dan mudah terbaca terbalik, mis. قخص terbaca "khoqash"); mereka hanya muncul di awal kata atau setelah huruf pemutus (ا د ذ ر ز و). Ubah di konstanta `NJ` dan `RS`.
 - Tailwind, font Amiri/Nunito, dan qrcodejs lokal (`css/tailwind.css`, `css/fonts.css`, `assets/fonts/`, `assets/lib/`). Tidak ada lagi ketergantungan ke CDN atau GitHub pihak lain.
 
 ## Offline
@@ -81,30 +81,30 @@ js/
 - Lewat http/https, `sw.js` menyimpan seluruh aplikasi sehingga bisa dibuka offline setelah kunjungan pertama. Jalankan `node tools/make-sw.js` setiap kali ada file berubah agar pengguna mendapat versi baru.
 - Bisa dipasang di layar utama HP (PWA): `manifest.webmanifest` dan `icons/`. Di Android Chrome pilih menu ⋮ lalu “Instal aplikasi”; di iPhone Safari pilih Bagikan lalu “Tambah ke Layar Utama”. Syaratnya dibuka lewat https (atau localhost). Ikon dibuat ulang dengan `python3 tools/make-icons.py` (huruf ق, font Amiri).
 - Ikon aplikasi dan favicon (wajah burung hud-hud, gaya penuh-kotak) dibuat dari gambar di `tools/ikon-sumber/` lewat `python3 tools/make-icons-maskot.py`, lalu jalankan `node tools/make-sw.js`. `tools/make-icons.js` dan `tools/make-icons.py` adalah skrip ikon lama (buku dan huruf ق) dan tidak dipakai lagi.
-- Mengubah pola kata latihan: edit `data/pola.js` (kode S, M, T, D, K; pola yang melanggar aturan otomatis dilewati dan diberi peringatan di konsol). Lembar tinjauan untuk guru dibuat dengan `node tools/tinjau.js` (satu berkas HTML mandiri, bisa dicetak).
+- Mengubah pola kata latihan: edit `fitur/belajar/data/pola.js` (kode S, M, T, D, K; pola yang melanggar aturan otomatis dilewati dan diberi peringatan di konsol). Lembar tinjauan untuk guru dibuat dengan `node tools/tinjau.js` (satu berkas HTML mandiri, bisa dicetak).
 - Mengubah tampilan (kelas Tailwind baru)? Bangun ulang CSS: `npm i tailwindcss@3.4.17` lalu `npx tailwindcss -c tools/tailwind.config.js -i tools/tailwind.in.css -o css/tailwind.css --minify`. Kelas yang disusun dari potongan teks saat runtime tidak terdeteksi; tulis nama kelas utuh.
 
 ## Lisensi materi Iqro Jilid 1–6
 
-`data/iqro1-buku.js` dan `data/iqro2-6-buku.js` adalah transkripsi buku Iqro karya KH. As'ad Humam dari https://github.com/dyazincahya/iqro-json (hasil OCR, bisa ada salah ketik). Boleh dipakai gratis untuk belajar, **tidak boleh diperjualbelikan** (hak cipta ada pada pemegang hak buku). Kalau QURO suatu saat dimonetisasi, hapus kedua file ini dan baris `<script>`-nya di `index.html`; Jilid 1–6 buatan program di `data/latihan.js` otomatis dipakai lagi. Jalankan `node tools/make-sw.js` setelah mengubah file.
+`fitur/belajar/data/iqro1-buku.js` dan `fitur/belajar/data/iqro2-6-buku.js` adalah transkripsi buku Iqro karya KH. As'ad Humam dari https://github.com/dyazincahya/iqro-json (hasil OCR, bisa ada salah ketik). Boleh dipakai gratis untuk belajar, **tidak boleh diperjualbelikan** (hak cipta ada pada pemegang hak buku). Kalau QURO suatu saat dimonetisasi, hapus kedua file ini dan baris `<script>`-nya di `index.html`; Jilid 1–6 buatan program di `fitur/belajar/data/latihan.js` otomatis dipakai lagi. Jalankan `node tools/make-sw.js` setelah mengubah file.
 
 ## Menambah game baru
 
 1. Buat folder `games/<nama-game>/` berisi `index.html` (salin dari game lain: memuat `../_shared/theme.js` di `<head>`, `../../css/*` agar gayanya sama dengan aplikasi, penanda loading `#gld` di awal `<body>`, lalu `../_shared/kit.js` dan `game.js`).
 2. Semua yang khusus game itu (soal, gambar, suara, css, model 3D) taruh di folder itu juga. Pakai kelas Tailwind yang sudah ada, atau tulis css sendiri di `style.css` milik game.
 3. Di `game.js` panggil `GK.run({slug,title,hint,init,view,act})` (lihat `games/susun-huruf/game.js`). Selesai? panggil `c.win()` di dalam `act`.
-4. Daftarkan di `data/games.js`: satu baris di `MG`, satu pasangan di `GP` (kunci → nama folder), dan kategori di `GC` (juga di `data/games.js`, dipakai lobby).
+4. Daftarkan di `fitur/game/data/games.js`: satu baris di `MG`, satu pasangan di `GP` (kunci → nama folder), dan kategori di `GC` (juga di `fitur/game/data/games.js`, dipakai lobby).
 5. Jalankan `node tools/make-sw.js`.
 
 Alur: Home → (grid 3 game atau "Lihat semua") → lobby `games/index.html` → game. Aplikasi membuka lobby/game dalam iframe layar penuh (tanpa header dan menu bawah), jadi koin, tema, dan suara tetap ikut aplikasi, tetapi semuanya juga bisa dibuka sendiri (`games/index.html`, `games/<nama>/index.html`). Tombol keluar (X) di kanan atas game kembali ke lobby; game yang dibuka dari grid Home (`?from=home`) kembali ke Home. Tombol kembali HP mengikuti aturan yang sama. Loading tampil saat lobby/game dibuka (minimal 350 ms supaya tidak berkedip).
 
 ## Cadangan, laporan, banner versi, dan tes
 
-- `js/backup.js`: layar **Profil → Cadangkan & pulihkan** (ekspor/impor file JSON; tiap kunci dicek bentuknya sebelum ditulis, sesi login tidak ikut), penyimpanan koin (`iqro_coins`), dan tombol **Lapor** di Reader (disimpan di `iqro_reports`, bisa disalin dari layar cadangan).
-- `js/update.js`: banner "Versi baru QURO tersedia" saat service worker baru aktif; app juga mengecek versi baru saat dibuka kembali (maks. 1x per 30 menit).
-- `js/ptr.js`: tarik ke bawah untuk menyegarkan halaman yang sedang dibuka.
+- `fitur/pengaturan/backup.js`: layar **Profil → Cadangkan & pulihkan** (ekspor/impor file JSON; tiap kunci dicek bentuknya sebelum ditulis, sesi login tidak ikut), penyimpanan koin (`iqro_coins`), dan tombol **Lapor** di Reader (disimpan di `iqro_reports`, bisa disalin dari layar cadangan).
+- `core/update.js`: banner "Versi baru QURO tersedia" saat service worker baru aktif; app juga mengecek versi baru saat dibuka kembali (maks. 1x per 30 menit).
+- `core/ptr.js`: tarik ke bawah untuk menyegarkan halaman yang sedang dibuka.
 - `tools/test-data.js`: tes cepat tanpa dependensi, jalankan `node tools/test-data.js` sebelum push. Memeriksa sintaks semua file JS, data Iqro Jilid 1–6 (sel kosong, huruf Latin di sisi Arab, posisi ganda), dan bahwa semua file yang dipanggil `index.html` ada dan masuk cache offline.
-- **Nomor versi** (tampil di Profil paling bawah dan di Tentang & kredit, mis. `v1.27`): `node tools/make-sw.js` menaikkan build 1 setiap isi file berubah dan menulisnya ke `version.json` serta `js/version.js` (jangan diedit tangan). Menjalankannya berulang tanpa perubahan tidak menaikkan nomor. Ubah angka depan lewat `major` di `version.json`.
+- **Nomor versi** (tampil di Profil paling bawah dan di Tentang & kredit, mis. `v1.27`): `node tools/make-sw.js` menaikkan build 1 setiap isi file berubah dan menulisnya ke `version.json` serta `core/version.js` (jangan diedit tangan). Menjalankannya berulang tanpa perubahan tidak menaikkan nomor. Ubah angka depan lewat `major` di `version.json`.
 
 
 ## Tes otomatis
@@ -117,8 +117,8 @@ Alur: Home → (grid 3 game atau "Lihat semua") → lobby `games/index.html` →
 
 Login memakai email + kata sandi, progres disinkronkan ke Supabase. Offline-first: tanpa internet atau tanpa akun (mode tamu) aplikasi tetap jalan dari data di HP.
 
-- `js/cloud-config.js`: URL project + kunci **publishable** (publik). Jangan pernah menaruh kunci secret/service_role di repo. Kosongkan untuk mematikan fitur akun.
-- `js/cloud.js`: daftar, masuk, keluar, dan sinkronisasi lewat fetch (tanpa SDK). Data digabung (union / ambil terbesar), penulisan ke server memakai pembanding `updated_at` sehingga tidak menimpa data dari HP lain.
+- `fitur/akun/cloud-config.js`: URL project + kunci **publishable** (publik). Jangan pernah menaruh kunci secret/service_role di repo. Kosongkan untuk mematikan fitur akun.
+- `fitur/akun/cloud.js`: daftar, masuk, keluar, dan sinkronisasi lewat fetch (tanpa SDK). Data digabung (union / ambil terbesar), penulisan ke server memakai pembanding `updated_at` sehingga tidak menimpa data dari HP lain.
 - `supabase/schema.sql`: tabel `profiles` dan `progress` + RLS (tiap pengguna hanya bisa akses barisnya sendiri) + pembuat profil otomatis. Tempel di Supabase -> SQL Editor -> Run.
 - Yang disinkronkan: halaman Iqro selesai, bintang kuis, waktu belajar, bookmark, koin (dihitung total diperoleh dikurangi total dibelanjakan, jadi belanja di Toko tidak "dikembalikan" saat sinkron), barang Toko, reaksi, absen, posisi baca, pengaturan. Tema, laporan, dan postingan komunitas belum.
 - Satu HP dipakai akun lain: progres akun sebelumnya dibuang dari HP (tetap aman di server), tidak dicampur.
@@ -130,7 +130,7 @@ Pengaturan Supabase yang perlu dilakukan sekali (Dashboard):
 
 ## Kunci level berurutan
 
-`js/lock.js`. Halaman berikutnya terbuka setelah lulus kuis halaman sebelumnya, dan Iqro berikutnya setelah lulus Kuis Jilid sebelumnya (Kuis Jilid sendiri terbuka setelah semua halaman jilid itu dibuka). Lulus = minimal `LOCK_MIN` (3) bintang.
+`fitur/belajar/lock.js`. Halaman berikutnya terbuka setelah lulus kuis halaman sebelumnya, dan Iqro berikutnya setelah lulus Kuis Jilid sebelumnya (Kuis Jilid sendiri terbuka setelah semua halaman jilid itu dibuka). Lulus = minimal `LOCK_MIN` (3) bintang.
 
 - Pengguna lama tidak terkunci dari yang sudah mereka buka: halaman dan Iqro yang pernah dibuka tetap terbuka, hanya yang berikutnya yang butuh lulus kuis.
 - Bisa dimatikan di Profil -> Target belajar -> "Kunci level berurutan" (`iqro_lock` = `0`).

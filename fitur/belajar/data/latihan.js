@@ -57,7 +57,7 @@ function wordPage(o,r){const rows=[],seen={};
   return{topic:o.topic,rows,id:o.id,ar:o.ar}}
 function okPat(p){return /^[SMTDK]+$/.test(p)&&/^[SM]/.test(p)&&(p.indexOf("T")<0||p.indexOf("T")===p.length-1)&&!/M[KD]|KD|KK/.test(p)}
 const WP={};
-const P=(l,fb)=>{const g=l.filter(okPat);l.filter(x=>!okPat(x)&&!WP[x]).forEach(x=>{WP[x]=1;console.warn("QURO: pola \""+x+"\" dilewati (melanggar aturan, lihat data/pola.js)")});return g.length?g:fb};
+const P=(l,fb)=>{const g=l.filter(okPat);l.filter(x=>!okPat(x)&&!WP[x]).forEach(x=>{WP[x]=1;console.warn("QURO: pola \""+x+"\" dilewati (melanggar aturan, lihat fitur/belajar/data/pola.js)")});return g.length?g:fb};
 const T3=[CN.slice(0,14),CN.slice(13),CN];
 const tp=(t,v)=>{const u=unit(t,LT["ب"],v);return{latin:u[1],arab:u[0]}};
 function j3(p,r){const g=Math.floor(p/3),k=p%3,v=["a","i","u"][g],mixed=g===3,vs=mixed?["a","i","u"]:[v];

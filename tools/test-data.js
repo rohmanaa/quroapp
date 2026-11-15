@@ -14,7 +14,7 @@ console.log("   "+js.length+" file diperiksa");
 /* 2. data Iqro (dimuat seperti browser: iqro.js, pola.js, latihan.js, lalu data buku) */
 console.log("2. Data Iqro");
 try{
- const files=["data/iqro.js","data/pola.js","data/latihan.js","data/iqro1-buku.js","data/iqro2-6-buku.js"].filter(f=>fs.existsSync(path.join(R,f)));
+ const files=["fitur/belajar/data/iqro.js","fitur/belajar/data/pola.js","fitur/belajar/data/latihan.js","fitur/belajar/data/iqro1-buku.js","fitur/belajar/data/iqro2-6-buku.js"].filter(f=>fs.existsSync(path.join(R,f)));
  const {JL,IQ}=new Function(files.map(f=>fs.readFileSync(path.join(R,f),"utf8")).join("\n")+";return {JL,IQ}")();
  let pages=0,cells=0;
  for(let j=1;j<=6;j++){
@@ -40,13 +40,13 @@ console.log("3. index.html dan cache offline (sw.js)");
 const html=fs.readFileSync(path.join(R,"index.html"),"utf8"),sw=fs.readFileSync(path.join(R,"sw.js"),"utf8");
 const refs=[...html.matchAll(/<(?:script[^>]*\ssrc|link[^>]*\shref)="([^"#?]+)"/g)].map(m=>m[1]).filter(u=>!/^(https?:)?\/\//.test(u));
 refs.forEach(u=>{if(!fs.existsSync(path.join(R,u)))bad("index.html memanggil "+u+" tetapi file tidak ada");else if(!sw.includes(u)&&u!=="sw.js")bad(u+" belum ada di cache offline: jalankan node tools/make-sw.js")});
-["games/index.html","games/lobby.js","js/backup.js","js/update.js","js/ptr.js"].forEach(u=>{if(fs.existsSync(path.join(R,u))&&!sw.includes(u))bad(u+" belum ada di cache offline: jalankan node tools/make-sw.js")});
+["games/index.html","games/lobby.js","fitur/pengaturan/backup.js","core/update.js","core/ptr.js"].forEach(u=>{if(fs.existsSync(path.join(R,u))&&!sw.includes(u))bad(u+" belum ada di cache offline: jalankan node tools/make-sw.js")});
 console.log("   "+refs.length+" file dirujuk");
 
 /* 4. nomor versi konsisten */
 console.log("4. Nomor versi");
-try{const vj=JSON.parse(fs.readFileSync(path.join(R,"version.json"),"utf8")),vs=fs.readFileSync(path.join(R,"js/version.js"),"utf8"),m=vs.match(/APP_VERSION="([\d.]+)"/);
- if(!m||m[1]!==vj.major+"."+vj.build)bad("js/version.js tidak sama dengan version.json: jalankan node tools/make-sw.js");else console.log("   v"+m[1])}catch(e){bad("version.json / js/version.js tidak terbaca: jalankan node tools/make-sw.js")}
+try{const vj=JSON.parse(fs.readFileSync(path.join(R,"version.json"),"utf8")),vs=fs.readFileSync(path.join(R,"core/version.js"),"utf8"),m=vs.match(/APP_VERSION="([\d.]+)"/);
+ if(!m||m[1]!==vj.major+"."+vj.build)bad("core/version.js tidak sama dengan version.json: jalankan node tools/make-sw.js");else console.log("   v"+m[1])}catch(e){bad("version.json / core/version.js tidak terbaca: jalankan node tools/make-sw.js")}
 
 console.log(err?"\nGAGAL: "+err+" masalah"+(warn?", "+warn+" catatan":""):"\nLOLOS"+(warn?" ("+warn+" catatan)":""));
 process.exit(err?1:0);

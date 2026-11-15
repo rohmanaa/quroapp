@@ -1,4 +1,4 @@
-/* Pewarnaan tajwid: tanwin, tasydid, mad thabi'i. Warna ada di css/reader.css (.tj[data-tj]). */
+/* Pewarnaan tajwid: tanwin, tasydid, mad thabi'i. Warna ada di fitur/belajar/reader.css (.tj[data-tj]). */
 const tjSplit=s=>{const r=[];for(const ch of s){if(r.length&&/[\u064B-\u065F\u0670\u06D6-\u06ED]/.test(ch))r[r.length-1]+=ch;else r.push(ch)}return r};
 function tjKind(c,prev){
   if(/[\u064B\u064C\u064D]/.test(c))return"tanwin";
