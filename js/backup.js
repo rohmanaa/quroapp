@@ -1,7 +1,7 @@
 /* Cadangkan & pulihkan progres (file JSON), laporan salah tulis materi, dan penyimpanan koin.
    Semua data ada di perangkat (localStorage); file cadangan membuatnya aman dari hapus data situs / ganti HP. */
 (function(){
-const KEYS=["iqro_acc","iqro_th","iqro_set","iqro_last","iqro_lastj","iqro_done","iqro_quiz","iqro_posts","iqro_time","iqro_goal","iqro_gmsg","iqro_bm","iqro_coins","iqro_absen","iqro_reports","iqro_shop"];
+const KEYS=["iqro_acc","iqro_th","iqro_set","iqro_last","iqro_lastj","iqro_done","iqro_quiz","iqro_posts","iqro_time","iqro_goal","iqro_gmsg","iqro_bm","iqro_coins","iqro_absen","iqro_reports","iqro_shop","iqro_react"];
 const lsGet=k=>{try{return localStorage.getItem(k)}catch(e){return null}},lsSet=(k,v)=>{try{localStorage.setItem(k,v);return true}catch(e){return false}};
 /* ---- koin: sebelumnya hilang tiap app ditutup, sekarang disimpan ---- */
 try{const c=lsGet("iqro_coins");if(c!==null&&/^\d{1,7}$/.test(c))coins=+c}catch(e){}
@@ -30,6 +30,7 @@ const CHK={iqro_acc:s=>{const v=J(s);return isO(v)&&typeof v.name==="string"&&v.
  iqro_posts:s=>{const v=J(s);return Array.isArray(v)&&v.length<=500&&v.every(x=>isO(x)&&typeof x.n==="string")},
  iqro_goal:s=>/^\d{1,3}$/.test(s),iqro_gmsg:s=>typeof s==="string"&&s.length<=200,iqro_coins:s=>/^\d{1,7}$/.test(s),iqro_absen:s=>{const v=J(s);return isO(v)&&Number.isInteger(v.c)&&v.c>=0&&v.c<=7&&typeof v.d==="string"&&v.d.length<=10},
  iqro_shop:s=>{const v=J(s);return isO(v)&&Array.isArray(v.own)&&v.own.length<=50&&v.own.every(x=>typeof x==="string"&&x.length<=20)&&Number.isInteger(v.spent)&&v.spent>=0&&v.spent<=1e7&&(v.use===undefined||typeof v.use==="string"&&v.use.length<=20)},
+ iqro_react:s=>{const v=J(s);return isO(v)&&Object.keys(v).length<=400&&Object.entries(v).every(([k,x])=>/^[pu]:.{1,30}$/.test(k)&&typeof x==="string"&&x.length<=20)},
  iqro_reports:s=>{const v=J(s);return Array.isArray(v)&&v.length<=300&&v.every(x=>isO(x)&&typeof x.t==="string")}};
 function importFile(f){if(!f)return;if(f.size>2e6)return toast("File terlalu besar");const r=new FileReader();
  r.onerror=()=>toast("File tidak bisa dibaca");

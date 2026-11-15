@@ -116,13 +116,21 @@ async function boot(base,store={},opt={}){
   let r4=mg2({iqro_coins:"60",iqro_shop:JSON.stringify({own:["utama","senang"],use:"senang",spent:20})},{iqro_coins:"50",iqro_shop:JSON.stringify({own:["utama","iqro2"],use:"iqro2",spent:60})});
   const o4=JSON.parse(r4.iqro_shop);ok("sinkron: dua HP sama-sama belanja = barang digabung, koin tidak negatif",o4.own.join()==="utama,senang,iqro2"&&o4.spent===60&&+r4.iqro_coins===Math.max(60+20,50+60)-60,JSON.stringify(r4));
   mw.w.close();
-  {const vm=require("vm"),fs2=require("fs"),pa=require("path"),ctx={TextEncoder,Blob};vm.createContext(ctx);vm.runInContext(fs2.readFileSync(pa.join(__dirname,"..","js","zipstore.js"),"utf8"),ctx);
-   const A=[104,105],B=[1,2,3,4,5],buf=Buffer.from(await ctx.zipStore([{n:"a.txt",d:new Uint8Array(A)},{n:"b.webp",d:new Uint8Array(B)}]).arrayBuffer());
-   const e=buf.length-22,cnt=buf.readUInt16LE(e+10),cdOff=buf.readUInt32LE(e+16);let p2=cdOff,got=[];
-   for(let i=0;i<cnt;i++){const sz=buf.readUInt32LE(p2+24),nl=buf.readUInt16LE(p2+28),lo=buf.readUInt32LE(p2+42),nm=buf.slice(p2+46,p2+46+nl).toString(),dat=buf.slice(lo+30+nl,lo+30+nl+sz);got.push(nm+":"+[...dat].join());p2+=46+nl}
-   ok("paket stiker: ZIP valid (isi dan nama berkas utuh)",buf.readUInt32LE(0)===0x04034b50&&buf.readUInt32LE(e)===0x06054b50&&cnt===2&&got.join("|")==="a.txt:104,105|b.webp:1,2,3,4,5",got.join("|"))}
-  const pk=await boot(base);let tmsg="";pk.w.eval("shopPack()");await sleep(50);
-  ok("paket stiker: kurang dari 3 stiker = ditolak dengan pesan",/minimal 3/.test(pk.w.document.body.textContent)&&!pk.errs.length);pk.w.close();}
+  {const rx=await boot(base),dq=s=>rx.w.document.querySelector(s);
+   rx.w.eval("go('community')");
+   ok("reaksi: tombol reaksi ada di kabar teman",!!dq('#app [data-act="rx"][data-k="p:1"]'));
+   dq('#app [data-act="rx"][data-k="p:1"]').click();
+   ok("reaksi: pilihan hanya maskot yang dimiliki",!rx.w.document.getElementById("m").classList.contains("hidden")&&rx.w.document.querySelectorAll('#m [data-act="rxset"]').length===1);
+   dq('#m [data-act="rxset"]').click();
+   ok("reaksi: terpilih, tersimpan, dan tampil di kabar",rx.w.eval("RX['p:1']")==="utama"&&JSON.parse(rx.w.localStorage.getItem("iqro_react"))["p:1"]==="utama"&&/assets\/mascot\/utama\.webp/.test(rx.w.document.getElementById("app").innerHTML));
+   ok("reaksi: tidak bisa memakai maskot yang belum dimiliki",rx.w.eval("rxSet('p:2','iqro6')")===false&&rx.w.eval("RX['p:2']")===undefined);
+   rx.w.eval("go('leaderboard')");
+   ok("reaksi: leaderboard punya tombol reaksi untuk orang lain, bukan untuk diri sendiri",rx.w.document.querySelectorAll('#app [data-act="rx"]').length>=3&&rx.w.document.querySelectorAll('#app [data-act="rx"]').length<rx.w.eval("lb(0).length"));
+   ok("reaksi: tanpa galat",rx.errs.length===0,rx.errs.slice(0,2).join(" | "));rx.w.close();
+   const rl=await boot(base,{iqro_react:JSON.stringify({"p:1":"senang","u:Rafi":"hacker","x:3":"senang"}),iqro_shop:JSON.stringify({own:["utama","senang"],use:"utama",spent:20})});
+   ok("reaksi: dipulihkan, id tak dikenal dan kunci aneh dibuang",rl.w.eval("Object.keys(RX).join()")==="p:1"&&rl.w.eval("RX['p:1']")==="senang");rl.w.close();
+   const mg=await boot(base),m3=JSON.parse(JSON.stringify(mg.w.eval('CL.merge({iqro_react:\'{"p:1":"senang"}\'},{iqro_react:\'{"p:1":"sedih","u:Rafi":"utama"}\'})')));mg.w.close();
+   const r5=JSON.parse(m3.iqro_react);ok("sinkron: reaksi digabung, bila bentrok milik HP ini",r5["p:1"]==="senang"&&r5["u:Rafi"]==="utama",m3.iqro_react)}}
  console.log("4. Game: tiap folder memuat dan menggambar");
  const GP=w.eval("GP"),MGk=w.eval("MG.map(g=>g[0])");
  for(let i=0;i<MGk.length;i++){const slug=GP[MGk[i]];

@@ -54,7 +54,7 @@ js/
     preferences.js    target, notifications, audio, privacy, theme
     practice.js       record
   games.js            daftar game + pembungkus iframe + penerima pesan dari game
-  shop.js             Toko Maskot: beli dengan koin, pakai di Home, simpan stiker 512×512 WebP, dan unduh paket `.wastickers` (ZIP buatan `js/zipstore.js`: cover.png, title.txt, author.txt, stiker .webp) untuk diimpor lewat Sticker Maker. Mengirim lewat menu Bagikan tidak dipakai: WhatsApp menganggapnya foto dan latar transparan jadi hitam. Data di `iqro_shop` = {own, use, spent}
+  shop.js             Toko Maskot: beli dengan koin, pakai di Home, dan pakai sebagai reaksi di Komunitas (kabar teman) dan Leaderboard. Data: `iqro_shop` = {own, use, spent} dan `iqro_react` = {"p:<id kabar>" atau "u:<nama>": id maskot}
   events.js           penangan klik utama
   main.js             render pertama
   share-profile.js    modal bagikan profil
@@ -120,7 +120,7 @@ Login memakai email + kata sandi, progres disinkronkan ke Supabase. Offline-firs
 - `js/cloud-config.js`: URL project + kunci **publishable** (publik). Jangan pernah menaruh kunci secret/service_role di repo. Kosongkan untuk mematikan fitur akun.
 - `js/cloud.js`: daftar, masuk, keluar, dan sinkronisasi lewat fetch (tanpa SDK). Data digabung (union / ambil terbesar), penulisan ke server memakai pembanding `updated_at` sehingga tidak menimpa data dari HP lain.
 - `supabase/schema.sql`: tabel `profiles` dan `progress` + RLS (tiap pengguna hanya bisa akses barisnya sendiri) + pembuat profil otomatis. Tempel di Supabase -> SQL Editor -> Run.
-- Yang disinkronkan: halaman Iqro selesai, bintang kuis, waktu belajar, bookmark, koin (dihitung total diperoleh dikurangi total dibelanjakan, jadi belanja di Toko tidak "dikembalikan" saat sinkron), barang Toko, absen, posisi baca, pengaturan. Tema, laporan, dan postingan komunitas belum.
+- Yang disinkronkan: halaman Iqro selesai, bintang kuis, waktu belajar, bookmark, koin (dihitung total diperoleh dikurangi total dibelanjakan, jadi belanja di Toko tidak "dikembalikan" saat sinkron), barang Toko, reaksi, absen, posisi baca, pengaturan. Tema, laporan, dan postingan komunitas belum.
 - Satu HP dipakai akun lain: progres akun sebelumnya dibuang dari HP (tetap aman di server), tidak dicampur.
 
 Pengaturan Supabase yang perlu dilakukan sekali (Dashboard):
