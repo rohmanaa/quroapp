@@ -1,7 +1,7 @@
 """Buat semua ikon aplikasi + favicon dari gambar maskot di tools/ikon-sumber/.
 Jalankan: python3 tools/make-icons-maskot.py   (butuh: pip install pillow)
   ikon-utama.jpg    wajah maskot memenuhi kotak (gaya OCTO) -> icon-192/512, apple-touch-icon, favicon-48, favicon.svg,
-                    dan icon-maskable-512 (ikon yang terpasang di HP): kepala yang sama dalam lingkaran 82% di tengah (zona aman Android)
+                    dan maskable-kepala-512/192 (nama baru agar cache lama tidak terpakai; ikon yang terpasang di HP): kepala yang sama dalam lingkaran 82% di tengah (zona aman Android)
 Setelah itu jalankan: node tools/make-sw.js"""
 import base64,io,os
 from PIL import Image,ImageDraw
@@ -21,7 +21,7 @@ sq(main,180).convert("RGB").save(os.path.join(O,"apple-touch-icon.png"),optimize
 bg=main.getpixel((6,6)); N=512; d=round(N*0.82); cx,cy,r=520,540,480
 head=main.crop((cx-r,cy-r,cx+r,cy+r)).resize((d,d),Image.LANCZOS).convert("RGBA")
 mk=Image.new("L",(d*4,d*4),0); ImageDraw.Draw(mk).ellipse((0,0,d*4-1,d*4-1),fill=255); head.putalpha(mk.resize((d,d),Image.LANCZOS))
-m=Image.new("RGBA",(N,N),bg+(255,)); m.alpha_composite(head,((N-d)//2,(N-d)//2)); m.convert("RGB").save(os.path.join(O,"icon-maskable-512.png"),optimize=True)
+m=Image.new("RGBA",(N,N),bg+(255,)); m.alpha_composite(head,((N-d)//2,(N-d)//2)); m=m.convert("RGB"); m.save(os.path.join(O,"maskable-kepala-512.png"),optimize=True); m.resize((192,192),Image.LANCZOS).save(os.path.join(O,"maskable-kepala-192.png"),optimize=True)
 # favicon.svg: gambar kecil di dalam SVG bersudut bulat
 buf=io.BytesIO(); sq(main,96).save(buf,"PNG",optimize=True)
 b64=base64.b64encode(buf.getvalue()).decode()
