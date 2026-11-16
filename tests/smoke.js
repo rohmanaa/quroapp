@@ -310,7 +310,7 @@ async function boot(base,store={},opt={}){
 
  console.log("11. Fitur lazy (pengaturan, profil, latihan) dimuat belakangan");
  const Y=await boot(base,{},{lazy:true,saveData:true});const y=x=>Y.w.eval(x);const sc=n=>[...Y.w.document.scripts].some(t=>t.src.includes(n));
- ok("di awal: berkas fitur lazy belum dimuat & layarnya belum ada",!sc("preferences.js")&&!sc("profile.js")&&!sc("practice.js")&&!sc("share-profile.js")&&["profile","theme","record"].every(n=>y("V."+n)===undefined)&&y("Object.keys(featDone).length")===0);
+ ok("di awal: berkas fitur lazy belum dimuat & layarnya belum ada",!sc("layar/theme.js")&&!sc("layar/profile.js")&&!sc("layar/record.js")&&!sc("share-profile.js")&&["profile","theme","record"].every(n=>y("V."+n)===undefined)&&y("Object.keys(featDone).length")===0);
  ok("share.css belum dimuat & kotak bagikan tetap tersembunyi",!Y.w.document.querySelector('link[href*="share.css"]')&&Y.w.document.getElementById("shareProfileModal").hasAttribute("hidden"));
  ok("mode hemat data: tidak memuat di latar belakang",await (async()=>{await sleep(2800);return y("Object.keys(featDone).length")===0})());
  y('go("profile")');await sleep(700);

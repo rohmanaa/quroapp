@@ -63,6 +63,16 @@ console.log("3b. Fitur lazy (core/routes.js)");
   for(const e of eager){const t=fs.readFileSync(path.join(R,e),"utf8");for(const n of names){if(ALLOW.has(n))continue;if(new RegExp("(?<![\\w$.])"+n.replace(/\$/g,"\\$")+"(?![\\w$])").test(t))bad("fitur lazy '"+k+"' tidak boleh dipakai kode awal: "+e+" memakai "+n+" (pindahkan ke fitur itu, atau jadikan fitur ini eager)")}}}
  console.log("   "+Object.keys(LAZY).length+" fitur lazy: "+Object.keys(LAZY).join(", "))}}
 
+/* 3c. satu berkas = satu layar (fitur/<fitur>/layar/<nama>.js mendefinisikan V.<nama>) */
+console.log("3c. Satu berkas satu layar");
+{const walk=d=>fs.readdirSync(path.join(R,d),{withFileTypes:true}).flatMap(e=>e.isDirectory()?(e.name==="node_modules"?[]:walk(d+"/"+e.name)):e.name.endsWith(".js")?[d+"/"+e.name]:[]);
+ const WRAP=new Set(["_versi.js","perf.js","cloud.js"]);let n=0;
+ for(const f of [...walk("core"),...walk("fitur")]){const src=fs.readFileSync(path.join(R,f),"utf8"),base=path.basename(f),names=[...new Set([...src.matchAll(/(?<![\w$.])V\.([A-Za-z0-9_]+)\s*=(?!=)/g)].map(m=>m[1]))];
+  if(WRAP.has(base))continue;
+  if(names.length>1)bad(f+" mendefinisikan "+names.length+" layar ("+names.join(", ")+"): pecah jadi satu berkas per layar di layar/<nama>.js");
+  if(/\/layar\//.test(f)&&!base.startsWith("_")){n++;if(names.length!==1||names[0]!==base.replace(/\.js$/,""))bad(f+": nama berkas harus sama dengan layar yang didefinisikannya (V."+base.replace(/\.js$/,"")+"), ditemukan: "+(names.join(", ")||"tidak ada"))}}
+ console.log("   "+n+" berkas layar, semuanya sesuai")}
+
 /* 4. nomor versi konsisten */
 console.log("4. Nomor versi");
 try{const vj=JSON.parse(fs.readFileSync(path.join(R,"version.json"),"utf8")),vs=fs.readFileSync(path.join(R,"core/version.js"),"utf8"),m=vs.match(/APP_VERSION="([\d.]+)"/);

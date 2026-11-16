@@ -1,0 +1,1 @@
+V.reels=()=>`<div class="mb-4"><h1 class="text-3xl font-black">Kabar Teman</h1><p class="text-mute text-sm">Capaian teman-temanmu.</p></div><div class="flex flex-col gap-4">${feed().map(reel).join("")}</div>`;

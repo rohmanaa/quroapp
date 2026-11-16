@@ -1,0 +1,6 @@
+V.harakat=()=>{const h=HK[hk];return `
+<h1 class="text-3xl font-black">Harakat</h1><p class="text-mute text-sm mb-4">Tanda yang mengubah bunyi huruf. Ketuk untuk mendengar.</p>
+<div id="hktab" dir="ltr" class="hs !mt-0 mb-2" role="tablist">${HK.map((h,k)=>`<button role="tab" aria-selected="${k===hk}" data-hk="${k}" class="${k===hk?"on bg-brand text-on shadow-[0_3px_0_var(--bd)]":"bg-soft text-brand"} shrink-0 h-10 px-4 rounded-full font-black text-sm">${h[0]}</button>`).join("")}</div>
+<div class="tile rounded-[32px] p-4 text-center mb-4" style="--h:${hkH(hk)}"><div class="ar text-[104px] leading-[2] pt-3 pb-1" dir="ltr">${"\u0628"+h[1]}</div><div class="text-xl font-extrabold mt-2">${h[0]} · “${h[2]}”</div><p class="text-sm font-bold opacity-90 mt-1">${h[3]}</p></div>
+<h2 class="font-bold text-lg mb-3">Contoh bacaan</h2>
+<div dir="rtl" class="grid grid-cols-3 gap-2">${[0,1,2,3,4,5].map(i=>{const e=hkEx(hk,i);return `<button data-hx="${i}" dir="ltr" class="tile rounded-[20px] h-[104px] w-full flex flex-col items-center justify-center gap-1" style="--h:${i*60}"><span class="ar text-[38px] leading-[1.9] h-[3.6rem] w-full grid place-items-center overflow-visible">${e[0]}</span><span class="text-xs font-extrabold opacity-80 leading-none">${e[1]}</span></button>`}).join("")}</div>`};

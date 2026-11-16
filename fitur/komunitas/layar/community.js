@@ -1,0 +1,1 @@
+V.community=()=>`<h1 class="text-3xl font-black mb-4">Komunitas</h1>${lbCard()}<section class="${card} mt-3 !p-3 flex items-center gap-3"><span class="live">LIVE</span><p id="lv" class="text-sm font-bold flex-1">${LV[li]}</p><button data-go="friends" class="text-brand font-black text-sm">Teman</button></section><div class="mt-6">${V.reels()}</div>`;

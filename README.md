@@ -14,17 +14,17 @@ core/                 kerangka bersama
   icons.js            ikon garis                    main.js     mulai aplikasi, pulihkan layar
   routes.js           tabel fitur lazy + pemuat      nav-fix.js ptr.js perf.js offline.js update.js
   version.js          (dibuat tools/make-sw.js, jangan diedit)
-fitur/                satu folder = satu fitur: layar + data + gayanya sendiri
-  belajar/            home, books, bookdetail, reader, huruf, harakat, record
-    views.js practice.js reader.js settings.js progress.js tajwid.js lock.js  reader.css
-    data/             letters harakat iqro pola latihan iqro1-buku  iqro-lazy.js  iqro2-6-buku.js (dimuat belakangan)
-  kuis/               quiz.js (kuis halaman/jilid/tajwid, bintang, tajwid)      data/tajwid.js
-  profil/             profile.js (progres, profil, misi, badge, tentang), share-profile.js, share.css
-  pengaturan/         preferences.js (target, notifikasi, audio, privasi, tema), backup.js
-  komunitas/          social.js (teman, papan peringkat, kabar, komunitas)      data/community.js
-  akun/               auth.js, cloud.js, cloud-config.js (Supabase)
-  toko/               shop.js (Toko Maskot)                                     data/shop.js
-  game/               games.js (daftar game + pembungkus iframe)                data/games.js
+fitur/                satu folder = satu fitur: layar + logika + data + gayanya sendiri. Satu layar = satu berkas di layar/<nama>.js (V.<nama>=...)
+  belajar/            layar/  _umum.js (pembantu: kartu absen, grid game) home books huruf harakat bookdetail reader record
+                      logika: reader.js settings.js progress.js tajwid.js lock.js   gaya: reader.css
+                      data/   letters harakat iqro pola latihan iqro1-buku  iqro-lazy.js  iqro2-6-buku.js (dimuat belakangan)
+  kuis/               layar/  quiz quizres tajwid        logika: quiz.js (soal, bintang, kartu kuis, bagikan)    data/tajwid.js
+  profil/             layar/  profile progress daily share result badges about  _versi.js (baris versi)   share-profile.js share.css
+  pengaturan/         layar/  target notifications audio privacy theme            backup.js (layar backup + cadangan/pemulihan)
+  komunitas/          layar/  _umum.js (ikon reel, tab, kartu papan) friends leaderboard reels community      data/community.js
+  akun/               layar/  login reg                  auth.js (kolom form), cloud.js, cloud-config.js (Supabase)
+  toko/               shop.js (layar shop + logika Toko Maskot)                  data/shop.js
+  game/               layar/  games game                 games.js (pembungkus iframe, pesan dari game)           data/games.js
 css/                  gaya bersama: base, components, animations, fonts, tailwind
 games/                lobby + tiap game berdiri sendiri (satu folder = satu game)
   index.html, lobby.js  lobby "Semua Game"
@@ -39,9 +39,11 @@ Memuat belakangan (lazy): `fitur/belajar/data/iqro2-6-buku.js` (±300 KB) baru d
 
 Fitur lazy (`core/routes.js`): `pengaturan` (preferences.js), `profil` (profile.js, share-profile.js, share.css), dan `latihan` (practice.js) tidak ada di `index.html`. `go("<layar>")` memuatnya saat pertama dibuka, dan sisanya dimuat saat browser menganggur (kecuali mode hemat data). Kode inti yang ikut mengubah layar lazy memakai `onFeature("<fitur>",()=>{...})` (contoh: kartu Mode hemat di `perf.js`). `tools/test-data.js` menjaga: berkasnya ada dan masuk cache offline, daftar layar cocok dengan `V.*` di berkas, dan tidak ada kode awal yang memanggil isi fitur lazy.
 
+Aturan "satu berkas satu layar": `fitur/<fitur>/layar/<nama>.js` hanya mendefinisikan `V.<nama>`. Pembantu bersama layar-layar itu ada di `layar/_umum.js` (dimuat paling dulu), logika di berkas biasa fitur itu, dan pembungkus layar lain (mis. baris versi) di berkas berawalan `_`. `V` (registri layar) dideklarasikan di `core/core.js`. `tools/test-data.js` menjaga namanya cocok dan tidak ada berkas yang menggabung dua layar.
+
 Menambah fitur baru:
 - Biasa (dimuat di awal): buat `fitur/<nama>/` berisi layar (`V.nama=...`), data, dan CSS-nya; daftarkan `<script>` di `index.html` (setelah file yang dibutuhkan).
-- Lazy (ringan, layar saja): daftarkan di `LAZY` pada `core/routes.js` dan jangan tulis `<script>`-nya di `index.html`. Fitur yang fungsinya dipanggil kode lain (kuis, toko, komunitas, akun) sengaja tidak lazy.
+- Lazy (ringan, layar saja): daftarkan berkas layarnya di `LAZY` pada `core/routes.js` dan jangan tulis `<script>`-nya di `index.html` (diunduh paralel, dijalankan berurutan). Fitur yang fungsinya dipanggil kode lain (kuis, toko, komunitas, akun) sengaja tidak lazy.
 - Lalu `node tools/make-sw.js`.
 
 ## Kuis, bintang, dan komunitas

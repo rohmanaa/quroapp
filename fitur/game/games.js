@@ -5,8 +5,6 @@ let GM=0,gmOk=0;
 let GDd=dk(),GD=lsj("iqro_gd",x=>isO(x)&&typeof x.d==="string"&&isO(x.k),{d:"",k:{}});GD=GD.d===GDd?GD.k:{};
 const gdSave=()=>{try{localStorage.setItem("iqro_gd",JSON.stringify({d:GDd,k:GD}))}catch(e){}};
 const gmFrame=(src,t)=>{gmOk=0;return `<div class="gh"><iframe id="gf" title="${t}" src="${src}" allow="autoplay" class="gf"></iframe></div>`};
-V.games=()=>gmFrame("games/index.html","Semua Game");
-V.game=()=>{const [k,t]=MG[GM];return gmFrame("games/"+GP[k]+"/index.html?from=home",t)};
 const gmSend=m=>{const f=document.getElementById("gf");try{f&&f.contentWindow.postMessage(Object.assign({quro:1},m),"*")}catch(x){}};
 /* Tombol kembali HP: diteruskan ke halaman game (game -> lobby, lobby -> Home). Kalau halaman belum siap, pakai perilaku biasa. */
 const gmBack=()=>{if(!gmOk||!document.getElementById("gf"))return false;gmSend({type:"back"});return true};

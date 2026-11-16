@@ -1,0 +1,9 @@
+V.quizres=()=>{const q=QZ,n=q.stars,m=["Tidak apa-apa, ayo belajar dulu lalu coba lagi","Semangat! Ayo coba lagi","Bagus! Sedikit lagi bintangmu penuh","Yey Alhamdulillah, hampir sempurna!","Yay MasyaAllah! Sempurna!"][n];
+ return `<section class="hero rounded-[32px] p-4 pb-5 text-center"><div class="flex justify-center items-end gap-2 mb-2">${[1,2,3,4].map(i=>`<span class="st ${i<=n?"":"off"} ${i%2?"":"-mt-4"}">${ic("star","w-11 h-11")}</span>`).join("")}</div>
+<div class="bg-card text-ink rounded-[28px] p-5 pt-3 border-4 border-[#FFE27A] relative"><div class="flex justify-center -mt-14">${mas("w-20",["bingung","semangat","senang","rayakan","rayakan"][n])}</div><h2 class="text-xl font-black mt-1">${m}</h2><div class="text-7xl font-black text-brand leading-tight mt-2">${q.right}<small class="text-3xl text-mute">/${q.qs.length}</small></div><p class="font-extrabold text-brand text-sm">${qzTitle()}</p>
+${q.unlock?`<div class="flex items-center justify-center gap-2 bg-soft text-brand rounded-2xl p-3 mt-4 font-black text-sm">${ic("lock","w-5 h-5")}${q.unlock}</div>`:q.need?`<p class="text-xs text-mute font-bold mt-3">${q.need}</p>`:""}
+${q.fresh.length?`<div class="text-left bg-soft rounded-2xl p-3 mt-4"><b class="text-sm">Lencana baru!</b><p class="text-xs text-mute font-semibold mt-1">${q.fresh.join(", ")}</p></div>`:""}
+${q.gain?`<p class="flex items-center justify-center gap-1.5 text-sm font-black mt-3">${coin()}+${q.gain*2} koin masuk</p>`:""}</div></section>
+${n>0?`<button data-act="shareres" data-k="quiz" class="btn w-full mt-5">Bagikan ke Komunitas +2 ${coin("w-5 h-5")}</button>`:""}
+<button data-act="qzagain" class="btn btn-w w-full mt-3" style="border:2px solid var(--line)">Ulangi kuis</button>
+<button data-act="qzdone" class="w-full mt-3 py-3 font-black text-brand">Selesai</button>`};
