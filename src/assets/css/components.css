@@ -46,3 +46,17 @@ html.scr .fl,html.scr .fl2,html.scr .mas,html.scr .eye,html.scr .live,html.scr .
 html.lite .fl,html.lite .fl2,html.lite .mas,html.lite .eye,html.lite .live,html.lite .wv,html.lite .tr-slide,html.lite .tr-slideb,html.lite .tr-fade,html.lite .tr-zoom,html.lite .tr-up{animation:none!important}
 html.lite body::before{display:none}
 .fpsb{position:fixed;left:12px;right:12px;top:calc(env(safe-area-inset-top,0px) + 10px);z-index:99;max-width:28rem;margin:0 auto;padding:10px 16px;border-radius:20px;background:var(--ink);color:var(--bg);font-weight:800;font-size:13px;text-align:center}
+
+/* Peta belajar + wizard */
+.pm{position:relative;margin:6px 0 24px}.pm svg{position:absolute;inset:0;width:100%;height:100%}
+.pmn{position:absolute;width:64px;height:64px;margin:-32px 0 0 -32px;border-radius:50%;display:grid;place-items:center;font-weight:900;font-size:22px;color:#fff;z-index:2;background:hsl(var(--h) 62% 52%);box-shadow:0 7px 0 hsl(var(--h) 62% 34%);transition:transform .1s,box-shadow .1s}
+.pmn:active{transform:translateY(5px);box-shadow:0 2px 0 hsl(var(--h) 62% 34%)}
+.pmn.op{background:hsl(var(--h) 62% 62%);box-shadow:0 7px 0 hsl(var(--h) 62% 40%)}
+.pmn.dn{background:#FFB72B;box-shadow:0 7px 0 #D98A00}
+.pmn.lk{background:var(--line);color:var(--mute);box-shadow:0 7px 0 rgba(0,0,0,.14)}
+.pmn.cur{animation:pmp 1.6s infinite}@keyframes pmp{50%{box-shadow:0 7px 0 hsl(var(--h) 62% 34%),0 0 0 12px hsl(var(--h) 62% 52%/.22)}}
+.pms{position:absolute;top:-8px;right:-12px;background:#fff;color:#E59A00;font-size:11px;padding:1px 6px;border-radius:99px;border:2px solid #FFD54A}
+.pmb{position:absolute;top:-38px;left:50%;transform:translateX(-50%);background:var(--card);color:var(--brand);border:2px solid var(--line);border-radius:14px;padding:3px 10px;font-size:12px;font-weight:900;white-space:nowrap;animation:bob 1.4s infinite ease-in-out}
+.pmm{position:absolute;z-index:1;pointer-events:none}.pmd{position:absolute;z-index:0;font-size:26px;margin:-14px 0 0 -14px;opacity:.85}
+.pm-fb{position:sticky;bottom:12px;margin-top:16px;border-radius:24px;padding:14px;border:2px solid;animation:trUp .25s}
+.pm-fb.ok{background:var(--soft);border-color:var(--brand);color:var(--brand)}.pm-fb.no{background:#FFE5E5;border-color:#FF6B6B;color:#D94F4F}

@@ -264,10 +264,24 @@ async function boot(base,store={},opt={}){
  e('jl=1;pn=7;go("reader")');ok("lompat paksa ke Hal 7: dikembalikan ke halaman terbuka",e("pn")===1);
  e('jl=3;pn=2;go("reader")');await sleep(700);ok("lompat paksa ke Iqro 3 terkunci: kembali ke Iqro 1",e("jl")===1);
  e('iqDN={"1-1":1};iqQZ={};go("bookdetail");jl=1;go("bookdetail")');
- ok("detail jilid: Hal 2+ berikon kunci, Hal 1 tidak",/data-pg="2"[^>]*opacity-60/.test(L1.w.document.getElementById("app").innerHTML)&&!/data-pg="1"[^>]*opacity-60/.test(L1.w.document.getElementById("app").innerHTML));
- L1.w.document.querySelector('[data-pg="3"]').click();await sleep(60);
+ ok("peta jilid: Hal 2+ terkunci, Hal 1 level MULAI",/data-p="2"[^>]*class="pmn lk"/.test(L1.w.document.getElementById("app").innerHTML)&&/data-p="1"[^>]*class="pmn cur"/.test(L1.w.document.getElementById("app").innerHTML));
+ L1.w.document.querySelector('[data-act="pmnode"][data-p="3"]').click();await sleep(60);
  ok("ketuk halaman terkunci di detail: dialog dengan tombol 'Mulai kuis'",/masih terkunci/.test(L1.w.document.getElementById("m").innerHTML)&&/Mulai kuis Hal 1/.test(L1.w.document.getElementById("m").innerHTML));
  L1.w.document.querySelector('#m [data-act="mclose"].btn')&&L1.w.document.querySelector('#m [data-act="mclose"].btn').click();
+ // wizard per halaman: peta -> dialog -> langkah per baris -> koin tiap benar -> bintang membuka halaman berikut
+ e('iqDN={"1-1":1};iqQZ={};lockOn=true;jl=1;pn=1;coins=0;go("bookdetail")');
+ L1.w.document.querySelector('[data-act="pmnode"][data-p="1"]').click();await sleep(60);
+ ok("ketuk level terbuka: dialog Mulai belajar",/Mulai belajar/.test(L1.w.document.getElementById("m").innerHTML));
+ L1.w.document.querySelector('#m [data-act="mok"]').click();await sleep(80);
+ ok("wizard terbuka (fase pelajari), tanpa menu bawah",e("S")==="wizard"&&e("QZ.w")===1&&e("QZ.ph")===0&&e("QZ.qs.length")>=1&&L1.w.document.querySelector("nav").style.display==="none");
+ const wn=e("QZ.qs.length");let got=0;
+ for(let i=0;i<wn;i++){L1.w.document.querySelector('[data-act="wzgo"]').click();await sleep(30);
+  const ans=e("QZ.qs[QZ.i].ans"),idx=e("QZ.qs[QZ.i].opts.indexOf(QZ.qs[QZ.i].ans)");
+  L1.w.document.querySelector('[data-act="qzopt"][data-i="'+idx+'"]').click();got++;await sleep(20);
+  L1.w.document.querySelector('[data-act="qznext"]').click();await sleep(30)}
+ ok("semua benar: +1 koin per langkah",e("coins")>=wn&&got===wn);
+ ok("selesai: bintang 4 tersimpan & Hal 2 terbuka",e("iqQZ['p1-1'].s")===4&&e("pgOpen(1,2)")===true&&e("S")==="quizres");
+ e('go("bookdetail")');ok("peta: Hal 1 selesai (emas), Hal 2 jadi MULAI",/data-p="1"[^>]*class="pmn dn"/.test(L1.w.document.getElementById("app").innerHTML)&&/data-p="2"[^>]*class="pmn cur"/.test(L1.w.document.getElementById("app").innerHTML));
  // hasil kuis: lulus membuka halaman / jilid, gagal memberi petunjuk
  e('iqDN={"1-1":1};iqQZ={};lockOn=true;jl=1;pn=1;qzStart("p")');
  e("QZ.right=QZ.qs.length;qzFinish()");
@@ -290,7 +304,7 @@ async function boot(base,store={},opt={}){
  const Z=await boot(base,{iqro_lock:"0"});const z=x=>Z.w.eval(x);
  ok("di awal: data buku Iqro 2-6 belum dimuat",z("BOOK26")===false&&![...Z.w.document.scripts].some(x=>/iqro2-6-buku/.test(x.src)));
  ok("jumlah halaman Iqro 2-6 sudah diketahui (30) tanpa memuat",[2,3,4,5,6].every(j=>z("JL["+j+"].n")===30)&&z("IQ['2-1']")===undefined);
- z('go("books")');z('jl=3;go("bookdetail")');ok("sampul & detail Iqro 3 tampil tanpa memuat data buku",z("BOOK26")===false&&/data-pg="30"/.test(Z.w.document.getElementById("app").innerHTML));
+ z('go("books")');z('jl=3;go("bookdetail")');ok("sampul & detail Iqro 3 tampil tanpa memuat data buku",z("BOOK26")===false&&/data-p="30"/.test(Z.w.document.getElementById("app").innerHTML));
  z('jl=1;pn=1;go("reader")');ok("membuka Iqro 1 tidak memuat data Iqro 2-6",z("BOOK26")===false&&z("S")==="reader");
  z('jl=3;pn=4;go("reader")');await sleep(900);
  ok("membuka Iqro 3: data dimuat lalu pembaca tampil",z("BOOK26")===true&&z("S")==="reader"&&z("jl")===3&&z("pn")===4&&!!Z.w.document.querySelector(".pp")&&z("IQ['3-4'].content.length")>0);

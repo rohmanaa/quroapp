@@ -5,5 +5,6 @@ ${q.unlock?`<div class="flex items-center justify-center gap-2 bg-soft text-bran
 ${q.fresh.length?`<div class="text-left bg-soft rounded-2xl p-3 mt-4"><b class="text-sm">Lencana baru!</b><p class="text-xs text-mute font-semibold mt-1">${q.fresh.join(", ")}</p></div>`:""}
 ${q.gain?`<p class="flex items-center justify-center gap-1.5 text-sm font-black mt-3">${coin()}+${q.gain*2} koin masuk</p>`:""}</div></section>
 ${n>0?`<button data-act="shareres" data-k="quiz" class="btn w-full mt-5">Bagikan ke Komunitas +2 ${coin("w-5 h-5")}</button>`:""}
+${q.w&&q.pn<JL[q.jl].n&&pgOpen(q.jl,q.pn+1)?`<button data-act="wznext" class="btn w-full mt-3">Lanjut ke Halaman ${q.pn+1}</button>`:""}
 <button data-act="qzagain" class="btn btn-w w-full mt-3" style="border:2px solid var(--line)">Ulangi kuis</button>
 <button data-act="qzdone" class="w-full mt-3 py-3 font-black text-brand">Selesai</button>`};

@@ -48,10 +48,10 @@ document.addEventListener("click",e=>{const t=e.target.closest("[data-act]");if(
  if(a==="qzjilid")qzStart("j");
  if(a==="qztj")qzStart("t");
  if(a==="qzhear"&&QZ)say(QZ.qs[QZ.i].hear);
- if(a==="qzopt"&&QZ&&QZ.pick<0){const q=QZ.qs[QZ.i];QZ.pick=+d.i;if(q.opts[QZ.pick]===q.ans)QZ.right++;render()}
- if(a==="qznext"&&QZ&&QZ.pick>=0){if(QZ.i+1>=QZ.qs.length)qzFinish();else{QZ.i++;QZ.pick=-1;scrollTo(0,0);render()}}
- if(a==="qzagain"&&QZ)qzStart(QZ.kind)
- if(a==="qzdone"&&QZ)go(QZ.kind==="p"?"reader":QZ.kind==="j"?"bookdetail":"tajwid");
+ if(a==="qzopt"&&QZ&&QZ.pick<0){const q=QZ.qs[QZ.i];QZ.pick=+d.i;if(q.opts[QZ.pick]===q.ans){QZ.right++;if(QZ.w){coins+=1;QZ.got=(QZ.got||0)+1}}render()}
+ if(a==="qznext"&&QZ&&QZ.pick>=0){if(QZ.i+1>=QZ.qs.length)qzFinish();else{QZ.i++;QZ.pick=-1;if(QZ.w)QZ.ph=0;scrollTo(0,0);render()}}
+ if(a==="qzagain"&&QZ)QZ.w?wzStart(QZ.jl,QZ.pn):qzStart(QZ.kind)
+ if(a==="qzdone"&&QZ)go(QZ.w?"bookdetail":QZ.kind==="p"?"reader":QZ.kind==="j"?"bookdetail":"tajwid");
  if(a==="tjtab"){tjTab=+d.i;render()}
  if(a==="tjhear")say(TJ[tjTab].ex[+d.w][0]);
  if(a==="settj"){useTj=!useTj;saveSet();render();if(document.getElementById("stw"))showSt()}

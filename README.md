@@ -103,6 +103,13 @@ Pengaturan Supabase yang perlu dilakukan sekali (Dashboard):
 2. Authentication -> Sign In / Providers -> Email: untuk tahap awal matikan **Confirm email** (tanpa SMTP sendiri, email bawaan Supabase hanya terkirim ke anggota tim dan dibatasi 2/jam). Nyalakan lagi setelah SMTP (Brevo/Resend) dipasang.
 3. Authentication -> URL Configuration: Site URL `https://quroapp.vercel.app`.
 
+## Peta belajar & wizard
+
+- Detail jilid (`views/bookdetail.js`) menampilkan **peta** berkelok (`components/path-map.js`): satu halaman = satu level. Status: terkunci (abu-abu + gembok), MULAI (level saat ini + maskot), terbuka, lulus (emas, bintang). Status mengikuti `stores/lock.js`, jadi tidak ada aturan kunci baru.
+- Ketuk level -> dialog -> **wizard** (`stores/wizard.js`, `views/wizard.js`): tiap BARIS halaman = satu langkah (maks. 8): fase pelajari (ketuk bacaan, dengar) lalu fase jawab pilihan ganda. Tiap jawaban benar **+1 koin**.
+- Wizard memakai ulang mesin kuis (`QZ`, `qzFinish`): hasil disimpan sebagai bintang kuis halaman (`p<jilid>-<hal>`), lulus (>= 3 bintang) membuka halaman berikutnya. Mode baca halaman penuh tetap ada (tombol buku di bilah bawah detail jilid).
+- Arab tetap RTL: baris dirender lewat `rowsOf()`/`cellH()`; jangan membalik urutan sel.
+
 ## Kunci level berurutan
 
 `src/stores/lock.js`. Halaman berikutnya terbuka setelah lulus kuis halaman sebelumnya, dan Iqro berikutnya setelah lulus Kuis Jilid sebelumnya (Kuis Jilid sendiri terbuka setelah semua halaman jilid itu dibuka). Lulus = minimal `LOCK_MIN` (3) bintang.
