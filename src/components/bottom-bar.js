@@ -1,6 +1,7 @@
 /* Inti: navigasi (go), render, bar bawah, modal, toast, suara */
 const B={badges:"profile",game:"home",leaderboard:"community",games:"home",about:"profile",theme:"profile",daily:"home",shop:"home",huruf:"books",harakat:"books",bookdetail:"books",reader:"books",share:"profile",friends:"profile",progress:"profile",target:"profile",notifications:"profile",audio:"profile",privacy:"profile",result:"record",quiz:"books",wizard:"bookdetail",quizres:"books",tajwid:"books"};
-const TABS=[["home","Home","home"],["books","Iqro","book"],["record","Latihan","mic"],["community","Komunitas","users"],["profile","Profil","user"]];
+/* Urutan tab: Iqro sengaja di tengah (indeks 2) */
+const TABS=[["home","Home","home"],["record","Latihan","mic"],["books","Iqro","book"],["community","Komunitas","users"],["profile","Profil","user"]];
 function bar(){
   const au=S==="login"||S==="reg"||S==="wizard";$("nav").style.display=au?"none":"";document.querySelector("header").style.display=au?"none":"";if(au)return;
   if(!B[S]){const bi=$("#bi");bi.style.width="";bi.style.padding="";if(bi.dataset.m==="tabs"&&bi.children.length===TABS.length){[...bi.children].forEach((b,i)=>{const on=S===TABS[i][0],sp=b.firstElementChild;b.classList.toggle("text-brand",on);b.classList.toggle("text-mute",!on);sp.classList.toggle("bg-soft",on);sp.classList.toggle("-translate-y-0.5",on)});return}bi.dataset.m="tabs";bi.innerHTML=TABS.map(([k,l,i])=>`<button data-go="${k}" class="flex-1 flex flex-col items-center gap-0.5 text-[11px] font-extrabold ${S===k?"text-brand":"text-mute"}"><span class="px-4 py-1 rounded-2xl ${S===k?"bg-soft -translate-y-0.5":""}">${ic(i,"w-6 h-6")}</span>${l}</button>`).join("");return}
