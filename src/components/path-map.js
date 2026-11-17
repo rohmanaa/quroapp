@@ -12,3 +12,5 @@ function pathMap(j){
     return `<button data-act="pmnode" data-p="${p}" class="pmn ${k}" style="left:${x}%;top:${y}px" aria-label="Halaman ${p}">${op?p:ic("lock","w-6 h-6")}${s?`<span class="pms">★${s}</span>`:""}${c?'<span class="pmb">MULAI</span>':""}</button>${c?`<div class="pmm" style="left:${x>50?x-32:x+17}%;top:${y-36}px">${mas("w-16","semangat")}</div>`:""}`}).join("");
   return `<div class="pm" style="--h:${h};height:${n*RH}px"><svg viewBox="0 0 100 ${n*RH}" preserveAspectRatio="none" aria-hidden="true"><path d="${dp}" fill="none" stroke="var(--line)" stroke-width="22" stroke-linecap="round" vector-effect="non-scaling-stroke"/></svg>${deco}${nodes}</div>`;
 }
+/* gulung ke level saat ini (dipanggil saat membuka tab Iqro / ganti dunia) */
+function pmScroll(){setTimeout(()=>{const e=document.querySelector("#app .pmn.cur")||[...document.querySelectorAll("#app .pmn.dn")].pop();if(e)e.scrollIntoView({block:"center",behavior:"smooth"})},140)}

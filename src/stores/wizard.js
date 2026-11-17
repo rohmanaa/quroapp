@@ -19,8 +19,10 @@ function wzStart(j,p){
 document.addEventListener("click",e=>{const t=e.target.closest("[data-act]");if(!t)return;const d=t.dataset,a=d.act;
  if(a==="pmnode"){const p=+d.p;if(!pgOpen(jl,p))return lockPg(jl,p);
   modal({t:"Halaman "+p,p:"Pelajari tiap baris, jawab, dan kumpulkan koin. Tiap jawaban benar +1 koin.",b:"Nanti",y:"Mulai belajar",ok:()=>wzStart(jl,p)})}
+ if(a==="wd"){const j=+d.w;if(!JL[j].ok)return toast("Iqro "+j+" segera hadir");if(!jOpen(j))return lockJ(j);jl=j;pn=iqLast[j]||1;render();pmScroll()}
+ if(a==="pmread"){pn=pmCur(jl);go("reader")}
  if(a==="wzcont")wzStart(jl,pmCur(jl));
  if(a==="wznext"&&QZ)wzStart(QZ.jl,QZ.pn+1);
  if(a==="wzgo"&&QZ&&QZ.w){QZ.ph=1;render();say(QZ.qs[QZ.i].hear)}
- if(a==="wzx")modal({t:"Keluar dari latihan?",p:"Koin yang sudah didapat tetap tersimpan, tapi bintang halaman ini belum dihitung.",b:"Lanjut belajar",y:"Keluar",ok:()=>{QZ=null;go("bookdetail")}});
+ if(a==="wzx")modal({t:"Keluar dari latihan?",p:"Koin yang sudah didapat tetap tersimpan, tapi bintang halaman ini belum dihitung.",b:"Lanjut belajar",y:"Keluar",ok:()=>{QZ=null;go("books")}});
 });

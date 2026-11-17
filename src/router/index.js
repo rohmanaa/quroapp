@@ -1,6 +1,6 @@
 /* Scroll horizontal (card atas tab Iqro, deretan tab/chip): diingat per layar dan dipulihkan saat kembali; digambar ulang di layar yang sama = tidak loncat ke awal */
 const hsEl=()=>document.querySelectorAll("#app .hs,#app .overflow-x-auto"),hsGet=()=>[...hsEl()].map(e=>e.scrollLeft),hsSet=a=>{const l=hsEl();if(a&&a.length===l.length)l.forEach((e,i)=>{if(a[i])e.scrollLeft=a[i]})},HS={};let lastS=null;
-function render(){const keep=lastS===S?hsGet():null;const g=S==="games"||S==="game";document.body.classList.toggle("gm",g);if(g)$("#app").classList.remove("tr-slide","tr-slideb","tr-fade","tr-zoom","tr-up");$("#app").innerHTML=V[S]();bar();if(S==="reader"){fitRows();if(document.fonts&&document.fonts.ready)document.fonts.ready.then(()=>{if(S==="reader")fitRows()})}if(keep)hsSet(keep);lastS=S}
+function render(){const keep=lastS===S?hsGet():null;const g=S==="games"||S==="game";document.body.classList.toggle("gm",g);if(g)$("#app").classList.remove("tr-slide","tr-slideb","tr-fade","tr-zoom","tr-up");$("#app").innerHTML=V[S]();bar();if(S==="reader"){fitRows();if(document.fonts&&document.fonts.ready)document.fonts.ready.then(()=>{if(S==="reader")fitRows()})}if(keep)hsSet(keep);if(S==="books"&&lastS!==S&&typeof pmScroll==="function")pmScroll();lastS=S}
 /* Posisi scroll tiap layar: disimpan saat pergi, dipulihkan saat kembali (tombol kembali / HP back) */
 const SC={};
 /* registri layar (views): tiap layar mendaftar sebagai V.<nama>=()=>html di src/views/<nama>.js */

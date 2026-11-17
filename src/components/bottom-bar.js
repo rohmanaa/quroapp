@@ -1,5 +1,5 @@
 /* Inti: navigasi (go), render, bar bawah, modal, toast, suara */
-const B={badges:"profile",game:"home",leaderboard:"community",games:"home",about:"profile",theme:"profile",daily:"home",shop:"home",huruf:"books",harakat:"books",bookdetail:"books",reader:"books",share:"profile",friends:"profile",progress:"profile",target:"profile",notifications:"profile",audio:"profile",privacy:"profile",result:"record",quiz:"books",wizard:"bookdetail",quizres:"books",tajwid:"books"};
+const B={badges:"profile",game:"home",leaderboard:"community",games:"home",about:"profile",theme:"profile",daily:"home",shop:"home",huruf:"books",harakat:"books",bookdetail:"books",reader:"books",share:"profile",friends:"profile",progress:"profile",target:"profile",notifications:"profile",audio:"profile",privacy:"profile",result:"record",quiz:"books",wizard:"books",materi:"home",quizres:"books",tajwid:"books"};
 /* Urutan tab: Iqro sengaja di tengah (indeks 2) */
 const TABS=[["home","Home","home"],["record","Latihan","mic"],["books","Iqro","book"],["community","Komunitas","users"],["profile","Profil","user"]];
 function bar(){

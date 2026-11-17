@@ -105,7 +105,8 @@ Pengaturan Supabase yang perlu dilakukan sekali (Dashboard):
 
 ## Peta belajar & wizard
 
-- Detail jilid (`views/bookdetail.js`) menampilkan **peta** berkelok (`components/path-map.js`): satu halaman = satu level. Status: terkunci (abu-abu + gembok), MULAI (level saat ini + maskot), terbuka, lulus (emas, bintang). Status mengikuti `stores/lock.js`, jadi tidak ada aturan kunci baru.
+- Tab **Iqro** (`views/books.js`) langsung berupa **peta dunia**: tiap jilid = satu dunia (pilih lewat bulatan 1-6 di header), tiap halaman = satu level; saat dibuka otomatis menggulung ke level saat ini. Materi dasar (huruf, harakat, tanda baca, penanda) dipindah ke layar `materi` (dibuka dari tombol Materi di Home dan header peta). Layar `bookdetail` lama masih ada tapi tidak dipakai navigasi.
+- Peta berkelok (`components/path-map.js`) memakai (`components/path-map.js`): satu halaman = satu level. Status: terkunci (abu-abu + gembok), MULAI (level saat ini + maskot), terbuka, lulus (emas, bintang). Status mengikuti `stores/lock.js`, jadi tidak ada aturan kunci baru.
 - Ketuk level -> dialog -> **wizard** (`stores/wizard.js`, `views/wizard.js`): tiap BARIS halaman = satu langkah (maks. 8): fase pelajari (ketuk bacaan, dengar) lalu fase jawab pilihan ganda. Tiap jawaban benar **+1 koin**.
 - Wizard memakai ulang mesin kuis (`QZ`, `qzFinish`): hasil disimpan sebagai bintang kuis halaman (`p<jilid>-<hal>`), lulus (>= 3 bintang) membuka halaman berikutnya. Mode baca halaman penuh tetap ada (tombol buku di bilah bawah detail jilid).
 - Arab tetap RTL: baris dirender lewat `rowsOf()`/`cellH()`; jangan membalik urutan sel.
