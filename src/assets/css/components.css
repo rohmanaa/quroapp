@@ -60,3 +60,6 @@ html.lite body::before{display:none}
 .pmm{position:absolute;z-index:1;pointer-events:none}.pmd{position:absolute;z-index:0;font-size:26px;margin:-14px 0 0 -14px;opacity:.85}
 .pm-fb{position:sticky;bottom:12px;margin-top:16px;border-radius:24px;padding:14px;border:2px solid;animation:trUp .25s}
 .pm-fb.ok{background:var(--soft);border-color:var(--brand);color:var(--brand)}.pm-fb.no{background:#FFE5E5;border-color:#FF6B6B;color:#D94F4F}
+
+.pw{border-radius:32px;overflow:hidden;margin:6px 0 24px}.pmdec{position:absolute;z-index:0;pointer-events:none}.pmriv{position:absolute;left:0;right:0;bottom:0;width:100%;height:96px;z-index:1;pointer-events:none}
+.pw .pmn.lk{background:#DCE4D5;color:#8A9A86;box-shadow:0 7px 0 #AEBBA8}

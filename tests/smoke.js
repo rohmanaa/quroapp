@@ -283,7 +283,7 @@ async function boot(base,store={},opt={}){
  ok("selesai: bintang 4 tersimpan & Hal 2 terbuka",e("iqQZ['p1-1'].s")===4&&e("pgOpen(1,2)")===true&&e("S")==="quizres");
  e('go("bookdetail")');ok("peta: Hal 1 selesai (emas), Hal 2 jadi MULAI",/data-p="1"[^>]*class="pmn dn"/.test(L1.w.document.getElementById("app").innerHTML)&&/data-p="2"[^>]*class="pmn cur"/.test(L1.w.document.getElementById("app").innerHTML));
  e('go("books")');const BK_=L1.w.document.getElementById("app").innerHTML;
- ok("tab Iqro = peta dunia (bukan daftar kartu jilid)",/class="pm"/.test(BK_)&&/DUNIA 1/.test(BK_)&&!/Pilih jilid/.test(BK_)&&!/30 huruf hijaiyah/.test(BK_));
+ ok("tab Iqro = peta dunia (bukan daftar kartu jilid)",/class="pm pw"/.test(BK_)&&/DUNIA 1/.test(BK_)&&!/Pilih jilid/.test(BK_)&&!/30 huruf hijaiyah/.test(BK_));
  L1.w.document.querySelector('[data-act="wd"][data-w="2"]').click();await sleep(60);
  ok("dunia 2 terkunci: dialog, tetap di dunia 1",/masih terkunci/.test(L1.w.document.getElementById("m").innerHTML)&&e("jl")===1);
  L1.w.document.querySelector('#m [data-act="mclose"].btn')&&L1.w.document.querySelector('#m [data-act="mclose"].btn').click();

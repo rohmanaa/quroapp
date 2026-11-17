@@ -6,4 +6,4 @@ V.books=()=>{if(!JL[jl]||!JL[jl].ok||!jOpen(jl)){jl=1;pn=iqLast[1]||1}
 <div class="flex gap-2"><button data-go="materi" class="px-3 py-2 rounded-full bg-white/25 text-xs font-black">Materi</button><button data-act="pmread" class="ib !w-10 !h-10 !border-0 !shadow-none bg-white/25 text-white" aria-label="Baca halaman">${ic("book")}</button></div></div>
 <div class="flex gap-2 mt-4 overflow-x-auto pb-1">${[1,2,3,4,5,6].map(j=>{const lk=!JL[j].ok||!jOpen(j),on=j===jl;return `<button data-act="wd" data-w="${j}" class="w-11 h-11 shrink-0 rounded-full font-black text-base grid place-items-center ${on?"bg-white":"bg-white/25 text-white"}" style="${on?`color:hsl(${CVH[j-1]} 62% 36%);box-shadow:0 4px 0 rgba(0,0,0,.2)`:""}" aria-label="Dunia ${j}">${lk&&!on?ic("lock","w-4 h-4"):j}</button>`}).join("")}</div></section>
 <p class="text-mute text-xs font-bold text-center mt-4 mb-2">Selesaikan tiap level (minimal ★${LOCK_MIN}) untuk membuka level berikutnya</p>
-${pathMap(jl)}${jqCard()}`};
+${jqCard()}${pathMap(jl)}`};
