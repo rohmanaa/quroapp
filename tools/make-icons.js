@@ -2,7 +2,7 @@
    Keluaran: icons/icon-192.png, icon-512.png, icon-maskable-512.png, apple-touch-icon.png, favicon-48.png, favicon.svg */
 const fs=require("fs"),path=require("path");let sharp;try{sharp=require("sharp")}catch(e){sharp=require(path.join(process.env.SHARP_DIR||"/tmp/t","node_modules/sharp"))}
 const out=p=>path.join(__dirname,"..","icons",p);
-/* wajah maskot: sama dengan assets/mascot.js (badan buku saja, tanpa tangan & kaki), koordinat 24..96 x 8..96 */
+/* wajah maskot: sama dengan src/assets/mascot.js (badan buku saja, tanpa tangan & kaki), koordinat 24..96 x 8..96 */
 const FACE=`<rect x="26" y="12" width="72" height="90" rx="13" fill="#2B8F39" opacity=".22"/>
 <rect x="26" y="10" width="72" height="88" rx="13" fill="#E8F5E0"/>
 <rect x="24" y="8" width="72" height="88" rx="13" fill="#43B649"/>

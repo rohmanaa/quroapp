@@ -91,7 +91,7 @@ async function boot(base,store={},opt={}){
  console.log("3b. Toko maskot: beli, pakai, simpan, tidak 'dikembalikan' saat sinkron");
  {const sp=await boot(base),A=()=>sp.w.document.getElementById("app").innerHTML;
   sp.w.eval("go('shop')");
-  ok("toko: layar tampil dengan 14 maskot",/Toko Maskot/.test(A())&&sp.w.eval("SHOP.length")===14&&sp.w.document.querySelectorAll("#app img[src^='assets/mascot/']").length===14);
+  ok("toko: layar tampil dengan 14 maskot",/Toko Maskot/.test(A())&&sp.w.eval("SHOP.length")===14&&sp.w.document.querySelectorAll("#app img[src^='src/assets/mascot/']").length===14);
   ok("toko: awalnya hanya Quro Baca yang dimiliki",sp.w.eval("SH.own.join()")==="utama"&&sp.w.eval("SH.use")==="utama");
   sp.w.eval("coins=100;shopBuy('melambai')");
   ok("toko: beli memotong koin dan memberi barang",sp.w.eval("coins")===80&&sp.w.eval("shopHas('melambai')"));
@@ -237,7 +237,7 @@ async function boot(base,store={},opt={}){
  await cf.w.eval('CL.doRegister("Ani","ani@mail.id","katasandi3")');await sleep(150);
  ok("konfirmasi email: muncul 'Cek emailmu', belum ada sesi",/Cek emailmu/.test(cf.w.document.getElementById("m").innerHTML)&&!cf.w.localStorage.getItem("quro_sb")&&cf.w.eval("U")===null);cf.w.close();
  // 8j. kunci rahasia tidak ada di kode
- const cfg=fs.readFileSync(path.join(ROOT,"fitur/akun/cloud-config.js"),"utf8").replace(/\/\*[\s\S]*?\*\//g,"");
+ const cfg=fs.readFileSync(path.join(ROOT,"src/services/cloud-config.js"),"utf8").replace(/\/\*[\s\S]*?\*\//g,"");
  ok("konfigurasi hanya berisi kunci publishable (bukan secret/service_role)",/sb_publishable_/.test(cfg)&&!/sb_secret_|service_role|eyJ[A-Za-z0-9_-]{20,}/.test(cfg));
  [u1,u2].forEach(x=>x.w.close());mk.close();
 
@@ -310,7 +310,7 @@ async function boot(base,store={},opt={}){
 
  console.log("11. Fitur lazy (pengaturan, profil, latihan) dimuat belakangan");
  const Y=await boot(base,{},{lazy:true,saveData:true});const y=x=>Y.w.eval(x);const sc=n=>[...Y.w.document.scripts].some(t=>t.src.includes(n));
- ok("di awal: berkas fitur lazy belum dimuat & layarnya belum ada",!sc("layar/theme.js")&&!sc("layar/profile.js")&&!sc("layar/record.js")&&!sc("share-profile.js")&&["profile","theme","record"].every(n=>y("V."+n)===undefined)&&y("Object.keys(featDone).length")===0);
+ ok("di awal: berkas fitur lazy belum dimuat & layarnya belum ada",!sc("views/theme.js")&&!sc("views/profile.js")&&!sc("views/record.js")&&!sc("share-profile.js")&&["profile","theme","record"].every(n=>y("V."+n)===undefined)&&y("Object.keys(featDone).length")===0);
  ok("share.css belum dimuat & kotak bagikan tetap tersembunyi",!Y.w.document.querySelector('link[href*="share.css"]')&&Y.w.document.getElementById("shareProfileModal").hasAttribute("hidden"));
  ok("mode hemat data: tidak memuat di latar belakang",await (async()=>{await sleep(2800);return y("Object.keys(featDone).length")===0})());
  y('go("profile")');await sleep(700);

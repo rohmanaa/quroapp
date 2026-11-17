@@ -4,7 +4,7 @@ import io,os
 from fontTools.ttLib import TTFont
 from PIL import Image,ImageDraw,ImageFont
 root=os.path.join(os.path.dirname(__file__),"..")
-f=TTFont(os.path.join(root,"assets/fonts/amiri-arabic-700-normal.woff2"));f.flavor=None
+f=TTFont(os.path.join(root,"src/assets/fonts/amiri-arabic-700-normal.woff2"));f.flavor=None
 buf=io.BytesIO();f.save(buf);buf.seek(0)
 def draw(size,rounded):
     S=1024

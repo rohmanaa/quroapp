@@ -14,7 +14,7 @@ console.log("   "+js.length+" file diperiksa");
 /* 2. data Iqro (dimuat seperti browser: iqro.js, pola.js, latihan.js, lalu data buku) */
 console.log("2. Data Iqro");
 try{
- const files=["fitur/belajar/data/iqro.js","fitur/belajar/data/pola.js","fitur/belajar/data/latihan.js","fitur/belajar/data/iqro1-buku.js","fitur/belajar/data/iqro-lazy.js","fitur/belajar/data/iqro2-6-buku.js"].filter(f=>fs.existsSync(path.join(R,f)));
+ const files=["src/data/iqro.js","src/data/pola.js","src/data/latihan.js","src/data/iqro1-buku.js","src/data/iqro-lazy.js","src/data/iqro2-6-buku.js"].filter(f=>fs.existsSync(path.join(R,f)));
  const {JL,IQ,BOOK26_N}=new Function(files.map(f=>fs.readFileSync(path.join(R,f),"utf8")).join("\n")+";return {JL,IQ,BOOK26_N}")();
  for(const j in BOOK26_N)if(JL[j].n!==BOOK26_N[j])bad("iqro-lazy.js: jumlah halaman Iqro "+j+" ("+BOOK26_N[j]+") tidak sama dengan isi buku ("+JL[j].n+")");
  let pages=0,cells=0;
@@ -43,17 +43,17 @@ if(/<script[^>]+iqro2-6-buku\.js/.test(html))bad("index.html memuat iqro2-6-buku
 if(!sw.includes("iqro2-6-buku.js"))bad("iqro2-6-buku.js tidak ada di cache offline (butuh untuk mode offline)");
 const refs=[...html.matchAll(/<(?:script[^>]*\ssrc|link[^>]*\shref)="([^"#?]+)"/g)].map(m=>m[1]).filter(u=>!/^(https?:)?\/\//.test(u));
 refs.forEach(u=>{if(!fs.existsSync(path.join(R,u)))bad("index.html memanggil "+u+" tetapi file tidak ada");else if(!sw.includes(u)&&u!=="sw.js")bad(u+" belum ada di cache offline: jalankan node tools/make-sw.js")});
-["games/index.html","games/lobby.js","fitur/pengaturan/backup.js","core/update.js","core/ptr.js"].forEach(u=>{if(fs.existsSync(path.join(R,u))&&!sw.includes(u))bad(u+" belum ada di cache offline: jalankan node tools/make-sw.js")});
+["games/index.html","games/lobby.js","src/services/backup.js","src/services/update.js","src/utils/ptr.js"].forEach(u=>{if(fs.existsSync(path.join(R,u))&&!sw.includes(u))bad(u+" belum ada di cache offline: jalankan node tools/make-sw.js")});
 console.log("   "+refs.length+" file dirujuk");
 
-/* 3b. fitur yang dimuat belakangan (core/routes.js) */
-console.log("3b. Fitur lazy (core/routes.js)");
-{const rs=fs.readFileSync(path.join(R,"core/routes.js"),"utf8"),m=rs.match(/const LAZY=(\{[\s\S]*?\});\nconst featDone/);
- if(!m)bad("core/routes.js: tabel LAZY tidak terbaca");else{
+/* 3b. fitur yang dimuat belakangan (src/router/routes.js) */
+console.log("3b. Fitur lazy (src/router/routes.js)");
+{const rs=fs.readFileSync(path.join(R,"src/router/routes.js"),"utf8"),m=rs.match(/const LAZY=(\{[\s\S]*?\});\nconst featDone/);
+ if(!m)bad("src/router/routes.js: tabel LAZY tidak terbaca");else{
  const LAZY=new Function("return "+m[1])(),ALLOW=new Set(["openShareProfileModal","closeShareProfileModal"]);
  const lazyFiles=new Set(Object.values(LAZY).flatMap(f=>[].concat(f.js||[],f.css||[])));
  const walk=d=>fs.readdirSync(path.join(R,d),{withFileTypes:true}).flatMap(e=>e.isDirectory()?(e.name==="node_modules"?[]:walk(d+"/"+e.name)):e.name.endsWith(".js")?[d+"/"+e.name]:[]);
- const eager=[...walk("core"),...walk("fitur")].filter(f=>!lazyFiles.has(f)&&!/\/data\//.test(f)||/iqro-lazy|data\/(letters|harakat|iqro|pola|latihan)\.js/.test(f));
+ const eager=walk("src").filter(f=>!lazyFiles.has(f)&&!/\/data\//.test(f)||/iqro-lazy|data\/(letters|harakat|iqro|pola|latihan)\.js/.test(f));
  for(const k in LAZY){const f=LAZY[k],files=[].concat(f.js||[],f.css||[]);
   files.forEach(u=>{if(!fs.existsSync(path.join(R,u)))bad("LAZY."+k+": "+u+" tidak ada");else{if(!sw.includes(u))bad(u+" (lazy) belum ada di cache offline: jalankan node tools/make-sw.js");if(html.includes('"'+u+'"'))bad(u+" ada di LAZY tetapi juga dimuat di index.html")}});
   const src=(f.js||[]).map(u=>fs.existsSync(path.join(R,u))?fs.readFileSync(path.join(R,u),"utf8"):"").join("\n");
@@ -63,20 +63,21 @@ console.log("3b. Fitur lazy (core/routes.js)");
   for(const e of eager){const t=fs.readFileSync(path.join(R,e),"utf8");for(const n of names){if(ALLOW.has(n))continue;if(new RegExp("(?<![\\w$.])"+n.replace(/\$/g,"\\$")+"(?![\\w$])").test(t))bad("fitur lazy '"+k+"' tidak boleh dipakai kode awal: "+e+" memakai "+n+" (pindahkan ke fitur itu, atau jadikan fitur ini eager)")}}}
  console.log("   "+Object.keys(LAZY).length+" fitur lazy: "+Object.keys(LAZY).join(", "))}}
 
-/* 3c. satu berkas = satu layar (fitur/<fitur>/layar/<nama>.js mendefinisikan V.<nama>) */
+/* 3c. satu berkas = satu layar (src/views/<nama>.js mendefinisikan V.<nama>); layar tidak boleh didefinisikan di luar views/ */
 console.log("3c. Satu berkas satu layar");
 {const walk=d=>fs.readdirSync(path.join(R,d),{withFileTypes:true}).flatMap(e=>e.isDirectory()?(e.name==="node_modules"?[]:walk(d+"/"+e.name)):e.name.endsWith(".js")?[d+"/"+e.name]:[]);
- const WRAP=new Set(["_versi.js","perf.js","cloud.js"]);let n=0;
- for(const f of [...walk("core"),...walk("fitur")]){const src=fs.readFileSync(path.join(R,f),"utf8"),base=path.basename(f),names=[...new Set([...src.matchAll(/(?<![\w$.])V\.([A-Za-z0-9_]+)\s*=(?!=)/g)].map(m=>m[1]))];
+ const WRAP=new Set(["_versi.js","perf.js","cloud.js"]),EXEMPT=new Set(["backup.js"]); /* backup.js: layar Cadangkan ada di dalam IIFE yang berbagi variabel privat dengan logika cadangan */let n=0;
+ for(const f of walk("src")){const src=fs.readFileSync(path.join(R,f),"utf8"),base=path.basename(f),names=[...new Set([...src.matchAll(/(?<![\w$.])V\.([A-Za-z0-9_]+)\s*=(?!=)/g)].map(m=>m[1]))];
   if(WRAP.has(base))continue;
-  if(names.length>1)bad(f+" mendefinisikan "+names.length+" layar ("+names.join(", ")+"): pecah jadi satu berkas per layar di layar/<nama>.js");
-  if(/\/layar\//.test(f)&&!base.startsWith("_")){n++;if(names.length!==1||names[0]!==base.replace(/\.js$/,""))bad(f+": nama berkas harus sama dengan layar yang didefinisikannya (V."+base.replace(/\.js$/,"")+"), ditemukan: "+(names.join(", ")||"tidak ada"))}}
+  if(names.length>1)bad(f+" mendefinisikan "+names.length+" layar ("+names.join(", ")+"): pecah jadi satu berkas per layar di src/views/<nama>.js");
+  if(names.length&&!/(^|\/)views\//.test(f)&&!WRAP.has(base)&&!EXEMPT.has(base))bad(f+" mendefinisikan layar ("+names.join(", ")+") di luar src/views/: pindahkan ke src/views/<nama>.js");
+  if(/(^|\/)views\//.test(f)&&!base.startsWith("_")){n++;if(names.length!==1||names[0]!==base.replace(/\.js$/,""))bad(f+": nama berkas harus sama dengan layar yang didefinisikannya (V."+base.replace(/\.js$/,"")+"), ditemukan: "+(names.join(", ")||"tidak ada"))}}
  console.log("   "+n+" berkas layar, semuanya sesuai")}
 
 /* 4. nomor versi konsisten */
 console.log("4. Nomor versi");
-try{const vj=JSON.parse(fs.readFileSync(path.join(R,"version.json"),"utf8")),vs=fs.readFileSync(path.join(R,"core/version.js"),"utf8"),m=vs.match(/APP_VERSION="([\d.]+)"/);
- if(!m||m[1]!==vj.major+"."+vj.build)bad("core/version.js tidak sama dengan version.json: jalankan node tools/make-sw.js");else console.log("   v"+m[1])}catch(e){bad("version.json / core/version.js tidak terbaca: jalankan node tools/make-sw.js")}
+try{const vj=JSON.parse(fs.readFileSync(path.join(R,"version.json"),"utf8")),vs=fs.readFileSync(path.join(R,"src/version.js"),"utf8"),m=vs.match(/APP_VERSION="([\d.]+)"/);
+ if(!m||m[1]!==vj.major+"."+vj.build)bad("src/version.js tidak sama dengan version.json: jalankan node tools/make-sw.js");else console.log("   v"+m[1])}catch(e){bad("version.json / src/version.js tidak terbaca: jalankan node tools/make-sw.js")}
 
 console.log(err?"\nGAGAL: "+err+" masalah"+(warn?", "+warn+" catatan":""):"\nLOLOS"+(warn?" ("+warn+" catatan)":""));
 process.exit(err?1:0);

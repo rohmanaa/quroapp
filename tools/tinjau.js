@@ -2,9 +2,9 @@
    Hasilnya satu berkas HTML mandiri (font ikut tertanam), nyaman dibuka di HP atau dicetak. */
 const fs=require("fs"),path=require("path");
 const root=path.join(__dirname,"..");
-const src=["fitur/belajar/data/iqro.js","fitur/belajar/data/pola.js","fitur/belajar/data/latihan.js","fitur/belajar/tajwid.js"].map(f=>fs.readFileSync(path.join(root,f),"utf8")).join("\n");
+const src=["src/data/iqro.js","src/data/pola.js","src/data/latihan.js","src/utils/tajwid.js"].map(f=>fs.readFileSync(path.join(root,f),"utf8")).join("\n");
 const {IQ,JL,POLA,tjh}=new Function("console",src+";return{IQ,JL,POLA,tjh}")({warn(){}});
-const b64=f=>fs.readFileSync(path.join(root,"assets/fonts",f)).toString("base64");
+const b64=f=>fs.readFileSync(path.join(root,"src/assets/fonts",f)).toString("base64");
 const esc=s=>String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;");
 const INFO={
  1:["Jilid 1 · Huruf berfathah","Huruf hijaiyah diperkenalkan bertahap, semuanya berfathah. Baris pertama tiap halaman memperlihatkan huruf baru, baris berikutnya latihan acak. Dua halaman terakhir adalah ulangan."],

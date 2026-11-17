@@ -1,0 +1,1 @@
+function say(t){try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(t);u.lang="ar-SA";u.rate=.6;u.onend=()=>{play=false;if(S==="reader")render()};speechSynthesis.speak(u);return true}catch(e){toast("Suara belum didukung di perangkat ini");return false}}

@@ -1,0 +1,4 @@
+/* Layar belajar: home, books, huruf, harakat, bookdetail, reader */
+
+const absen=()=>`<section class="${card} mt-4"><div class="flex justify-between items-center mb-3"><h3 class="font-black">Absen 7 hari</h3><span class="text-xs font-extrabold text-brand">${ci} hari beruntun 🔥</span></div>
+<div class="grid grid-cols-7 gap-1.5 text-center">${[1,2,3,4,5,6,7].map(n=>{const dn=n<=ci,nx=n===ci+1&&!claimed;return `<div><div class="aspect-square rounded-2xl grid place-items-center text-xs font-black ${dn?"bg-brand text-on":"bg-soft text-mute"} ${nx?"ring-4 ring-gold":""}" style="${dn?"box-shadow:0 3px 0 var(--bd)":""}">${dn?ic("check","w-4 h-4"):n===7?ic("star","w-4 h-4"):"+"+n}</div><small class="text-[9px] font-extrabold text-mute">${n===7?"Bonus":"H"+n}</small></div>`}).join("")}</div></section>`;
